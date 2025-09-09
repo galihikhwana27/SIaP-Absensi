@@ -942,7 +942,7 @@
         currentUser = null;
         document.getElementById('loginPage').classList.add('active');
         document.getElementById('mainApp').classList.add('hidden');
-        document.getElementById('loading-overlay').style.display = 'flex';
+        document.getElementById('loading-overlay').style.display = 'none';
     }
 
     function setupDashboardUI() {
@@ -1194,29 +1194,4 @@
 
 </body>
 </html>
-```
-
-### 
-### Langkah Wajib: Perbaiki Izin Akses Firebase
-
-Error `Missing or insufficient permissions` **tidak bisa diperbaiki dari kode**. Anda harus mengubahnya langsung di dasbor proyek Firebase Anda. Untuk keperluan pengembangan, kita akan mengizinkan semua akses baca dan tulis.
-
-1.  Buka [Konsol Firebase](https://console.firebase.google.com/).
-2.  Pilih proyek Anda (`siapabsensi-f2d1a`).
-3.  Di menu sebelah kiri, klik **Build** > **Firestore Database**.
-4.  Pilih tab **Rules** di bagian atas.
-5.  Ganti semua isi editor dengan kode berikut:
-
-    ```javascript
-    rules_version = '2';
-    service cloud.firestore {
-      match /databases/{database}/documents {
-        // Izinkan semua orang untuk membaca dan menulis ke semua dokumen
-        // HANYA UNTUK PENGEMBANGAN!
-        match /{document=**} {
-          allow read, write: if true;
-        }
-      }
-    }
-    
 

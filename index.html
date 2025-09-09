@@ -874,9 +874,14 @@
             let passwordValid = false;
             const enteredPassword = passwordInput.value;
             
-            if (userData.password && userData.password === enteredPassword) {
-                 passwordValid = true; // Untuk admin atau user dengan password eksplisit
+            // Logika Validasi Password yang Diperbaiki
+            if (userData.role === 'Admin') {
+                // Admin WAJIB punya field 'password' di Firestore
+                if (userData.password && userData.password === enteredPassword) {
+                    passwordValid = true;
+                }
             } else if (userData.tglLahir) {
+                // Guru & Pegawai menggunakan tanggal lahir
                 const [year, month, day] = userData.tglLahir.split('-');
                 const formattedPassword = `${day}${month}${year}`;
                 if (enteredPassword === formattedPassword) {
@@ -885,7 +890,7 @@
             }
 
             if (!passwordValid) {
-                throw new Error("Password salah");
+                throw new Error("Password salah atau tidak sesuai");
             }
             
             const token = typeof __initial_auth_token !== 'undefined' 
@@ -1194,4 +1199,6 @@
 
 </body>
 </html>
+    
+
 

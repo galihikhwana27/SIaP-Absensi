@@ -97,7 +97,7 @@
         <!-- Konten aplikasi utama (sidebar, header, pages) akan tetap sama -->
         <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden lg:hidden"></div>
         <!-- Sidebar/Menu Navigasi -->
-        <aside id="sidebar" class="bg-blue-800 text-white w-64 h-screen fixed z-30 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full no-print">
+        <aside id="sidebar" class="bg-blue-800 text-white w-64 h-screen fixed z-30 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 no-print">
             <div class="p-6 text-center border-b border-blue-700">
                 <h2 class="text-xl font-bold">SIAP Hadir</h2>
                 <p class="text-xs text-blue-200">SMPN 3 Lempuing Jaya</p>
@@ -137,14 +137,14 @@
         </aside>
 
         <!-- Konten Utama -->
-        <main id="main-content" class="p-4 transition-all duration-300 ease-in-out">
+        <main id="main-content" class="lg:ml-64 p-4 transition-all duration-300 ease-in-out">
             <!-- Header Konten -->
             <header id="header-main" class="flex justify-between items-center mb-4 bg-blue-700 text-white p-4 shadow-lg rounded-xl no-print">
                 <div class="flex items-center gap-4">
-                    <button id="sidebarToggle" class="text-white hover:text-blue-200 focus:outline-none">
+                    <button id="sidebarToggle" class="text-white hover:text-blue-200 focus:outline-none lg:hidden">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
-                    <div class="flex items-center gap-3">
+                    <div class="hidden sm:flex items-center gap-3">
                         <div class="bg-white p-1 rounded-full">
                            <svg class="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.789-2.75 9.565M12 11c0-3.517 1.009-6.789 2.75-9.565M12 11H3.25m8.75 0H20.75M12 21.565c-3.131 0-5.945-1.9-7.5-4.5M12 2.435c3.131 0 5.945 1.9 7.5 4.5"></path></svg>
                         </div>
@@ -160,7 +160,6 @@
                 </div>
             </header>
             
-            <!-- Sisa dari HTML (Pengumuman, Aksi Cepat, Halaman-halaman) tidak berubah -->
             <!-- Pengumuman Berjalan -->
             <div class="bg-white p-2 mb-4 rounded-lg shadow-md overflow-hidden whitespace-nowrap no-print">
                 <div class="inline-block animate-marquee">
@@ -817,20 +816,34 @@
     });
     
     function setupStaticEventListeners() {
-        // ... (event listener statis lainnya tetap sama)
         document.getElementById('loginButton').addEventListener('click', handleLogin);
-        // ...
+        document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+        document.getElementById('sidebarOverlay').addEventListener('click', toggleSidebar);
+
+        // Event listener untuk tab admin
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Hapus kelas aktif dari semua tab
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('border-blue-500', 'text-blue-600'));
+                // Sembunyikan semua konten tab
+                document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+
+                // Tambahkan kelas aktif ke tab yang diklik
+                tab.classList.add('border-blue-500', 'text-blue-600');
+                // Tampilkan konten tab yang relevan
+                document.getElementById(tab.dataset.tab).classList.remove('hidden');
+            });
+        });
+         // Set tab pertama sebagai aktif secara default
+        document.querySelector('.admin-tab').click();
     }
 
     // --- OTENTIKASI & INISIALISASI APLIKASI ---
     
-    // Listener utama yang memantau status login
     onAuthStateChanged(auth, user => {
         if (user) {
-            // Jika user berhasil login
             initializeAppData(user.uid);
         } else {
-            // Jika user logout atau sesi tidak valid
             cleanupAndShowLogin();
         }
     });
@@ -858,14 +871,15 @@
             const userDoc = querySnapshot.docs[0];
             const userData = userDoc.data();
 
-            // Validasi password (di aplikasi nyata, ini harus di-hash)
             let passwordValid = false;
-            if (userData.role === 'Admin' && userData.password === passwordInput.value) {
-                passwordValid = true;
+            const enteredPassword = passwordInput.value;
+            
+            if (userData.password && userData.password === enteredPassword) {
+                 passwordValid = true; // Untuk admin atau user dengan password eksplisit
             } else if (userData.tglLahir) {
                 const [year, month, day] = userData.tglLahir.split('-');
                 const formattedPassword = `${day}${month}${year}`;
-                if (passwordInput.value === formattedPassword) {
+                if (enteredPassword === formattedPassword) {
                     passwordValid = true;
                 }
             }
@@ -874,18 +888,15 @@
                 throw new Error("Password salah");
             }
             
-            // Di aplikasi production, Anda akan memanggil backend/Cloud Function
-            // untuk membuat custom token berdasarkan user ID ini.
-            // Untuk sekarang, kita akan menggunakan token palsu jika __initial_auth_token tidak ada.
             const token = typeof __initial_auth_token !== 'undefined' 
                 ? __initial_auth_token 
-                : await getFakeToken(userDoc.id); // Fungsi dummy untuk simulasi
+                : await getFakeToken(userDoc.id);
             
             await signInWithCustomToken(auth, token);
-            // `onAuthStateChanged` akan menangani sisanya
             
         } catch (error) {
             console.error("Login failed:", error.message);
+            errorDiv.querySelector('span').innerText = error.message;
             errorDiv.classList.remove('hidden');
         } finally {
             loginButton.disabled = false;
@@ -894,10 +905,8 @@
         }
     }
 
-    // FUNGSI INI HANYA UNTUK SIMULASI. JANGAN DIGUNAKAN DI PRODUCTION.
     async function getFakeToken(uid) {
         console.warn("MENGGUNAKAN FAKE TOKEN UNTUK LOGIN. INI TIDAK AMAN.");
-        // Ini adalah contoh format JWT, tapi tidak valid secara kriptografis.
         const header = btoa(JSON.stringify({ alg: "none", typ: "JWT" }));
         const payload = btoa(JSON.stringify({ uid: uid, iat: Math.floor(Date.now() / 1000) }));
         return `${header}.${payload}.`;
@@ -908,7 +917,6 @@
     }
     
     async function initializeAppData(uid) {
-        // 1. Ambil data user yang login
         const userDocRef = doc(db, getPath('personil'), uid);
         const userDoc = await getDoc(userDocRef);
         if (!userDoc.exists()) {
@@ -918,74 +926,56 @@
         }
         currentUser = { id: userDoc.id, ...userDoc.data() };
 
-        // 2. Setup UI
         setupDashboardUI();
-
-        // 3. Setup real-time data listeners
         setupDataListeners();
         
-        // 4. Tampilkan aplikasi
         document.getElementById('loginPage').classList.remove('active');
         document.getElementById('mainApp').classList.remove('hidden');
         showPage('homePage', document.querySelector('.nav-link'));
+        document.getElementById('loading-overlay').style.display = 'none';
     }
     
     function cleanupAndShowLogin() {
-        // Hentikan semua listener Firestore yang aktif
         unsubscribes.forEach(unsub => unsub());
         unsubscribes = [];
         
         currentUser = null;
         document.getElementById('loginPage').classList.add('active');
         document.getElementById('mainApp').classList.add('hidden');
-        document.getElementById('loading-overlay').style.display = 'none';
+        document.getElementById('loading-overlay').style.display = 'flex';
     }
 
     function setupDashboardUI() {
         document.getElementById('userName').innerText = currentUser.name;
         document.getElementById('userRole').innerText = currentUser.role;
         document.getElementById('welcomeName').innerText = currentUser.name.split(',')[0];
-        document.getElementById('userAvatar').alt = currentUser.name;
-        // Tampilkan menu admin jika user adalah admin
+        document.getElementById('userAvatar').src = `https://placehold.co/40x40/E2E8F0/4A5568?text=${currentUser.name.charAt(0)}`;
         document.getElementById('adminMenu').classList.toggle('hidden', currentUser.role !== 'Admin');
     }
 
     // --- DATA LISTENERS (REAL-TIME) ---
     function setupDataListeners() {
-        // Listener untuk data personil
         const personilQuery = query(collection(db, getPath('personil')));
         const unsubPersonil = onSnapshot(personilQuery, snapshot => {
             allPersonil = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             console.log("Real-time update: Personil", allPersonil);
-            // Re-render UI yang relevan
             if (document.getElementById('adminPage').classList.contains('active')) renderManajemenPersonil();
-            if (document.getElementById('lihatAbsensiPage').classList.contains('active')) renderAbsensiHarianGuru();
-            updateDashboardStats();
-            updateGuruDropdowns();
-        });
+        }, error => console.error("Error listening to personil:", error));
         unsubscribes.push(unsubPersonil);
 
-        // Listener untuk data kelas
         const kelasQuery = query(collection(db, getPath('kelas')));
         const unsubKelas = onSnapshot(kelasQuery, snapshot => {
             allKelas = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             allKelas.sort((a,b) => a.name.localeCompare(b.name));
             console.log("Real-time update: Kelas", allKelas);
             updateAllKelasDropdowns();
-            setupSiswaListeners(); // Setup listener siswa setiap kali daftar kelas berubah
+            setupSiswaListeners();
             if (document.getElementById('adminPage').classList.contains('active')) renderManajemenKelas();
-        });
+        }, error => console.error("Error listening to kelas:", error));
         unsubscribes.push(unsubKelas);
-        
-        // ... (Tambahkan listener untuk absensi personal dan siswa) ...
-        
-        // Sembunyikan loading overlay setelah listener utama terpasang
-        document.getElementById('loading-overlay').style.display = 'none';
     }
     
     function setupSiswaListeners() {
-        // Hapus listener siswa yang lama sebelum membuat yang baru
-        // (Ini penting jika ada kelas yang dihapus/ditambah)
         unsubscribes = unsubscribes.filter(unsub => !unsub.isSiswaListener);
         allSiswa = {};
 
@@ -994,40 +984,64 @@
             const unsubSiswa = onSnapshot(siswaQuery, snapshot => {
                 allSiswa[kelas.id] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 console.log(`Real-time update: Siswa kelas ${kelas.name}`, allSiswa[kelas.id]);
-                // Re-render UI yang relevan
                  if (document.getElementById('adminPage').classList.contains('active')) renderManajemenSiswa();
-                 if (document.getElementById('absensiSiswaPage').classList.contains('active')) loadSiswaForAbsen();
-
-            });
-            unsubSiswa.isSiswaListener = true; // Tandai sebagai listener siswa
+            }, error => console.error(`Error listening to siswa in kelas ${kelas.id}:`, error));
+            unsubSiswa.isSiswaListener = true;
             unsubscribes.push(unsubSiswa);
         });
     }
 
-    // --- Semua fungsi lainnya (showPage, handleAbsenStaff, simpanAbsensiSiswa, dll.) ---
-    // --- akan diubah untuk membaca dari variabel state global (allPersonil, allSiswa, dll.) ---
-    // --- dan menulis ke Firestore. ---
+    // --- FUNGSI RENDER & UI ---
     
-    // Contoh perubahan fungsi `renderManajemenPersonil`
+    function showPage(pageId, element) {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-blue-700'));
+        if(element) element.classList.add('bg-blue-700');
+        
+        // Tutup sidebar di mode mobile saat link diklik
+        const sidebar = document.getElementById('sidebar');
+        if (!sidebar.classList.contains('lg:translate-x-0')) {
+           toggleSidebar();
+        }
+    }
+
+    function updateDate() {
+        const dateElement = document.getElementById('currentDate');
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.innerText = now.toLocaleDateString('id-ID', options);
+    }
+    
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+    }
+
+    // --- FUNGSI CRUD & FORM (Contoh untuk Personil) ---
+
     function renderManajemenPersonil() {
         const tbody = document.getElementById('personilTableBody');
         tbody.innerHTML = '';
         const personilToShow = allPersonil.filter(u => u.role !== 'Admin');
         
         if (personilToShow.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4">Belum ada data personil.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 text-gray-400">Belum ada data personil.</td></tr>`;
             return;
         }
 
-        personilToShow.forEach(user => {
+        personilToShow.sort((a,b) => a.name.localeCompare(b.name)).forEach(user => {
             const row = `
-                <tr class="bg-white border-b">
+                <tr class="bg-white border-b hover:bg-gray-50">
                     <td class="px-6 py-4 font-medium text-gray-900">${user.name}</td>
                     <td class="px-6 py-4">${user.nip}</td>
                     <td class="px-6 py-4">${user.role}</td>
-                    <td class="px-6 py-4 space-x-2">
-                        <button onclick="showPersonilForm('${user.id}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
-                        <button onclick="hapusPersonil('${user.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                    <td class="px-6 py-4 space-x-4">
+                        <button onclick="showPersonilForm('${user.id}')" class="text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-edit"></i> Edit</button>
+                        <button onclick="hapusPersonil('${user.id}')" class="text-red-600 hover:text-red-800 font-medium"><i class="fas fa-trash"></i> Hapus</button>
                     </td>
                 </tr>
             `;
@@ -1035,48 +1049,174 @@
         });
     }
 
-    // Contoh perubahan fungsi `simpanPersonil`
+    function showPersonilForm(personilId = null) {
+        const personil = personilId ? allPersonil.find(p => p.id === personilId) : null;
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+
+        modalTitle.innerText = personil ? 'Edit Data Personil' : 'Tambah Personil Baru';
+        modalBody.innerHTML = `
+            <div class="space-y-4">
+                <div>
+                    <label for="formNip" class="text-sm font-medium text-gray-600">NIP / ID Pegawai</label>
+                    <input type="text" id="formNip" value="${personil?.nip || ''}" ${personil ? 'readonly' : ''} class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${personil ? 'bg-gray-200 cursor-not-allowed' : ''}">
+                </div>
+                <div>
+                    <label for="formNama" class="text-sm font-medium text-gray-600">Nama Lengkap & Gelar</label>
+                    <input type="text" id="formNama" value="${personil?.name || ''}" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="formTglLahir" class="text-sm font-medium text-gray-600">Tgl. Lahir (Password Default)</label>
+                    <input type="date" id="formTglLahir" value="${personil?.tglLahir || ''}" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <p class="text-xs text-gray-500 mt-1">Format password: ddmmyyyy (contoh: 01011990)</p>
+                </div>
+                <div>
+                    <label for="formRole" class="text-sm font-medium text-gray-600">Peran / Jabatan</label>
+                    <select id="formRole" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="Guru" ${personil?.role === 'Guru' ? 'selected' : ''}>Guru</option>
+                        <option value="Pegawai" ${personil?.role === 'Pegawai' ? 'selected' : ''}>Pegawai</option>
+                    </select>
+                </div>
+                <div class="flex justify-end pt-4">
+                     <button onclick="simpanPersonil()" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">Simpan</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('formModal').classList.remove('hidden');
+        document.getElementById('formModal').classList.add('flex');
+    }
+
     async function simpanPersonil() {
-        // ... (ambil data dari form seperti sebelumnya)
-        const nip = document.getElementById('formNip').value;
-        const name = document.getElementById('formNama').value;
+        const nip = document.getElementById('formNip').value.trim();
+        const name = document.getElementById('formNama').value.trim();
+        const tglLahir = document.getElementById('formTglLahir').value;
+        const role = document.getElementById('formRole').value;
         
-        if (!nip || !name) {
-            showErrorToast('NIP dan Nama wajib diisi!');
+        if (!nip || !name || !tglLahir || !role) {
+            showErrorToast('Semua kolom wajib diisi!');
             return;
         }
         
-        // Di aplikasi nyata, ID dokumen personil harus sama dengan UID dari Firebase Auth.
-        // Untuk sekarang, kita akan buat query untuk mencari/membuat user.
-        // Ini adalah simplified logic.
+        const personilRef = doc(db, getPath('personil'), nip);
         
         try {
-            // Kita akan menggunakan NIP sebagai ID dokumen untuk kemudahan
-            const personilRef = doc(db, getPath('personil'), nip); 
-            const dataToSave = {
-                // ... (data personil dari form)
-            };
-            await setDoc(personilRef, dataToSave, { merge: true }); // merge: true untuk update
+            await setDoc(personilRef, { nip, name, tglLahir, role }, { merge: true });
             showSuccessToast('Data personil berhasil disimpan!');
             closeModal();
         } catch (error) {
             console.error("Gagal menyimpan personil:", error);
-            showErrorToast('Gagal menyimpan data.');
+            showErrorToast('Gagal menyimpan data ke server.');
         }
     }
+
+    function hapusPersonil(personilId) {
+       showConfirmModal('Hapus Personil', 'Apakah Anda yakin ingin menghapus data personil ini secara permanen?', async () => {
+           try {
+               await deleteDoc(doc(db, getPath('personil'), personilId));
+               showSuccessToast('Data personil berhasil dihapus.');
+           } catch (error) {
+               console.error("Gagal menghapus personil:", error);
+               showErrorToast('Gagal menghapus data.');
+           }
+       });
+    }
+
+
+    // --- FUNGSI MODAL & NOTIFIKASI ---
+    function closeModal() {
+        const modal = document.getElementById('formModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.getElementById('modalBody').innerHTML = '';
+    }
+
+    function showSuccessToast(message) {
+        const toast = document.getElementById('successToast');
+        document.getElementById('successMessage').innerText = message;
+        toast.classList.remove('hidden', 'translate-x-full');
+        setTimeout(() => {
+            toast.classList.add('translate-x-full');
+             setTimeout(() => toast.classList.add('hidden'), 500);
+        }, 3000);
+    }
+
+    function showErrorToast(message) {
+        const toast = document.getElementById('errorToast');
+        document.getElementById('errorMessage').innerText = message;
+        toast.classList.remove('hidden', 'translate-x-full');
+        setTimeout(() => {
+            toast.classList.add('translate-x-full');
+            setTimeout(() => toast.classList.add('hidden'), 500);
+        }, 3000);
+    }
     
-    // Pastikan untuk meng-export fungsi yang dipanggil dari HTML (onclick) ke window
+    function showConfirmModal(title, message, onConfirm) {
+        document.getElementById('confirmTitle').innerText = title;
+        document.getElementById('confirmMessage').innerText = message;
+        const confirmModal = document.getElementById('confirmModal');
+        confirmModal.classList.remove('hidden');
+        confirmModal.classList.add('flex');
+
+        const confirmOk = document.getElementById('confirmOk');
+        const confirmCancel = document.getElementById('confirmCancel');
+
+        const closeConfirm = () => {
+            confirmModal.classList.add('hidden');
+            confirmModal.classList.remove('flex');
+            // Hapus event listener agar tidak menumpuk
+            confirmOk.replaceWith(confirmOk.cloneNode(true));
+            confirmCancel.replaceWith(confirmCancel.cloneNode(true));
+        };
+
+        confirmOk.addEventListener('click', () => {
+            onConfirm();
+            closeConfirm();
+        });
+        confirmCancel.addEventListener('click', closeConfirm);
+    }
+    
+    // --- STUB/PLACEHOLDER FUNGSI LAINNYA ---
+    function renderManajemenKelas() { /* TODO */ }
+    function renderManajemenSiswa() { /* TODO */ }
+    function updateAllKelasDropdowns() { /* TODO */ }
+    
+    // --- EXPORT FUNGSI KE GLOBAL SCOPE ---
     window.showPage = showPage;
     window.handleLogout = handleLogout;
     window.simpanPersonil = simpanPersonil;
-    // ... export semua fungsi lain yang dibutuhkan ...
-
-    // Sisa fungsi (utility, UI, dll.) bisa disalin dari skrip lama, 
-    // dengan penyesuaian untuk membaca dari state global dan menulis ke Firestore.
+    window.showPersonilForm = showPersonilForm;
+    window.hapusPersonil = hapusPersonil;
+    window.closeModal = closeModal;
+    // ... export fungsi lainnya jika sudah dibuat ...
     
 </script>
 
 
 </body>
 </html>
+```
+
+### 
+### Langkah Wajib: Perbaiki Izin Akses Firebase
+
+Error `Missing or insufficient permissions` **tidak bisa diperbaiki dari kode**. Anda harus mengubahnya langsung di dasbor proyek Firebase Anda. Untuk keperluan pengembangan, kita akan mengizinkan semua akses baca dan tulis.
+
+1.  Buka [Konsol Firebase](https://console.firebase.google.com/).
+2.  Pilih proyek Anda (`siapabsensi-f2d1a`).
+3.  Di menu sebelah kiri, klik **Build** > **Firestore Database**.
+4.  Pilih tab **Rules** di bagian atas.
+5.  Ganti semua isi editor dengan kode berikut:
+
+    ```javascript
+    rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        // Izinkan semua orang untuk membaca dan menulis ke semua dokumen
+        // HANYA UNTUK PENGEMBANGAN!
+        match /{document=**} {
+          allow read, write: if true;
+        }
+      }
+    }
+    
 

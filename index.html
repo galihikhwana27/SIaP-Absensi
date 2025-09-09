@@ -69,6 +69,16 @@
                 display: block;
             }
         }
+
+        /* Menyembunyikan scrollbar di sidebar nav */
+        #sidebar nav::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        #sidebar nav {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -112,12 +122,12 @@
     <div id="mainApp" class="hidden">
         <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden lg:hidden"></div>
         <!-- Sidebar/Menu Navigasi -->
-        <aside id="sidebar" class="bg-blue-800 text-white w-64 min-h-screen fixed z-30 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full no-print">
+        <aside id="sidebar" class="bg-blue-800 text-white w-64 h-screen fixed z-30 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full no-print">
             <div class="p-6 text-center border-b border-blue-700">
                 <h2 class="text-xl font-bold">SIAP Hadir</h2>
                 <p class="text-xs text-blue-200">SMPN 3 Lempuing Jaya</p>
             </div>
-            <nav class="flex-1 mt-4">
+            <nav class="flex-1 mt-4 overflow-y-auto">
                 <a href="#" onclick="showPage('homePage', this)" class="nav-link bg-blue-700 flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
                     <i class="fas fa-home w-6"></i> <span>Home</span>
                 </a>
@@ -314,6 +324,14 @@
                                 <option>Dr. Budi Santoso, M.Pd.</option>
                             </select>
                         </div>
+                    </div>
+                    
+                    <!-- Opsi Notifikasi WA -->
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center">
+                        <input id="kirimNotifikasiWA" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <label for="kirimNotifikasiWA" class="ml-3 min-w-0 flex-1 text-gray-700 font-medium text-sm">
+                            <i class="fab fa-whatsapp text-green-500 mr-1"></i> Kirim Notifikasi WA ke Ortu/Wali untuk semua siswa
+                        </label>
                     </div>
 
                     <!-- Daftar Siswa -->
@@ -713,6 +731,17 @@
                                         <input type="file" id="logoSekolah" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                                     </div>
                                 </div>
+                                <hr>
+                                <h4 class="text-lg font-semibold text-gray-700 pt-2">Pengaturan Notifikasi WhatsApp (Sidobe)</h4>
+                                <div>
+                                    <label for="sidobeApiKey" class="text-sm font-medium text-gray-600">API Key Sidobe</label>
+                                    <input type="text" id="sidobeApiKey" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" placeholder="Masukkan API Key Anda">
+                                </div>
+                                <div>
+                                    <label for="sidobePesanTemplate" class="text-sm font-medium text-gray-600">Template Pesan</label>
+                                    <textarea id="sidobePesanTemplate" rows="4" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">Yth. Bapak/Ibu [nama_ortu], kami memberitahukan bahwa ananda [nama_siswa] dari kelas [kelas] tidak hadir pada hari ini, [tanggal], dengan keterangan [status]. Terima kasih. - SMPN 3 Lempuing Jaya</textarea>
+                                    <p class="text-xs text-gray-500 mt-1">Gunakan variabel: [nama_siswa], [nama_ortu], [kelas], [tanggal], [status].</p>
+                                </div>
                                 <button class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
                                     <i class="fas fa-save mr-2"></i>Simpan Pengaturan
                                 </button>
@@ -726,7 +755,7 @@
     </div>
 
     <!-- Modal Generic -->
-    <div id="formModal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden items-center justify-center p-4">
+    <div id="formModal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden items-start justify-center p-4 pt-16 overflow-y-auto">
         <div class="bg-white w-full max-w-lg p-6 rounded-xl shadow-xl">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="modalTitle" class="text-xl font-bold text-gray-800">Judul Modal</h3>
@@ -742,9 +771,27 @@
 
 
     <!-- Peringatan Notifikasi Sukses -->
-    <div id="successToast" class="fixed top-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl transform translate-x-full transition-transform duration-500 ease-in-out hidden">
+    <div id="successToast" class="fixed top-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl transform translate-x-full transition-transform duration-500 ease-in-out z-50 hidden">
         <i class="fas fa-check-circle mr-2"></i>
         <span id="successMessage">Aksi berhasil!</span>
+    </div>
+    
+    <!-- Peringatan Notifikasi Eror -->
+    <div id="errorToast" class="fixed top-5 right-5 bg-red-500 text-white py-3 px-6 rounded-lg shadow-xl transform translate-x-full transition-transform duration-500 ease-in-out z-50 hidden">
+        <i class="fas fa-exclamation-circle mr-2"></i>
+        <span id="errorMessage">Terjadi kesalahan!</span>
+    </div>
+
+    <!-- Modal Konfirmasi -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm p-6 rounded-xl shadow-xl">
+            <h3 id="confirmTitle" class="text-lg font-bold text-gray-800">Konfirmasi Aksi</h3>
+            <p id="confirmMessage" class="text-gray-600 mt-2 text-sm">Apakah Anda yakin ingin melanjutkan?</p>
+            <div class="flex justify-end gap-3 mt-6">
+                <button id="confirmCancel" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
+                <button id="confirmOk" class="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700">Ya, Lanjutkan</button>
+            </div>
+        </div>
     </div>
 
 
@@ -846,6 +893,57 @@ function showSuccessToast(message) {
         }, 500);
     }, 3000);
 }
+
+function showErrorToast(message) {
+    const toast = document.getElementById('errorToast');
+    document.getElementById('errorMessage').innerText = message;
+    
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+        toast.classList.add('translate-x-0');
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.remove('translate-x-0');
+        toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 500);
+    }, 4000);
+}
+
+// --- FUNGSI MODAL KONFIRMASI ---
+function showConfirmModal(title, message, onConfirm) {
+    const modal = document.getElementById('confirmModal');
+    document.getElementById('confirmTitle').innerText = title;
+    document.getElementById('confirmMessage').innerText = message;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    const confirmOk = document.getElementById('confirmOk');
+    const confirmCancel = document.getElementById('confirmCancel');
+
+    const okListener = () => {
+        onConfirm();
+        closeConfirmModal();
+    };
+
+    const cancelListener = () => {
+        closeConfirmModal();
+    };
+
+    const closeConfirmModal = () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        confirmOk.removeEventListener('click', okListener);
+        confirmCancel.removeEventListener('click', cancelListener);
+    };
+
+    confirmOk.addEventListener('click', okListener);
+    confirmCancel.addEventListener('click', cancelListener);
+}
+
 
 // --- FUNGSI HALAMAN & NAVIGASI ---
 function showPage(pageId, element) {
@@ -1107,7 +1205,7 @@ function handleAbsenStaff(tipe) {
     const time = document.getElementById('inputWaktuAbsen').value;
 
     if (!date || !time) {
-        alert("Tanggal dan Waktu tidak boleh kosong!");
+        showErrorToast("Tanggal dan Waktu tidak boleh kosong!");
         return;
     }
 
@@ -1125,7 +1223,7 @@ function handleAbsenStaff(tipe) {
         showSuccessToast(`Absen masuk pukul ${time} berhasil dicatat.`);
     } else if (tipe === 'pulang') {
         if (!absenRecord.masuk) {
-            alert("Anda harus absen masuk terlebih dahulu sebelum absen pulang!");
+            showErrorToast("Anda harus absen masuk terlebih dahulu sebelum absen pulang!");
             return;
         }
         absenRecord.pulang = time;
@@ -1170,7 +1268,79 @@ function updatePersonalAbsenStatus(date) {
 }
 
 
-// --- FUNGSI ABSENSI SISWA ---
+// --- FUNGSI ABSENSI SISWA & NOTIFIKASI WA ---
+function kirimNotifikasiWA(nomorHp, pesan) {
+    const apiKey = document.getElementById('sidobeApiKey').value;
+    if (!apiKey) {
+        console.warn("API Key Sidobe belum diatur di Panel Admin.");
+        return;
+    }
+    // Hapus karakter non-numerik dari nomor HP
+    const nomorHpBersih = nomorHp.replace(/\D/g, '');
+
+    // Simulasi pengiriman notifikasi
+    console.log(`--- SIMULASI KIRIM WA via Sidobe ---
+    API Key: ${apiKey}
+    Nomor Tujuan: ${nomorHpBersih}
+    Pesan: ${pesan}
+    -----------------------------------`);
+    // Di aplikasi nyata, Anda akan menggunakan fetch() untuk memanggil API Sidobe
+    // const url = `https://sidobe.com/api/v1/message/send?api_key=${apiKey}&tujuan=${nomorHpBersih}&pesan=${encodeURIComponent(pesan)}`;
+    // fetch(url).then(res => res.json()).then(data => console.log(data));
+}
+
+function simpanAbsensiSiswa() {
+    const tanggal = document.getElementById('inputTanggalAbsenSiswa').value;
+    const kelas = document.getElementById('pilihKelas').value;
+    const kirimNotifikasi = document.getElementById('kirimNotifikasiWA').checked;
+    
+    if (!tanggal || !kelas || kelas === "-- Pilih Kelas --") {
+        showErrorToast("Harap pilih tanggal dan kelas terlebih dahulu!");
+        return;
+    }
+
+    if (!mockAbsensiDatabase.siswa[tanggal]) {
+        mockAbsensiDatabase.siswa[tanggal] = {};
+    }
+    if (!mockAbsensiDatabase.siswa[tanggal][kelas]) {
+        mockAbsensiDatabase.siswa[tanggal][kelas] = {};
+    }
+
+    const siswaDiKelas = mockSiswa[kelas];
+    if (siswaDiKelas) {
+        siswaDiKelas.forEach(siswa => {
+            const statusRadio = document.querySelector(`input[name="status-${siswa.nis}"]:checked`);
+            if (!statusRadio) return; // Lewati jika tidak ada yang dipilih
+            
+            const status = statusRadio.value;
+            mockAbsensiDatabase.siswa[tanggal][kelas][siswa.nis] = { status: status };
+
+            // Kirim notifikasi jika diperlukan
+            if (kirimNotifikasi) {
+                if (siswa.noHp) {
+                    const template = document.getElementById('sidobePesanTemplate').value;
+                    const statusLengkap = { 'H': 'Hadir', 'S': 'Sakit', 'I': 'Izin', 'A': 'Alfa' }[status];
+
+                    const pesan = template
+                        .replace(/\[nama_siswa\]/g, siswa.name)
+                        .replace(/\[nama_ortu\]/g, siswa.namaOrtu)
+                        .replace(/\[kelas\]/g, kelas)
+                        .replace(/\[tanggal\]/g, new Date(tanggal).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'}))
+                        .replace(/\[status\]/g, statusLengkap);
+                    
+                    kirimNotifikasiWA(siswa.noHp, pesan);
+                } else {
+                    console.warn(`Nomor HP untuk siswa ${siswa.name} tidak ditemukan.`);
+                }
+            }
+        });
+    }
+
+    console.log("Database Absensi Siswa:", mockAbsensiDatabase.siswa);
+    showSuccessToast(`Absensi kelas ${kelas} tanggal ${tanggal} berhasil disimpan!`);
+    updateDashboardStats();
+}
+
 function loadSiswaForAbsen() {
     const kelas = document.getElementById('pilihKelas').value;
     const tbody = document.getElementById('daftarSiswa');
@@ -1208,34 +1378,6 @@ function loadSiswaForAbsen() {
         `;
         tbody.innerHTML += row;
     });
-}
-
-function simpanAbsensiSiswa() {
-    const tanggal = document.getElementById('inputTanggalAbsenSiswa').value;
-    const kelas = document.getElementById('pilihKelas').value;
-    if (!tanggal || !kelas || kelas === "-- Pilih Kelas --") {
-        alert("Harap pilih tanggal dan kelas terlebih dahulu!");
-        return;
-    }
-
-    if (!mockAbsensiDatabase.siswa[tanggal]) {
-        mockAbsensiDatabase.siswa[tanggal] = {};
-    }
-    if (!mockAbsensiDatabase.siswa[tanggal][kelas]) {
-        mockAbsensiDatabase.siswa[tanggal][kelas] = {};
-    }
-
-    const siswaDiKelas = mockSiswa[kelas];
-    if (siswaDiKelas) {
-        siswaDiKelas.forEach(siswa => {
-            const status = document.querySelector(`input[name="status-${siswa.nis}"]:checked`).value;
-            mockAbsensiDatabase.siswa[tanggal][kelas][siswa.nis] = { status: status };
-        });
-    }
-
-    console.log("Database Absensi Siswa:", mockAbsensiDatabase.siswa);
-    showSuccessToast(`Absensi kelas ${kelas} tanggal ${tanggal} berhasil disimpan!`);
-    updateDashboardStats();
 }
 
 // --- FUNGSI LIHAT ABSENSI HARIAN ---
@@ -1587,20 +1729,22 @@ function simpanPersonil() {
     const noHp = document.getElementById('formNoHp').value;
 
     if (!nip || !name || !tglLahir) {
-        alert('NIP, Nama, dan Tanggal Lahir tidak boleh kosong!');
+        showErrorToast('NIP, Nama, dan Tanggal Lahir wajib diisi!');
         return;
     }
 
-    const existingUser = mockUsers[nip];
-    if (existingUser) { // Edit
-        existingUser.name = name;
-        existingUser.role = role;
-        existingUser.tempatLahir = tempatLahir;
-        existingUser.tglLahir = tglLahir;
-        existingUser.noHp = noHp;
-    } else { // Tambah
-        mockUsers[nip] = { nip, name, role, tempatLahir, tglLahir, noHp };
+    const isEditing = !!mockUsers[nip];
+
+    // Jika tambah baru, cek apakah NIP sudah ada
+    if (!isEditing && mockUsers[nip]) {
+        showErrorToast('NIP/ID sudah terdaftar. Gunakan ID lain.');
+        return;
     }
+
+    mockUsers[nip] = { 
+        ...mockUsers[nip], // Pertahankan data lama jika ada
+        nip, name, role, tempatLahir, tglLahir, noHp 
+    };
     
     showSuccessToast('Data personil berhasil disimpan!');
     renderManajemenPersonil();
@@ -1608,11 +1752,15 @@ function simpanPersonil() {
 }
 
 function hapusPersonil(nip) {
-    if (confirm(`Apakah Anda yakin ingin menghapus personil dengan NIP ${nip}?`)) {
-        delete mockUsers[nip];
-        showSuccessToast('Data personil berhasil dihapus.');
-        renderManajemenPersonil();
-    }
+    showConfirmModal(
+        'Hapus Personil',
+        `Apakah Anda yakin ingin menghapus personil dengan NIP ${nip}? Aksi ini tidak dapat dibatalkan.`,
+        () => {
+            delete mockUsers[nip];
+            showSuccessToast('Data personil berhasil dihapus.');
+            renderManajemenPersonil();
+        }
+    );
 }
 
 // Manajemen Kelas
@@ -1674,18 +1822,19 @@ function simpanKelas() {
     const waliKelasNip = document.getElementById('formWaliKelas').value;
 
     if (!id || !name) {
-        alert('ID dan Nama Kelas tidak boleh kosong!');
+        showErrorToast('ID dan Nama Kelas tidak boleh kosong!');
         return;
     }
     
-    const existingKelas = mockKelas.find(k => k.id === id);
+    const isEditing = !!mockKelas.find(k => k.id === id);
 
-    if (existingKelas) { // Edit
-        existingKelas.name = name;
-        existingKelas.waliKelasNip = waliKelasNip;
+    if (isEditing) { // Edit
+        const kelasIndex = mockKelas.findIndex(k => k.id === id);
+        mockKelas[kelasIndex].name = name;
+        mockKelas[kelasIndex].waliKelasNip = waliKelasNip;
     } else { // Tambah
         if (mockKelas.find(k => k.id === id)) {
-            alert('ID Kelas sudah ada!');
+            showErrorToast('ID Kelas sudah ada! Gunakan ID yang unik.');
             return;
         }
         mockKelas.push({ id, name, waliKelasNip });
@@ -1700,13 +1849,17 @@ function simpanKelas() {
 
 
 function hapusKelas(id) {
-     if (confirm(`Yakin ingin menghapus kelas ${id}? Ini akan menghapus semua siswa di dalamnya.`)) {
-         mockKelas = mockKelas.filter(k => k.id !== id);
-         delete mockSiswa[id];
-         showSuccessToast('Kelas berhasil dihapus.');
-         renderManajemenKelas();
-         updateAllKelasDropdowns();
-     }
+    showConfirmModal(
+        'Hapus Kelas',
+        `Yakin ingin menghapus kelas ${id}? Ini akan menghapus semua data siswa di dalamnya.`,
+        () => {
+            mockKelas = mockKelas.filter(k => k.id !== id);
+            delete mockSiswa[id];
+            showSuccessToast('Kelas berhasil dihapus.');
+            renderManajemenKelas();
+            updateAllKelasDropdowns();
+        }
+    );
 }
 
 // Manajemen Siswa
@@ -1811,13 +1964,15 @@ function simpanSiswa() {
     const noHp = document.getElementById('formSiswaNoHp').value;
     
     if(!nis || !name || !kelasId) {
-        alert('NIS, Nama, dan Kelas harus diisi!');
+        showErrorToast('NIS, Nama, dan Kelas wajib diisi!');
         return;
     }
     
+    const isEditing = !!kelasLamaId;
+
     // Cek jika siswa sudah ada (untuk tambah baru)
-    if (!kelasLamaId && Object.values(mockSiswa).flat().some(s => s.nis === nis)) {
-        alert('NIS sudah terdaftar!');
+    if (!isEditing && Object.values(mockSiswa).flat().some(s => s.nis === nis)) {
+        showErrorToast('NIS sudah terdaftar!');
         return;
     }
 
@@ -1844,12 +1999,16 @@ function simpanSiswa() {
 }
 
 function hapusSiswa(nis, kelasId) {
-    if(confirm(`Yakin ingin menghapus siswa dengan NIS ${nis}?`)) {
-        mockSiswa[kelasId] = mockSiswa[kelasId].filter(s => s.nis !== nis);
-        showSuccessToast('Siswa berhasil dihapus.');
-        renderManajemenSiswa();
-        renderManajemenKelas();
-    }
+    showConfirmModal(
+        'Hapus Siswa',
+        `Yakin ingin menghapus siswa dengan NIS ${nis}?`,
+        () => {
+            mockSiswa[kelasId] = mockSiswa[kelasId].filter(s => s.nis !== nis);
+            showSuccessToast('Siswa berhasil dihapus.');
+            renderManajemenSiswa();
+            renderManajemenKelas();
+        }
+    );
 }
 
 // Helper Functions
@@ -1875,3 +2034,4 @@ function updateAllKelasDropdowns() {
 
 </body>
 </html>
+

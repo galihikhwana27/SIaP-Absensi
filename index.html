@@ -1198,7 +1198,7 @@ function setAbsenInputsToNow(dateInputId, timeInputId) {
 
 
 // --- FUNGSI ABSENSI PERSONAL ---
-async function handleAbsenStaff(tipe) {
+window.handleAbsenStaff = async function(tipe) {
     const date = document.getElementById('inputTanggalAbsen').value;
     const time = document.getElementById('inputWaktuAbsen').value;
 
@@ -1878,6 +1878,7 @@ window.showSiswaForm = function(id = null, kelasId = null) {
 
     const bodyHtml = `
          <div class="space-y-4">
+            <input type="hidden" id="formSiswaKelasLama" value="${siswa?.kelasId || ''}">
             <div><label class="text-sm font-medium">NIS</label><input type="text" id="formSiswaNis" class="mt-1 block w-full p-2 bg-gray-50 border rounded-lg" value="${siswa?.nis || ''}" ${siswa ? 'readonly' : ''}></div>
             <div><label class="text-sm font-medium">Nama Lengkap</label><input type="text" id="formSiswaNama" class="mt-1 block w-full p-2 bg-gray-50 border rounded-lg" value="${siswa?.name || ''}"></div>
             <div><label class="text-sm font-medium">Nama Ortu</label><input type="text" id="formSiswaNamaOrtu" class="mt-1 block w-full p-2 bg-gray-50 border rounded-lg" value="${siswa?.namaOrtu || ''}"></div>
@@ -1968,4 +1969,5 @@ function applyPengaturan(data) {
 
 </body>
 </html>
+
 

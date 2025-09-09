@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIAP Hadir - Absensi Online SMPN 3 Lempuing Jaya</title>
+    
+    <!-- Menggunakan Tailwind CSS untuk desain yang modern dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Menggunakan Font Poppins dari Google Fonts untuk tampilan yang lebih menarik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Menggunakan Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Menerapkan font Poppins ke seluruh halaman */
+        body {
+            font-family: 'Poppins', sans-serif;
+            -webkit-print-color-adjust: exact; /* Memastikan warna tercetak dengan benar */
+        }
+        
+        /* Menyembunyikan halaman-halaman yang tidak aktif */
+        .page {
+            display: none;
+        }
+        
+        /* Menampilkan halaman yang aktif */
+        .page.active {
+            display: block;
+        }
+
+        /* Animasi untuk teks berjalan (marquee) */
+        @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+
+        /* Gaya untuk sidebar saat dicetak */
+        @media print {
+            body {
+                background-color: white;
+            }
+            #sidebar, #header-main, .no-print {
+                display: none;
+            }
+            #main-content {
+                margin-left: 0;
+                padding: 0;
+            }
+            #rekapAbsensiPage .p-8 {
+                padding: 0;
+            }
+            #rekapAbsensiPage .bg-white {
+                box-shadow: none;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- === HALAMAN LOGIN === -->
+    <div id="loginPage" class="page active">
+        <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-teal-400 p-4">
+            <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl">
+                <div class="flex flex-col items-center mb-6">
+                    <!-- Placeholder untuk logo sekolah -->
+                    <div class="bg-blue-100 p-3 rounded-full mb-4">
+                        <svg class="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.789-2.75 9.565M12 11c0-3.517 1.009-6.789 2.75-9.565M12 11H3.25m8.75 0H20.75M12 21.565c-3.131 0-5.945-1.9-7.5-4.5M12 2.435c3.131 0 5.945 1.9 7.5 4.5"></path></svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">SMP NEGERI 3 LEMPUING JAYA</h1>
+                    <p class="text-gray-500 mt-1">Sistem Informasi Absensi Pelajar & Pendidik</p>
+                </div>
+                
+                <div id="loginError" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4 hidden" role="alert">
+                    <span class="block sm:inline">Username atau password salah!</span>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="username" class="text-sm font-medium text-gray-600">Username</label>
+                        <input type="text" id="username" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan NIP/Username">
+                    </div>
+                    <div>
+                        <label for="password" class="text-sm font-medium text-gray-600">Password</label>
+                        <input type="password" id="password" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="******">
+                    </div>
+                </div>
+
+                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg mt-8 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 transform hover:scale-105">
+                    Login
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- === APLIKASI UTAMA (SETELAH LOGIN) === -->
+    <div id="mainApp" class="hidden">
+        <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden lg:hidden"></div>
+        <!-- Sidebar/Menu Navigasi -->
+        <aside id="sidebar" class="bg-blue-800 text-white w-64 min-h-screen fixed z-30 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full no-print">
+            <div class="p-6 text-center border-b border-blue-700">
+                <h2 class="text-xl font-bold">SIAP Hadir</h2>
+                <p class="text-xs text-blue-200">SMPN 3 Lempuing Jaya</p>
+            </div>
+            <nav class="flex-1 mt-4">
+                <a href="#" onclick="showPage('homePage', this)" class="nav-link bg-blue-700 flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                    <i class="fas fa-home w-6"></i> <span>Home</span>
+                </a>
+                <a href="#" onclick="showPage('absensiGuruPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                    <i class="fas fa-user-check w-6"></i> <span>Absensi Guru</span>
+                </a>
+                <a href="#" onclick="showPage('absensiSiswaPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                    <i class="fas fa-users w-6"></i> <span>Absensi Siswa</span>
+                </a>
+                <a href="#" onclick="showPage('lihatAbsensiPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                    <i class="fas fa-eye w-6"></i> <span>Lihat Absensi</span>
+                </a>
+                <a href="#" onclick="showPage('rekapAbsensiPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                    <i class="fas fa-file-alt w-6"></i> <span>Rekap Absensi</span>
+                </a>
+                <a href="#" id="adminMenu" onclick="showPage('adminPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200 hidden">
+                    <i class="fas fa-user-shield w-6"></i> <span>Panel Admin</span>
+                </a>
+            </nav>
+            <div class="p-6 border-t border-blue-700">
+                <div class="flex items-center">
+                    <img src="https://placehold.co/40x40/E2E8F0/4A5568?text=G" class="rounded-full" alt="User Avatar">
+                    <div class="ml-3">
+                        <p id="userName" class="font-semibold text-sm">Nama Guru</p>
+                        <p id="userRole" class="text-xs text-blue-300">Guru</p>
+                    </div>
+                </div>
+                <button onclick="handleLogout()" class="w-full mt-4 bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200 text-sm">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Konten Utama -->
+        <main id="main-content" class="p-4 transition-all duration-300 ease-in-out">
+            <!-- Header Konten -->
+            <header id="header-main" class="flex justify-between items-center mb-4 bg-blue-700 text-white p-4 shadow-lg rounded-xl no-print">
+                <div class="flex items-center gap-4">
+                    <button id="sidebarToggle" class="text-white hover:text-blue-200 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white p-1 rounded-full">
+                           <svg class="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.789-2.75 9.565M12 11c0-3.517 1.009-6.789 2.75-9.565M12 11H3.25m8.75 0H20.75M12 21.565c-3.131 0-5.945-1.9-7.5-4.5M12 2.435c3.131 0 5.945 1.9 7.5 4.5"></path></svg>
+                        </div>
+                        <h1 class="text-lg sm:text-xl font-bold">SMP NEGERI 3 LEMPUING JAYA</h1>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="font-semibold text-white text-sm">Selamat Datang, <span id="welcomeName"></span>!</p>
+                    <div class="text-blue-200 text-xs mt-1">
+                        <i class="fas fa-calendar-alt mr-1"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Pengumuman Berjalan -->
+            <div class="bg-white p-2 mb-4 rounded-lg shadow-md overflow-hidden whitespace-nowrap no-print">
+                <div class="inline-block animate-marquee">
+                    <span class="text-sm text-gray-700"><i class="fas fa-bullhorn text-blue-500 mx-4"></i><strong>12 Sep 2025:</strong> Rapat dinas bulanan akan dilaksanakan setelah jam pelajaran selesai di ruang guru.</span>
+                    <span class="text-sm text-gray-700"><i class="fas fa-bullhorn text-blue-500 mx-4"></i><strong>15 Sep 2025:</strong> Pelaksanaan Ujian Tengah Semester (UTS) Ganjil akan dimulai minggu depan. Harap persiapkan soal.</span>
+                </div>
+            </div>
+
+            <!-- Aksi Cepat -->
+            <div class="mb-4 no-print">
+                <h3 class="text-lg font-bold text-gray-800 mb-3"><i class="fas fa-rocket mr-2 text-blue-500"></i> Aksi Cepat</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                    <a href="#" onclick="showPage('absensiGuruPage', document.querySelector('a[onclick*=\'absensiGuruPage\']'))" class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-teal-100 text-teal-600 p-3 rounded-lg text-xl"><i class="fas fa-user-check"></i></div>
+                            <div>
+                                <h4 class="font-bold text-md text-gray-800">Absensi Guru</h4>
+                                <p class="text-xs text-gray-500">Catat kehadiran Anda.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" onclick="showPage('absensiSiswaPage', document.querySelector('a[onclick*=\'absensiSiswaPage\']'))" class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-sky-100 text-sky-600 p-3 rounded-lg text-xl"><i class="fas fa-users"></i></div>
+                            <div>
+                                <h4 class="font-bold text-md text-gray-800">Absensi Siswa</h4>
+                                <p class="text-xs text-gray-500">Isi jurnal kelas harian.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" onclick="showPage('lihatAbsensiPage', document.querySelector('a[onclick*=\'lihatAbsensiPage\']'))" class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-indigo-100 text-indigo-600 p-3 rounded-lg text-xl"><i class="fas fa-eye"></i></div>
+                            <div>
+                                <h4 class="font-bold text-md text-gray-800">Lihat Absensi</h4>
+                                <p class="text-xs text-gray-500">Pantau kehadiran harian.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" onclick="showPage('rekapAbsensiPage', document.querySelector('a[onclick*=\'rekapAbsensiPage\']'))" class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-rose-100 text-rose-600 p-3 rounded-lg text-xl"><i class="fas fa-file-alt"></i></div>
+                            <div>
+                                <h4 class="font-bold text-md text-gray-800">Rekap Absensi</h4>
+                                <p class="text-xs text-gray-500">Cetak laporan bulanan.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- === KONTEN HOME === -->
+            <div id="homePage" class="page active">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Kartu Statistik -->
+                    <div class="bg-gradient-to-r from-green-500 to-emerald-500 text-white p-6 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-semibold">Kehadiran Siswa Hari Ini</h3>
+                            <i class="fas fa-users text-2xl opacity-50"></i>
+                        </div>
+                        <p class="text-4xl font-bold mt-2">97.5%</p>
+                        <p class="text-sm opacity-80 mt-1">273 dari 280 siswa hadir</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-sky-500 to-cyan-500 text-white p-6 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-semibold">Status Absensi Anda</h3>
+                             <i class="fas fa-user-check text-2xl opacity-50"></i>
+                        </div>
+                        <p id="guruStatus" class="text-4xl font-bold mt-2">Hadir</p>
+                        <p id="guruTime" class="text-sm opacity-80 mt-1">Masuk pukul 07:10 WIB</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === KONTEN ABSENSI GURU === -->
+            <div id="absensiGuruPage" class="page">
+                <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md text-center">
+                    <h2 class="text-2xl font-bold text-gray-800">Absensi Kehadiran Guru</h2>
+                    <p id="guruAbsenName" class="text-lg font-semibold text-blue-600 mb-4"></p>
+                    <p class="text-gray-500 mb-6">Silakan catat kehadiran Anda hari ini.</p>
+                    <div class="bg-gray-100 p-6 rounded-lg mb-6">
+                        <div id="digitalClock" class="text-6xl font-bold text-blue-600">00:00:00</div>
+                        <div class="text-gray-600" id="clockDate"></div>
+                    </div>
+                    <div id="guruAbsenStatus" class="mb-6 p-4 rounded-lg text-sm hidden"></div>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button id="btnAbsenMasuk" onclick="handleAbsenGuru('masuk')" class="w-full sm:w-auto bg-green-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-green-600 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
+                            <i class="fas fa-fingerprint"></i> Absen Masuk
+                        </button>
+                        <button id="btnAbsenPulang" onclick="handleAbsenGuru('pulang')" class="w-full sm:w-auto bg-orange-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-orange-600 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2" disabled>
+                            <i class="fas fa-door-open"></i> Absen Pulang
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- === KONTEN ABSENSI SISWA === -->
+            <div id="absensiSiswaPage" class="page">
+                 <div class="bg-white p-8 rounded-xl shadow-md">
+                    <div class="flex flex-wrap gap-4 justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Formulir Absensi Siswa</h2>
+                            <p class="text-gray-500">Pilih kelas dan mata pelajaran untuk memulai absensi.</p>
+                        </div>
+                        <button onclick="simpanAbsensiSiswa()" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center gap-2">
+                            <i class="fas fa-save"></i> Simpan Absensi
+                        </button>
+                    </div>
+
+                    <!-- Filter -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label for="pilihKelas" class="text-sm font-medium text-gray-600">Pilih Kelas</label>
+                            <select id="pilihKelas" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>-- Pilih Kelas --</option>
+                                <option value="IX-A">IX A</option>
+                                <option value="IX-B">IX B</option>
+                                <option value="VIII-A">VIII A</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label for="pilihMapel" class="text-sm font-medium text-gray-600">Mata Pelajaran</label>
+                            <select id="pilihMapel" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>-- Pilih Mapel --</option>
+                                <option>Matematika</option>
+                                <option>Bahasa Indonesia</option>
+                                <option>IPA</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label for="jamPelajaran" class="text-sm font-medium text-gray-600">Jam Pelajaran Ke-</label>
+                            <select id="jamPelajaran" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>1-2</option>
+                                <option>3-4</option>
+                                <option>5-6</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Daftar Siswa -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">No</th>
+                                    <th scope="col" class="px-6 py-3">Nama Siswa</th>
+                                    <th scope="col" class="px-6 py-3">NIS</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="daftarSiswa">
+                                <!-- Data siswa akan dimuat di sini oleh JavaScript -->
+                                <tr><td colspan="4" class="text-center p-6 text-gray-400">Silakan pilih kelas terlebih dahulu.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === KONTEN LIHAT ABSENSI === -->
+            <div id="lihatAbsensiPage" class="page">
+                 <div class="bg-white p-8 rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Absensi Harian</h2>
+                    <p class="text-gray-500 mb-6">Pantau kehadiran guru dan siswa hari ini.</p>
+                    
+                    <!-- Tabs -->
+                    <div class="mb-4 border-b border-gray-200">
+                        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="absensiTabs" role="tablist">
+                            <li class="mr-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="guru-tab" type="button" role="tab" aria-controls="guru" aria-selected="true">Absensi Guru</button>
+                            </li>
+                            <li class="mr-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300" id="siswa-tab" type="button" role="tab" aria-controls="siswa" aria-selected="false">Absensi Siswa</button>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Konten Tab -->
+                    <div>
+                        <!-- Tab Guru -->
+                        <div id="guru" role="tabpanel" aria-labelledby="guru-tab">
+                             <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3">Nama Guru</th>
+                                            <th class="px-6 py-3">Status</th>
+                                            <th class="px-6 py-3">Jam Masuk</th>
+                                            <th class="px-6 py-3">Jam Pulang</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white border-b">
+                                            <td class="px-6 py-4 font-medium text-gray-900">Dr. Budi Santoso, M.Pd.</td>
+                                            <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Hadir</span></td>
+                                            <td class="px-6 py-4">07:10</td>
+                                            <td class="px-6 py-4">-</td>
+                                        </tr>
+                                         <tr class="bg-white border-b">
+                                            <td class="px-6 py-4 font-medium text-gray-900">Siti Aminah, S.Pd.</td>
+                                            <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Hadir</span></td>
+                                            <td class="px-6 py-4">07:15</td>
+                                            <td class="px-6 py-4">-</td>
+                                        </tr>
+                                        <tr class="bg-white border-b">
+                                            <td class="px-6 py-4 font-medium text-gray-900">Joko Susilo, S.Kom.</td>
+                                            <td class="px-6 py-4"><span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Belum Absen</span></td>
+                                            <td class="px-6 py-4">-</td>
+                                            <td class="px-6 py-4">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                             </div>
+                        </div>
+                        <!-- Tab Siswa -->
+                        <div id="siswa" class="hidden" role="tabpanel" aria-labelledby="siswa-tab">
+                            <select id="pilihKelasLihat" class="mb-4 block px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>-- Pilih Kelas --</option>
+                                <option value="IX-A">IX A</option>
+                                <option value="IX-B">IX B</option>
+                            </select>
+                             <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3">Nama Siswa</th>
+                                            <th class="px-6 py-3">Status Hari Ini</th>
+                                            <th class="px-6 py-3">Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white border-b">
+                                            <td class="px-6 py-4 font-medium text-gray-900">Ahmad Zulkifli</td>
+                                            <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Hadir</span></td>
+                                            <td class="px-6 py-4">Hadir di semua jam pelajaran</td>
+                                        </tr>
+                                        <tr class="bg-white border-b">
+                                            <td class="px-6 py-4 font-medium text-gray-900">Citra Lestari</td>
+                                            <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Izin</span></td>
+                                            <td class="px-6 py-4">Izin tidak masuk karena acara keluarga</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === KONTEN REKAP ABSENSI === -->
+            <div id="rekapAbsensiPage" class="page">
+                 <div class="bg-white p-8 rounded-xl shadow-md">
+                     <div class="flex flex-wrap gap-4 justify-between items-center mb-6 no-print">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Rekapitulasi Absensi Bulanan</h2>
+                            <p class="text-gray-500">Laporan bulanan siap untuk dicetak atau diunduh.</p>
+                        </div>
+                        <div class="flex gap-2">
+                             <button onclick="printRekap()" class="bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-300 flex items-center gap-2">
+                                <i class="fas fa-print"></i> Cetak
+                            </button>
+                            <button class="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300 flex items-center gap-2">
+                                <i class="fas fa-file-excel"></i> Unduh Excel
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Filter Rekap -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 no-print">
+                         <div>
+                            <label for="pilihBulanRekap" class="text-sm font-medium text-gray-600">Bulan</label>
+                            <select id="pilihBulanRekap" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <!-- Opsi bulan diisi JavaScript -->
+                            </select>
+                        </div>
+                        <div>
+                            <label for="pilihTahunRekap" class="text-sm font-medium text-gray-600">Tahun</label>
+                            <select id="pilihTahunRekap" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>2025</option>
+                                <option>2024</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="pilihKelasRekap" class="text-sm font-medium text-gray-600">Kelas</label>
+                            <select id="pilihKelasRekap" onchange="renderRekapAbsensi()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                               <option>-- Pilih Kelas --</option>
+                                <option value="IX-A">IX A</option>
+                                <option value="IX-B">IX B</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Area Cetak -->
+                    <div id="printArea">
+                        <div class="text-center mb-6 hidden" id="kopSurat">
+                            <h3 class="text-xl font-bold">REKAPITULASI KEHADIRAN SISWA</h3>
+                            <h4 class="text-lg font-semibold">SMP NEGERI 3 LEMPUING JAYA</h4>
+                            <p class="text-sm">Bulan: <span id="rekapBulan"></span> <span id="rekapTahun"></span> | Kelas: <span id="rekapKelas"></span></p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-center border-collapse border border-gray-400">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th rowspan="2" class="border border-gray-300 p-2">No</th>
+                                        <th rowspan="2" class="border border-gray-300 p-2">Nama Siswa</th>
+                                        <th colspan="31" class="border border-gray-300 p-2">Tanggal</th>
+                                        <th colspan="4" class="border border-gray-300 p-2">Jumlah</th>
+                                    </tr>
+                                    <tr>
+                                        <!-- Tanggal akan di-generate oleh JS -->
+                                        <script>
+                                            for(let i = 1; i <= 31; i++) {
+                                                document.write(`<th class="border border-gray-300 font-normal w-8">${i}</th>`);
+                                            }
+                                        </script>
+                                        <th class="border border-gray-300 p-1 bg-green-100">H</th>
+                                        <th class="border border-gray-300 p-1 bg-blue-100">S</th>
+                                        <th class="border border-gray-300 p-1 bg-yellow-100">I</th>
+                                        <th class="border border-gray-300 p-1 bg-red-100">A</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rekapTabelBody">
+                                     <!-- data rekap akan dimuat disini -->
+                                    <tr><td colspan="37" class="p-6 text-gray-400">Pilih kelas untuk melihat rekapitulasi.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- === KONTEN PANEL ADMIN === -->
+            <div id="adminPage" class="page">
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-blue-100 text-blue-600 p-4 rounded-lg text-2xl"><i class="fas fa-users-cog"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-800">Manajemen Guru</h3>
+                                <p class="text-sm text-gray-500">Tambah, edit, atau hapus akun guru.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-green-100 text-green-600 p-4 rounded-lg text-2xl"><i class="fas fa-address-book"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-800">Manajemen Siswa</h3>
+                                <p class="text-sm text-gray-500">Kelola data siswa per kelas.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-yellow-100 text-yellow-600 p-4 rounded-lg text-2xl"><i class="fas fa-chalkboard"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-800">Manajemen Kelas</h3>
+                                <p class="text-sm text-gray-500">Atur rombongan belajar.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-purple-100 text-purple-600 p-4 rounded-lg text-2xl"><i class="fas fa-calendar-alt"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-800">Kelola Absensi</h3>
+                                <p class="text-sm text-gray-500">Lihat & edit semua data absensi.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-red-100 text-red-600 p-4 rounded-lg text-2xl"><i class="fas fa-bullhorn"></i></div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-800">Buat Pengumuman</h3>
+                                <p class="text-sm text-gray-500">Kirim info ke dashboard guru.</p>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- Peringatan Notifikasi Sukses -->
+    <div id="successToast" class="fixed top-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl transform translate-x-full transition-transform duration-500 ease-in-out">
+        <i class="fas fa-check-circle mr-2"></i>
+        <span id="successMessage">Aksi berhasil!</span>
+    </div>
+
+
+<script>
+// =================================================================
+// SCRIPT UTAMA SISTEM ABSENSI
+// Ini adalah simulasi frontend, tidak ada database sungguhan.
+// =================================================================
+
+// --- DATABASE SIMULASI (MOCK DATA) ---
+const mockUsers = {
+    '198501012010011001': { nip: '198501012010011001', name: 'Dr. Budi Santoso, M.Pd.', role: 'Guru', password: '123' },
+    'admin01': { nip: 'admin01', name: 'Admin Sekolah', role: 'Admin', password: 'admin' }
+};
+
+const mockSiswa = {
+    'IX-A': [
+        { nis: '12301', name: 'Ahmad Zulkifli' },
+        { nis: '12302', name: 'Bunga Citra Lestari' },
+        { nis: '12303', name: 'Cahyo Purnomo' },
+        { nis: '12304', name: 'Dewi Anggraini' },
+        { nis: '12305', name: 'Eko Prasetyo' }
+    ],
+    'IX-B': [
+        { nis: '12401', name: 'Fajar Nugroho' },
+        { nis: '12402', name: 'Gita Permata' },
+        { nis: '12403', name: 'Hadi Wibowo' }
+    ]
+};
+
+// --- VARIABEL GLOBAL ---
+let currentUser = null;
+let guruAbsenState = { masuk: null, pulang: null };
+
+// --- FUNGSI UTAMA ---
+document.addEventListener('DOMContentLoaded', () => {
+    // --- SIDEBAR TOGGLE SCRIPT ---
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    const toggleSidebar = () => {
+        sidebar.classList.toggle('-translate-x-full');
+        mainContent.classList.toggle('lg:ml-64');
+        sidebarOverlay.classList.toggle('hidden');
+    };
+
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+    // --- END SIDEBAR TOGGLE SCRIPT ---
+
+    // Inisialisasi tanggal & jam
+    updateDate();
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // Inisialisasi event listener
+    document.getElementById('pilihKelas').addEventListener('change', loadSiswaForAbsen);
+    
+    const guruTab = document.getElementById('guru-tab');
+    const siswaTab = document.getElementById('siswa-tab');
+    guruTab.addEventListener('click', () => switchTab('guru'));
+    siswaTab.addEventListener('click', () => switchTab('siswa'));
+
+    // Inisialisasi dropdown bulan
+    populateBulanDropdown();
+});
+
+function showSuccessToast(message) {
+    const toast = document.getElementById('successToast');
+    document.getElementById('successMessage').innerText = message;
+    toast.classList.remove('translate-x-full');
+    toast.classList.add('translate-x-0');
+    setTimeout(() => {
+        toast.classList.remove('translate-x-0');
+        toast.classList.add('translate-x-full');
+    }, 3000);
+}
+
+
+// --- FUNGSI HALAMAN & NAVIGASI ---
+function showPage(pageId, element) {
+    // Sembunyikan semua halaman
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    // Tampilkan halaman yang dipilih
+    document.getElementById(pageId).classList.add('active');
+
+    // Tampilkan nama guru di halaman absensi guru
+    if (pageId === 'absensiGuruPage' && currentUser) {
+        document.getElementById('guruAbsenName').innerText = currentUser.name;
+    }
+
+    // Update style link navigasi aktif
+    if (element) {
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-blue-700'));
+        element.classList.add('bg-blue-700');
+    }
+}
+
+function switchTab(tabName) {
+    const guruTabContent = document.getElementById('guru');
+    const siswaTabContent = document.getElementById('siswa');
+    const guruTabBtn = document.getElementById('guru-tab');
+    const siswaTabBtn = document.getElementById('siswa-tab');
+
+    if (tabName === 'guru') {
+        guruTabContent.classList.remove('hidden');
+        siswaTabContent.classList.add('hidden');
+        guruTabBtn.classList.add('border-blue-600', 'text-blue-600');
+        guruTabBtn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+        siswaTabBtn.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+        siswaTabBtn.classList.remove('border-blue-600', 'text-blue-600');
+    } else {
+        siswaTabContent.classList.remove('hidden');
+        guruTabContent.classList.add('hidden');
+        siswaTabBtn.classList.add('border-blue-600', 'text-blue-600');
+        siswaTabBtn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+        guruTabBtn.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+        guruTabBtn.classList.remove('border-blue-600', 'text-blue-600');
+    }
+}
+
+
+// --- FUNGSI OTENTIKASI (LOGIN/LOGOUT) ---
+function handleLogin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const user = mockUsers[username];
+
+    if (user && user.password === password) {
+        currentUser = user;
+        document.getElementById('loginPage').classList.remove('active');
+        document.getElementById('mainApp').classList.remove('hidden');
+        showPage('homePage', document.querySelector('.nav-link'));
+        setupDashboard();
+    } else {
+        const errorDiv = document.getElementById('loginError');
+        errorDiv.classList.remove('hidden');
+    }
+}
+
+function handleLogout() {
+    currentUser = null;
+    document.getElementById('loginPage').classList.add('active');
+    document.getElementById('mainApp').classList.add('hidden');
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('loginError').classList.add('hidden');
+}
+
+function setupDashboard() {
+    document.getElementById('userName').innerText = currentUser.name;
+    document.getElementById('userRole').innerText = currentUser.role;
+    document.getElementById('welcomeName').innerText = currentUser.name.split(',')[0]; // Ambil nama depan saja
+
+    // Tampilkan menu admin jika role adalah Admin
+    if (currentUser.role === 'Admin') {
+        document.getElementById('adminMenu').classList.remove('hidden');
+    } else {
+        document.getElementById('adminMenu').classList.add('hidden');
+    }
+}
+
+
+// --- FUNGSI WAKTU & TANGGAL ---
+function updateDate() {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const today = new Date().toLocaleDateString('id-ID', options);
+    document.getElementById('currentDate').innerText = today;
+    document.getElementById('clockDate').innerText = today;
+}
+
+function updateClock() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('it-IT'); // format 24 jam HH:mm:ss
+    document.getElementById('digitalClock').innerText = timeString;
+}
+
+
+// --- FUNGSI ABSENSI GURU ---
+function handleAbsenGuru(tipe) {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    const statusDiv = document.getElementById('guruAbsenStatus');
+
+    if (tipe === 'masuk') {
+        guruAbsenState.masuk = timeString;
+        statusDiv.innerHTML = `<i class="fas fa-check-circle text-green-500"></i> Anda berhasil absen masuk pada pukul <strong>${timeString}</strong>.`;
+        statusDiv.className = 'mb-6 p-4 rounded-lg text-sm bg-green-100 text-green-800';
+        document.getElementById('btnAbsenMasuk').disabled = true;
+        document.getElementById('btnAbsenPulang').disabled = false;
+    } else if (tipe === 'pulang') {
+        guruAbsenState.pulang = timeString;
+        statusDiv.innerHTML = `<i class="fas fa-check-circle text-orange-500"></i> Anda berhasil absen pulang pada pukul <strong>${timeString}</strong>.`;
+        statusDiv.className = 'mb-6 p-4 rounded-lg text-sm bg-orange-100 text-orange-800';
+        document.getElementById('btnAbsenPulang').disabled = true;
+    }
+    statusDiv.classList.remove('hidden');
+    showSuccessToast(`Berhasil absen ${tipe}`);
+}
+
+
+// --- FUNGSI ABSENSI SISWA ---
+function loadSiswaForAbsen() {
+    const kelas = document.getElementById('pilihKelas').value;
+    const tbody = document.getElementById('daftarSiswa');
+    const siswa = mockSiswa[kelas];
+    
+    tbody.innerHTML = ''; // Kosongkan tabel
+
+    if (!siswa) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-6 text-gray-400">Pilih kelas yang valid.</td></tr>';
+        return;
+    }
+
+    siswa.forEach((s, index) => {
+        const row = `
+            <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4">${index + 1}</td>
+                <td class="px-6 py-4 font-medium text-gray-900">${s.name}</td>
+                <td class="px-6 py-4">${s.nis}</td>
+                <td class="px-6 py-4">
+                    <div class="flex justify-center items-center space-x-1" role="group">
+                        <input type="radio" id="h-${s.nis}" name="status-${s.nis}" value="H" class="hidden peer/h" checked>
+                        <label for="h-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-green-600 bg-green-100 rounded-full cursor-pointer peer-checked/h:bg-green-600 peer-checked/h:text-white transition">H</label>
+                        
+                        <input type="radio" id="s-${s.nis}" name="status-${s.nis}" value="S" class="hidden peer/s">
+                        <label for="s-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-blue-600 bg-blue-100 rounded-full cursor-pointer peer-checked/s:bg-blue-600 peer-checked/s:text-white transition">S</label>
+                        
+                        <input type="radio" id="i-${s.nis}" name="status-${s.nis}" value="I" class="hidden peer/i">
+                        <label for="i-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-yellow-600 bg-yellow-100 rounded-full cursor-pointer peer-checked/i:bg-yellow-600 peer-checked/i:text-white transition">I</label>
+                        
+                        <input type="radio" id="a-${s.nis}" name="status-${s.nis}" value="A" class="hidden peer/a">
+                        <label for="a-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-red-600 bg-red-100 rounded-full cursor-pointer peer-checked/a:bg-red-600 peer-checked/a:text-white transition">A</label>
+                    </div>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+function simpanAbsensiSiswa() {
+    const kelas = document.getElementById('pilihKelas').value;
+    if (!kelas || kelas === "-- Pilih Kelas --") {
+        alert("Harap pilih kelas terlebih dahulu!");
+        return;
+    }
+    // Logika untuk menyimpan data akan ditambahkan di sini saat terhubung ke backend
+    console.log("Menyimpan absensi untuk kelas:", kelas);
+    showSuccessToast(`Absensi kelas ${kelas} berhasil disimpan!`);
+}
+
+
+// --- FUNGSI REKAP ABSENSI ---
+function populateBulanDropdown() {
+    const select = document.getElementById('pilihBulanRekap');
+    const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const currentMonth = new Date().getMonth();
+
+    bulan.forEach((namaBulan, index) => {
+        const option = document.createElement('option');
+        option.value = index + 1;
+        option.textContent = namaBulan;
+        if (index === currentMonth) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+}
+
+function renderRekapAbsensi() {
+    const kelas = document.getElementById('pilihKelasRekap').value;
+    const tbody = document.getElementById('rekapTabelBody');
+    const siswa = mockSiswa[kelas];
+    
+    tbody.innerHTML = '';
+    
+    if (!siswa) {
+        tbody.innerHTML = '<tr><td colspan="37" class="p-6 text-gray-400">Pilih kelas untuk melihat rekapitulasi.</td></tr>';
+        return;
+    }
+    
+    const status = ['H', 'S', 'I', 'A'];
+    const colors = {
+        H: 'bg-green-100',
+        S: 'bg-blue-100',
+        I: 'bg-yellow-100',
+        A: 'bg-red-100'
+    };
+
+    siswa.forEach((s, index) => {
+        let row = `<tr class="text-center">
+            <td class="border border-gray-300 p-1">${index + 1}</td>
+            <td class="border border-gray-300 p-1 text-left">${s.name}</td>`;
+        
+        let counts = { H: 0, S: 0, I: 0, A: 0 };
+        
+        for (let i = 1; i <= 31; i++) {
+            // Simulasi data absensi acak
+            const randomStatus = i > 28 ? '' : status[Math.floor(Math.random() * status.length)];
+            if(randomStatus) counts[randomStatus]++;
+            row += `<td class="border border-gray-300 ${colors[randomStatus] || ''}">${randomStatus}</td>`;
+        }
+        
+        row += `
+            <td class="border border-gray-300 font-semibold bg-green-100">${counts.H}</td>
+            <td class="border border-gray-300 font-semibold bg-blue-100">${counts.S}</td>
+            <td class="border border-gray-300 font-semibold bg-yellow-100">${counts.I}</td>
+            <td class="border border-gray-300 font-semibold bg-red-100">${counts.A}</td>
+        </tr>`;
+        
+        tbody.innerHTML += row;
+    });
+}
+
+function printRekap() {
+    // Siapkan kop surat untuk dicetak
+    const bulanEl = document.getElementById('pilihBulanRekap');
+    const tahunEl = document.getElementById('pilihTahunRekap');
+    const kelasEl = document.getElementById('pilihKelasRekap');
+    
+    document.getElementById('rekapBulan').innerText = bulanEl.options[bulanEl.selectedIndex].text;
+    document.getElementById('rekapTahun').innerText = tahunEl.value;
+    document.getElementById('rekapKelas').innerText = kelasEl.value;
+    
+    document.getElementById('kopSurat').classList.remove('hidden');
+
+    window.print();
+    
+    // Sembunyikan lagi setelah dialog cetak ditutup
+    document.getElementById('kopSurat').classList.add('hidden');
+}
+
+</script>
+
+</body>
+</html>
+

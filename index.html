@@ -434,65 +434,130 @@
                             </button>
                         </div>
                     </div>
-                    <!-- Filter Rekap -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 no-print">
-                         <div>
-                            <label for="pilihBulanRekap" class="text-sm font-medium text-gray-600">Bulan</label>
-                            <select id="pilihBulanRekap" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <!-- Opsi bulan diisi JavaScript -->
-                            </select>
-                        </div>
-                        <div>
-                            <label for="pilihTahunRekap" class="text-sm font-medium text-gray-600">Tahun</label>
-                            <select id="pilihTahunRekap" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option>2025</option>
-                                <option>2024</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="pilihKelasRekap" class="text-sm font-medium text-gray-600">Kelas</label>
-                            <select id="pilihKelasRekap" onchange="renderRekapAbsensi()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                               <option>-- Pilih Kelas --</option>
-                                <option value="IX-A">IX A</option>
-                                <option value="IX-B">IX B</option>
-                            </select>
-                        </div>
+
+                    <!-- Navigasi Tab Rekap -->
+                    <div class="mb-4 border-b border-gray-200 no-print">
+                        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="rekapTabs" role="tablist">
+                            <li role="presentation">
+                                <button class="rekap-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="rekapSiswa">Rekap Siswa</button>
+                            </li>
+                            <li role="presentation">
+                                <button class="rekap-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="rekapGuru">Rekap Guru</button>
+                            </li>
+                        </ul>
                     </div>
-                    
-                    <!-- Area Cetak -->
-                    <div id="printArea">
-                        <div class="text-center mb-6 hidden" id="kopSurat">
-                            <h3 class="text-xl font-bold">REKAPITULASI KEHADIRAN SISWA</h3>
-                            <h4 class="text-lg font-semibold">SMP NEGERI 3 LEMPUING JAYA</h4>
-                            <p class="text-sm">Bulan: <span id="rekapBulan"></span> <span id="rekapTahun"></span> | Kelas: <span id="rekapKelas"></span></p>
+
+                    <!-- Konten Tab Rekap -->
+                    <div>
+                        <!-- Konten Rekap Siswa -->
+                        <div id="rekapSiswa" class="rekap-tab-content">
+                            <!-- Filter Rekap Siswa -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 no-print">
+                                <div>
+                                    <label for="pilihBulanRekapSiswa" class="text-sm font-medium text-gray-600">Bulan</label>
+                                    <select id="pilihBulanRekapSiswa" onchange="renderRekapAbsensi()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <!-- Opsi bulan diisi JavaScript -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="pilihTahunRekapSiswa" class="text-sm font-medium text-gray-600">Tahun</label>
+                                    <select id="pilihTahunRekapSiswa" onchange="renderRekapAbsensi()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option>2025</option>
+                                        <option>2024</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="pilihKelasRekap" class="text-sm font-medium text-gray-600">Kelas</label>
+                                    <select id="pilihKelasRekap" onchange="renderRekapAbsensi()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">-- Pilih Kelas --</option>
+                                        <option value="IX-A">IX A</option>
+                                        <option value="IX-B">IX B</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Area Cetak Siswa -->
+                            <div id="printAreaSiswa">
+                                <div class="text-center mb-6 hidden" id="kopSuratSiswa">
+                                    <h3 class="text-xl font-bold">REKAPITULASI KEHADIRAN SISWA</h3>
+                                    <h4 class="text-lg font-semibold">SMP NEGERI 3 LEMPUING JAYA</h4>
+                                    <p class="text-sm">Bulan: <span class="rekapBulan"></span> <span class="rekapTahun"></span> | Kelas: <span class="rekapKelas"></span></p>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-xs text-center border-collapse border border-gray-400">
+                                        <thead class="bg-gray-100">
+                                            <tr>
+                                                <th rowspan="2" class="border border-gray-300 p-2">No</th>
+                                                <th rowspan="2" class="border border-gray-300 p-2">Nama Siswa</th>
+                                                <th colspan="31" class="border border-gray-300 p-2">Tanggal</th>
+                                                <th colspan="4" class="border border-gray-300 p-2">Jumlah</th>
+                                            </tr>
+                                            <tr>
+                                                <script>for(let i = 1; i <= 31; i++) { document.write(`<th class="border border-gray-300 font-normal w-8">${i}</th>`);}</script>
+                                                <th class="border border-gray-300 p-1 bg-green-100">H</th>
+                                                <th class="border border-gray-300 p-1 bg-blue-100">S</th>
+                                                <th class="border border-gray-300 p-1 bg-yellow-100">I</th>
+                                                <th class="border border-gray-300 p-1 bg-red-100">A</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="rekapTabelBodySiswa">
+                                            <tr><td colspan="37" class="p-6 text-gray-400">Pilih kelas untuk melihat rekapitulasi.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-xs text-center border-collapse border border-gray-400">
-                                <thead class="bg-gray-100">
-                                    <tr>
-                                        <th rowspan="2" class="border border-gray-300 p-2">No</th>
-                                        <th rowspan="2" class="border border-gray-300 p-2">Nama Siswa</th>
-                                        <th colspan="31" class="border border-gray-300 p-2">Tanggal</th>
-                                        <th colspan="4" class="border border-gray-300 p-2">Jumlah</th>
-                                    </tr>
-                                    <tr>
-                                        <!-- Tanggal akan di-generate oleh JS -->
-                                        <script>
-                                            for(let i = 1; i <= 31; i++) {
-                                                document.write(`<th class="border border-gray-300 font-normal w-8">${i}</th>`);
-                                            }
-                                        </script>
-                                        <th class="border border-gray-300 p-1 bg-green-100">H</th>
-                                        <th class="border border-gray-300 p-1 bg-blue-100">S</th>
-                                        <th class="border border-gray-300 p-1 bg-yellow-100">I</th>
-                                        <th class="border border-gray-300 p-1 bg-red-100">A</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="rekapTabelBody">
-                                     <!-- data rekap akan dimuat disini -->
-                                    <tr><td colspan="37" class="p-6 text-gray-400">Pilih kelas untuk melihat rekapitulasi.</td></tr>
-                                </tbody>
-                            </table>
+
+                        <!-- Konten Rekap Guru -->
+                        <div id="rekapGuru" class="rekap-tab-content hidden">
+                            <!-- Filter Rekap Guru -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 no-print">
+                                <div>
+                                    <label for="pilihBulanRekapGuru" class="text-sm font-medium text-gray-600">Bulan</label>
+                                    <select id="pilihBulanRekapGuru" onchange="renderRekapGuru()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <!-- Opsi bulan diisi JavaScript -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="pilihTahunRekapGuru" class="text-sm font-medium text-gray-600">Tahun</label>
+                                    <select id="pilihTahunRekapGuru" onchange="renderRekapGuru()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option>2025</option>
+                                        <option>2024</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                             <!-- Area Cetak Guru -->
+                             <div id="printAreaGuru">
+                                <div class="text-center mb-6 hidden" id="kopSuratGuru">
+                                    <h3 class="text-xl font-bold">REKAPITULASI KEHADIRAN GURU</h3>
+                                    <h4 class="text-lg font-semibold">SMP NEGERI 3 LEMPUING JAYA</h4>
+                                    <p class="text-sm">Bulan: <span class="rekapBulan"></span> <span class="rekapTahun"></span></p>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-xs text-center border-collapse border border-gray-400">
+                                        <thead class="bg-gray-100">
+                                            <tr>
+                                                <th rowspan="2" class="border border-gray-300 p-2">No</th>
+                                                <th rowspan="2" class="border border-gray-300 p-2">Nama Guru</th>
+                                                <th rowspan="2" class="border border-gray-300 p-2">NIP</th>
+                                                <th colspan="31" class="border border-gray-300 p-2">Tanggal</th>
+                                                <th colspan="4" class="border border-gray-300 p-2">Jumlah</th>
+                                            </tr>
+                                            <tr>
+                                                <script>for(let i = 1; i <= 31; i++) { document.write(`<th class="border border-gray-300 font-normal w-8">${i}</th>`);}</script>
+                                                <th class="border border-gray-300 p-1 bg-green-100">H</th>
+                                                <th class="border border-gray-300 p-1 bg-blue-100">S</th>
+                                                <th class="border border-gray-300 p-1 bg-yellow-100">I</th>
+                                                <th class="border border-gray-300 p-1 bg-red-100">A</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="rekapTabelBodyGuru">
+                                            <!-- Data rekap guru dimuat di sini -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                  </div>
@@ -500,49 +565,68 @@
 
             <!-- === KONTEN PANEL ADMIN === -->
             <div id="adminPage" class="page">
-                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-blue-100 text-blue-600 p-4 rounded-lg text-2xl"><i class="fas fa-users-cog"></i></div>
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-800">Manajemen Guru</h3>
-                                <p class="text-sm text-gray-500">Tambah, edit, atau hapus akun guru.</p>
-                            </div>
-                        </div>
+                 <div class="bg-white p-8 rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Panel Admin</h2>
+                    <p class="text-gray-500 mb-6">Kelola semua pengaturan sistem dari sini.</p>
+
+                    <!-- Navigasi Tab Admin -->
+                    <div class="mb-4 border-b border-gray-200">
+                        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="adminTabs" role="tablist">
+                            <li role="presentation">
+                                <button class="admin-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="manajemenGuru">
+                                    <i class="fas fa-users-cog mr-2"></i>Manajemen Guru
+                                </button>
+                            </li>
+                            <li role="presentation">
+                                <button class="admin-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="manajemenSiswa">
+                                    <i class="fas fa-address-book mr-2"></i>Manajemen Siswa
+                                </button>
+                            </li>
+                             <li role="presentation">
+                                <button class="admin-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="manajemenKelas">
+                                    <i class="fas fa-chalkboard mr-2"></i>Manajemen Kelas
+                                </button>
+                            </li>
+                            <li role="presentation">
+                                <button class="admin-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="pengumuman">
+                                    <i class="fas fa-bullhorn mr-2"></i>Buat Pengumuman
+                                </button>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-green-100 text-green-600 p-4 rounded-lg text-2xl"><i class="fas fa-address-book"></i></div>
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-800">Manajemen Siswa</h3>
-                                <p class="text-sm text-gray-500">Kelola data siswa per kelas.</p>
-                            </div>
+
+                    <!-- Konten Tab Admin -->
+                    <div>
+                        <div id="manajemenGuru" class="admin-tab-content pt-4">
+                           <h3 class="text-xl font-semibold mb-4 text-gray-700">Daftar Akun Guru</h3>
+                           <!-- Placeholder untuk konten manajemen guru -->
+                           <p class="text-gray-600">Fitur untuk menambah, mengedit, dan menghapus akun guru akan ditampilkan di sini.</p>
                         </div>
-                    </div>
-                     <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-yellow-100 text-yellow-600 p-4 rounded-lg text-2xl"><i class="fas fa-chalkboard"></i></div>
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-800">Manajemen Kelas</h3>
-                                <p class="text-sm text-gray-500">Atur rombongan belajar.</p>
-                            </div>
+                        <div id="manajemenSiswa" class="admin-tab-content hidden pt-4">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-700">Data Siswa</h3>
+                            <!-- Placeholder untuk konten manajemen siswa -->
+                            <p class="text-gray-600">Fitur untuk mengelola data siswa per kelas akan ditampilkan di sini, termasuk impor data dari Excel.</p>
                         </div>
-                    </div>
-                     <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-purple-100 text-purple-600 p-4 rounded-lg text-2xl"><i class="fas fa-calendar-alt"></i></div>
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-800">Kelola Absensi</h3>
-                                <p class="text-sm text-gray-500">Lihat & edit semua data absensi.</p>
-                            </div>
+                         <div id="manajemenKelas" class="admin-tab-content hidden pt-4">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-700">Data Kelas</h3>
+                             <!-- Placeholder untuk konten manajemen kelas -->
+                            <p class="text-gray-600">Fitur untuk membuat, mengubah nama, dan menghapus rombongan belajar (kelas) akan ditampilkan di sini.</p>
                         </div>
-                    </div>
-                     <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-red-100 text-red-600 p-4 rounded-lg text-2xl"><i class="fas fa-bullhorn"></i></div>
-                            <div>
-                                <h3 class="font-bold text-lg text-gray-800">Buat Pengumuman</h3>
-                                <p class="text-sm text-gray-500">Kirim info ke dashboard guru.</p>
+                        <div id="pengumuman" class="admin-tab-content hidden pt-4">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-700">Buat Pengumuman Baru</h3>
+                             <!-- Placeholder untuk form pengumuman -->
+                            <div class="space-y-4 max-w-lg">
+                                <div>
+                                    <label for="judulPengumuman" class="text-sm font-medium text-gray-600">Judul Pengumuman</label>
+                                    <input type="text" id="judulPengumuman" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Rapat Dinas Bulanan">
+                                </div>
+                                <div>
+                                    <label for="isiPengumuman" class="text-sm font-medium text-gray-600">Isi Pengumuman</label>
+                                    <textarea id="isiPengumuman" rows="4" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tulis isi pengumuman yang akan ditampilkan di teks berjalan..."></textarea>
+                                </div>
+                                <button class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
+                                    Kirim Pengumuman
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -553,7 +637,7 @@
     </div>
 
     <!-- Peringatan Notifikasi Sukses -->
-    <div id="successToast" class="fixed top-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl transform translate-x-full transition-transform duration-500 ease-in-out">
+    <div id="successToast" class="fixed top-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl transform translate-x-full transition-transform duration-500 ease-in-out hidden">
         <i class="fas fa-check-circle mr-2"></i>
         <span id="successMessage">Aksi berhasil!</span>
     </div>
@@ -620,36 +704,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const siswaTab = document.getElementById('siswa-tab');
     guruTab.addEventListener('click', () => switchTab('guru'));
     siswaTab.addEventListener('click', () => switchTab('siswa'));
+    
+    // Inisialisasi Panel Admin Tabs
+    setupAdminTabs();
 
     // Inisialisasi dropdown bulan
     populateBulanDropdown();
+
+    // Inisialisasi Tab Rekap
+    setupRekapTabs();
+    renderRekapGuru(); // Tampilkan rekap guru default saat halaman dimuat
 });
 
 function showSuccessToast(message) {
     const toast = document.getElementById('successToast');
     document.getElementById('successMessage').innerText = message;
-    toast.classList.remove('translate-x-full');
-    toast.classList.add('translate-x-0');
+    
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+        toast.classList.add('translate-x-0');
+    }, 10);
+
     setTimeout(() => {
         toast.classList.remove('translate-x-0');
         toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 500);
     }, 3000);
 }
 
-
 // --- FUNGSI HALAMAN & NAVIGASI ---
 function showPage(pageId, element) {
-    // Sembunyikan semua halaman
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-    // Tampilkan halaman yang dipilih
     document.getElementById(pageId).classList.add('active');
 
-    // Tampilkan nama guru di halaman absensi guru
     if (pageId === 'absensiGuruPage' && currentUser) {
         document.getElementById('guruAbsenName').innerText = currentUser.name;
     }
 
-    // Update style link navigasi aktif
     if (element) {
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-blue-700'));
         element.classList.add('bg-blue-700');
@@ -662,21 +756,74 @@ function switchTab(tabName) {
     const guruTabBtn = document.getElementById('guru-tab');
     const siswaTabBtn = document.getElementById('siswa-tab');
 
+    const activeClasses = ['border-blue-600', 'text-blue-600'];
+    const inactiveClasses = ['border-transparent', 'hover:text-gray-600', 'hover:border-gray-300'];
+
     if (tabName === 'guru') {
         guruTabContent.classList.remove('hidden');
         siswaTabContent.classList.add('hidden');
-        guruTabBtn.classList.add('border-blue-600', 'text-blue-600');
-        guruTabBtn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
-        siswaTabBtn.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
-        siswaTabBtn.classList.remove('border-blue-600', 'text-blue-600');
+        guruTabBtn.classList.add(...activeClasses);
+        guruTabBtn.classList.remove(...inactiveClasses);
+        siswaTabBtn.classList.add(...inactiveClasses);
+        siswaTabBtn.classList.remove(...activeClasses);
     } else {
         siswaTabContent.classList.remove('hidden');
         guruTabContent.classList.add('hidden');
-        siswaTabBtn.classList.add('border-blue-600', 'text-blue-600');
-        siswaTabBtn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
-        guruTabBtn.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
-        guruTabBtn.classList.remove('border-blue-600', 'text-blue-600');
+        siswaTabBtn.classList.add(...activeClasses);
+        siswaTabBtn.classList.remove(...inactiveClasses);
+        guruTabBtn.classList.add(...inactiveClasses);
+        guruTabBtn.classList.remove(...activeClasses);
     }
+}
+
+// --- FUNGSI TAB PANEL ADMIN ---
+function setupAdminTabs() {
+    const adminTabs = document.querySelectorAll('.admin-tab');
+    const adminContents = document.querySelectorAll('.admin-tab-content');
+    const defaultTabStyle = 'border-transparent hover:text-gray-600 hover:border-gray-300';
+    const activeTabStyle = 'border-blue-600 text-blue-600';
+
+    if(adminTabs.length > 0) {
+        adminTabs.forEach(t => t.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
+        adminTabs[0].className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
+        adminContents.forEach(c => c.classList.add('hidden'));
+        if(adminContents.length > 0) adminContents[0].classList.remove('hidden');
+    }
+
+    adminTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
+            adminTabs.forEach(t => t.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
+            tab.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
+            adminContents.forEach(content => content.classList.add('hidden'));
+            document.getElementById(target).classList.remove('hidden');
+        });
+    });
+}
+
+// --- FUNGSI TAB REKAP ABSENSI ---
+function setupRekapTabs() {
+    const rekapTabs = document.querySelectorAll('.rekap-tab');
+    const rekapContents = document.querySelectorAll('.rekap-tab-content');
+    const defaultTabStyle = 'border-transparent hover:text-gray-600 hover:border-gray-300';
+    const activeTabStyle = 'border-blue-600 text-blue-600';
+
+    if(rekapTabs.length > 0) {
+        rekapTabs.forEach(t => t.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
+        rekapTabs[0].className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
+        rekapContents.forEach(c => c.classList.add('hidden'));
+        if(rekapContents.length > 0) rekapContents[0].classList.remove('hidden');
+    }
+
+    rekapTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
+            rekapTabs.forEach(t => t.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
+            tab.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
+            rekapContents.forEach(content => content.classList.add('hidden'));
+            document.getElementById(target).classList.remove('hidden');
+        });
+    });
 }
 
 
@@ -710,9 +857,8 @@ function handleLogout() {
 function setupDashboard() {
     document.getElementById('userName').innerText = currentUser.name;
     document.getElementById('userRole').innerText = currentUser.role;
-    document.getElementById('welcomeName').innerText = currentUser.name.split(',')[0]; // Ambil nama depan saja
+    document.getElementById('welcomeName').innerText = currentUser.name.split(',')[0]; 
 
-    // Tampilkan menu admin jika role adalah Admin
     if (currentUser.role === 'Admin') {
         document.getElementById('adminMenu').classList.remove('hidden');
     } else {
@@ -731,7 +877,7 @@ function updateDate() {
 
 function updateClock() {
     const now = new Date();
-    const timeString = now.toLocaleTimeString('it-IT'); // format 24 jam HH:mm:ss
+    const timeString = now.toLocaleTimeString('it-IT'); 
     document.getElementById('digitalClock').innerText = timeString;
 }
 
@@ -765,7 +911,7 @@ function loadSiswaForAbsen() {
     const tbody = document.getElementById('daftarSiswa');
     const siswa = mockSiswa[kelas];
     
-    tbody.innerHTML = ''; // Kosongkan tabel
+    tbody.innerHTML = ''; 
 
     if (!siswa) {
         tbody.innerHTML = '<tr><td colspan="4" class="text-center p-6 text-gray-400">Pilih kelas yang valid.</td></tr>';
@@ -805,7 +951,6 @@ function simpanAbsensiSiswa() {
         alert("Harap pilih kelas terlebih dahulu!");
         return;
     }
-    // Logika untuk menyimpan data akan ditambahkan di sini saat terhubung ke backend
     console.log("Menyimpan absensi untuk kelas:", kelas);
     showSuccessToast(`Absensi kelas ${kelas} berhasil disimpan!`);
 }
@@ -813,24 +958,28 @@ function simpanAbsensiSiswa() {
 
 // --- FUNGSI REKAP ABSENSI ---
 function populateBulanDropdown() {
-    const select = document.getElementById('pilihBulanRekap');
+    const selects = [document.getElementById('pilihBulanRekapSiswa'), document.getElementById('pilihBulanRekapGuru')];
     const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
     const currentMonth = new Date().getMonth();
 
-    bulan.forEach((namaBulan, index) => {
-        const option = document.createElement('option');
-        option.value = index + 1;
-        option.textContent = namaBulan;
-        if (index === currentMonth) {
-            option.selected = true;
-        }
-        select.appendChild(option);
+    selects.forEach(select => {
+        if (!select) return;
+        select.innerHTML = '';
+        bulan.forEach((namaBulan, index) => {
+            const option = document.createElement('option');
+            option.value = index + 1;
+            option.textContent = namaBulan;
+            if (index === currentMonth) {
+                option.selected = true;
+            }
+            select.appendChild(option);
+        });
     });
 }
 
 function renderRekapAbsensi() {
     const kelas = document.getElementById('pilihKelasRekap').value;
-    const tbody = document.getElementById('rekapTabelBody');
+    const tbody = document.getElementById('rekapTabelBodySiswa');
     const siswa = mockSiswa[kelas];
     
     tbody.innerHTML = '';
@@ -841,12 +990,7 @@ function renderRekapAbsensi() {
     }
     
     const status = ['H', 'S', 'I', 'A'];
-    const colors = {
-        H: 'bg-green-100',
-        S: 'bg-blue-100',
-        I: 'bg-yellow-100',
-        A: 'bg-red-100'
-    };
+    const colors = { H: 'bg-green-100', S: 'bg-blue-100', I: 'bg-yellow-100', A: 'bg-red-100' };
 
     siswa.forEach((s, index) => {
         let row = `<tr class="text-center">
@@ -856,7 +1000,6 @@ function renderRekapAbsensi() {
         let counts = { H: 0, S: 0, I: 0, A: 0 };
         
         for (let i = 1; i <= 31; i++) {
-            // Simulasi data absensi acak
             const randomStatus = i > 28 ? '' : status[Math.floor(Math.random() * status.length)];
             if(randomStatus) counts[randomStatus]++;
             row += `<td class="border border-gray-300 ${colors[randomStatus] || ''}">${randomStatus}</td>`;
@@ -873,22 +1016,63 @@ function renderRekapAbsensi() {
     });
 }
 
-function printRekap() {
-    // Siapkan kop surat untuk dicetak
-    const bulanEl = document.getElementById('pilihBulanRekap');
-    const tahunEl = document.getElementById('pilihTahunRekap');
-    const kelasEl = document.getElementById('pilihKelasRekap');
-    
-    document.getElementById('rekapBulan').innerText = bulanEl.options[bulanEl.selectedIndex].text;
-    document.getElementById('rekapTahun').innerText = tahunEl.value;
-    document.getElementById('rekapKelas').innerText = kelasEl.value;
-    
-    document.getElementById('kopSurat').classList.remove('hidden');
+function renderRekapGuru() {
+    const tbody = document.getElementById('rekapTabelBodyGuru');
+    const guruUsers = Object.values(mockUsers).filter(user => user.role === 'Guru' || user.role === 'Admin'); // Tampilkan semua user non-siswa
 
-    window.print();
+    tbody.innerHTML = '';
+
+    const status = ['H', 'S', 'I', 'A'];
+    const colors = { H: 'bg-green-100', S: 'bg-blue-100', I: 'bg-yellow-100', A: 'bg-red-100' };
+
+    guruUsers.forEach((guru, index) => {
+        let row = `<tr class="text-center">
+            <td class="border border-gray-300 p-1">${index + 1}</td>
+            <td class="border border-gray-300 p-1 text-left">${guru.name}</td>
+            <td class="border border-gray-300 p-1 text-left">${guru.nip}</td>`;
+
+        let counts = { H: 0, S: 0, I: 0, A: 0 };
+        
+        for (let i = 1; i <= 31; i++) {
+            const randomStatus = i > 28 ? '' : status[Math.floor(Math.random() * 0.95 * status.length)]; // Guru lebih sering hadir
+            if(randomStatus) counts[randomStatus]++;
+            row += `<td class="border border-gray-300 ${colors[randomStatus] || ''}">${randomStatus}</td>`;
+        }
+        
+        row += `
+            <td class="border border-gray-300 font-semibold bg-green-100">${counts.H}</td>
+            <td class="border border-gray-300 font-semibold bg-blue-100">${counts.S}</td>
+            <td class="border border-gray-300 font-semibold bg-yellow-100">${counts.I}</td>
+            <td class="border border-gray-300 font-semibold bg-red-100">${counts.A}</td>
+        </tr>`;
+        
+        tbody.innerHTML += row;
+    });
+}
+
+
+function printRekap() {
+    const activeTabContent = document.querySelector('.rekap-tab-content:not(.hidden)');
+    let kopSurat, bulanEl, tahunEl, kelasEl;
+
+    if (activeTabContent.id === 'rekapSiswa') {
+        kopSurat = document.getElementById('kopSuratSiswa');
+        bulanEl = document.getElementById('pilihBulanRekapSiswa');
+        tahunEl = document.getElementById('pilihTahunRekapSiswa');
+        kelasEl = document.getElementById('pilihKelasRekap');
+        kopSurat.querySelector('.rekapKelas').innerText = kelasEl.value;
+    } else { // Rekap Guru
+        kopSurat = document.getElementById('kopSuratGuru');
+        bulanEl = document.getElementById('pilihBulanRekapGuru');
+        tahunEl = document.getElementById('pilihTahunRekapGuru');
+    }
     
-    // Sembunyikan lagi setelah dialog cetak ditutup
-    document.getElementById('kopSurat').classList.add('hidden');
+    kopSurat.querySelector('.rekapBulan').innerText = bulanEl.options[bulanEl.selectedIndex].text;
+    kopSurat.querySelector('.rekapTahun').innerText = tahunEl.value;
+    
+    kopSurat.classList.remove('hidden');
+    window.print();
+    kopSurat.classList.add('hidden');
 }
 
 </script>

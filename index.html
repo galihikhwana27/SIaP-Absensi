@@ -23,9 +23,17 @@
             -webkit-print-color-adjust: exact; /* Memastikan warna tercetak dengan benar */
         }
         
-        .page { display: none; }
-        .page.active { display: block; }
+        /* Menyembunyikan halaman-halaman yang tidak aktif */
+        .page {
+            display: none;
+        }
+        
+        /* Menampilkan halaman yang aktif */
+        .page.active {
+            display: block;
+        }
 
+        /* Animasi untuk teks berjalan (marquee) */
         @keyframes marquee {
             from { transform: translateX(100%); }
             to { transform: translateX(-100%); }
@@ -34,34 +42,53 @@
             animation: marquee 30s linear infinite;
         }
 
-        .print-only { display: none; }
-
-        @media print {
-            body { background-color: white; }
-            #sidebar, #header-main, .no-print { display: none; }
-            #main-content { margin-left: 0; padding: 0; }
-            #rekapAbsensiPage .p-8 { padding: 0; }
-            #rekapAbsensiPage .bg-white { box-shadow: none; border: none; }
-            .print-only { display: block; }
+        .print-only {
+            display: none;
         }
 
-        #sidebar nav::-webkit-scrollbar { display: none; }
-        #sidebar nav { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Gaya untuk sidebar saat dicetak */
+        @media print {
+            body {
+                background-color: white;
+            }
+            #sidebar, #header-main, .no-print {
+                display: none;
+            }
+            #main-content {
+                margin-left: 0;
+                padding: 0;
+            }
+            #rekapAbsensiPage .p-8 {
+                padding: 0;
+            }
+            #rekapAbsensiPage .bg-white {
+                box-shadow: none;
+                border: none;
+            }
+            .print-only {
+                display: block;
+            }
+        }
+
+        /* Menyembunyikan scrollbar di sidebar nav */
+        #sidebar nav::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        #sidebar nav {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 <body class="bg-gray-100">
-
-    <!-- Indikator Loading Global -->
-    <div id="loading-overlay" class="fixed inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center z-[9999]">
-        <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
-        <p class="mt-4 text-lg text-gray-700">Memuat data...</p>
-    </div>
 
     <!-- === HALAMAN LOGIN === -->
     <div id="loginPage" class="page active">
         <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-teal-400 p-4">
             <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl">
                 <div class="flex flex-col items-center mb-6">
+                    <!-- Placeholder untuk logo sekolah -->
                     <div class="bg-blue-100 p-3 rounded-full mb-4">
                         <svg class="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.789-2.75 9.565M12 11c0-3.517 1.009-6.789 2.75-9.565M12 11H3.25m8.75 0H20.75M12 21.565c-3.131 0-5.945-1.9-7.5-4.5M12 2.435c3.131 0 5.945 1.9 7.5 4.5"></path></svg>
                     </div>
@@ -84,9 +111,8 @@
                     </div>
                 </div>
 
-                <button id="loginButton" class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg mt-8 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 transform hover:scale-105 flex items-center justify-center">
-                    <span id="loginText">Login</span>
-                    <i id="loginSpinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
+                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg mt-8 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 transform hover:scale-105">
+                    Login
                 </button>
             </div>
         </div>
@@ -94,10 +120,9 @@
     
     <!-- === APLIKASI UTAMA (SETELAH LOGIN) === -->
     <div id="mainApp" class="hidden">
-        <!-- Konten aplikasi utama (sidebar, header, pages) akan tetap sama -->
         <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden lg:hidden"></div>
         <!-- Sidebar/Menu Navigasi -->
-        <aside id="sidebar" class="bg-blue-800 text-white w-64 h-screen fixed z-30 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 no-print">
+        <aside id="sidebar" class="bg-blue-800 text-white w-64 h-screen fixed z-30 flex flex-col transition-transform duration-300 ease-in-out -translate-x-full no-print">
             <div class="p-6 text-center border-b border-blue-700">
                 <h2 class="text-xl font-bold">SIAP Hadir</h2>
                 <p class="text-xs text-blue-200">SMPN 3 Lempuing Jaya</p>
@@ -124,7 +149,7 @@
             </nav>
             <div class="p-6 border-t border-blue-700">
                 <div class="flex items-center">
-                    <img id="userAvatar" src="https://placehold.co/40x40/E2E8F0/4A5568?text=G" class="rounded-full" alt="User Avatar">
+                    <img src="https://placehold.co/40x40/E2E8F0/4A5568?text=G" class="rounded-full" alt="User Avatar">
                     <div class="ml-3">
                         <p id="userName" class="font-semibold text-sm">Nama Guru</p>
                         <p id="userRole" class="text-xs text-blue-300">Guru</p>
@@ -137,14 +162,14 @@
         </aside>
 
         <!-- Konten Utama -->
-        <main id="main-content" class="lg:ml-64 p-4 transition-all duration-300 ease-in-out">
+        <main id="main-content" class="p-4 transition-all duration-300 ease-in-out">
             <!-- Header Konten -->
             <header id="header-main" class="flex justify-between items-center mb-4 bg-blue-700 text-white p-4 shadow-lg rounded-xl no-print">
                 <div class="flex items-center gap-4">
-                    <button id="sidebarToggle" class="text-white hover:text-blue-200 focus:outline-none lg:hidden">
+                    <button id="sidebarToggle" class="text-white hover:text-blue-200 focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
-                    <div class="hidden sm:flex items-center gap-3">
+                    <div class="flex items-center gap-3">
                         <div class="bg-white p-1 rounded-full">
                            <svg class="w-8 h-8 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.789-2.75 9.565M12 11c0-3.517 1.009-6.789 2.75-9.565M12 11H3.25m8.75 0H20.75M12 21.565c-3.131 0-5.945-1.9-7.5-4.5M12 2.435c3.131 0 5.945 1.9 7.5 4.5"></path></svg>
                         </div>
@@ -159,7 +184,7 @@
                     </div>
                 </div>
             </header>
-            
+
             <!-- Pengumuman Berjalan -->
             <div class="bg-white p-2 mb-4 rounded-lg shadow-md overflow-hidden whitespace-nowrap no-print">
                 <div class="inline-block animate-marquee">
@@ -294,6 +319,9 @@
                             <label for="pilihGuruPiket" class="text-sm font-medium text-gray-600">Pilih Guru Piket</label>
                             <select id="pilihGuruPiket" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option>-- Pilih Guru --</option>
+                                <option>Siti Aminah, S.Pd.</option>
+                                <option>Joko Susilo, S.Kom.</option>
+                                <option>Dr. Budi Santoso, M.Pd.</option>
                             </select>
                         </div>
                     </div>
@@ -358,7 +386,7 @@
                                             <th class="px-6 py-3">Jam Pulang</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="lihatAbsensiGuruBody">
+                                    <tbody>
                                         <!-- Data absensi harian personil dimuat di sini -->
                                     </tbody>
                                 </table>
@@ -378,7 +406,7 @@
                                             <th class="px-6 py-3">Keterangan</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="lihatAbsensiSiswaBody">
+                                    <tbody>
                                        <!-- Data absensi harian siswa dimuat di sini -->
                                     </tbody>
                                 </table>
@@ -722,7 +750,7 @@
                     </div>
                  </div>
             </div>
-
+            
         </main>
     </div>
 
@@ -767,582 +795,1274 @@
     </div>
 
 
-<!-- ================================================================= -->
-<!-- SCRIPT UTAMA SISTEM ABSENSI DENGAN FIREBASE -->
-<!-- ================================================================= -->
-<script type="module">
-    // --- IMPOR MODUL FIREBASE ---
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInWithCustomToken, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { 
-        getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, 
-        onSnapshot, collection, query, where, getDocs, writeBatch 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+<script>
+// =================================================================
+// SCRIPT UTAMA SISTEM ABSENSI
+// =================================================================
 
-    // --- INISIALISASI FIREBASE ---
-    const firebaseConfig = typeof __firebase_config !== 'undefined' 
-        ? JSON.parse(__firebase_config) 
-        : {
-            apiKey: "AIzaSyAJGVemVp_1taX15obiPP04Apei5bVL7aE",
-            authDomain: "siapabsensi-f2d1a.firebaseapp.com",
-            projectId: "siapabsensi-f2d1a",
-            storageBucket: "siapabsensi-f2d1a.appspot.com",
-            messagingSenderId: "878553978081",
-            appId: "1:878553978081:web:4fe2ede353d3e40a1b93a0"
-          };
+// --- DATABASE SIMULASI (MOCK DATA) ---
+let mockUsers = {
+    '198501012010011001': { nip: '198501012010011001', name: 'Dr. Budi Santoso, M.Pd.', role: 'Guru', tempatLahir: 'Bandung', tglLahir: '1985-01-01', noHp: '081222333444' },
+    '198805102014022003': { nip: '198805102014022003', name: 'Siti Aminah, S.Pd.', role: 'Guru', tempatLahir: 'Surabaya', tglLahir: '1988-05-10', noHp: '081555666777' },
+    'pegawai01': { nip: 'TU-001', name: 'Slamet Riyadi', role: 'Pegawai', tempatLahir: 'Yogyakarta', tglLahir: '1990-03-15', noHp: '081888999000' },
+    'admin01': { nip: 'admin01', name: 'Admin Sekolah', role: 'Admin', password: 'admin' }
+};
+
+let mockKelas = [
+    { id: 'IX-A', name: 'IX A', waliKelasNip: '198501012010011001' },
+    { id: 'IX-B', name: 'IX B', waliKelasNip: '198805102014022003' }
+];
+
+let mockSiswa = {
+    'IX-A': [
+        { nis: '12301', name: 'Ahmad Zulkifli', namaOrtu: 'Zulkifli', noHp: '081234567890' },
+        { nis: '12302', name: 'Bunga Citra Lestari', namaOrtu: 'Lestari', noHp: '081234567891' },
+        { nis: '12303', name: 'Cahyo Purnomo', namaOrtu: 'Purnomo', noHp: '081234567892' },
+    ],
+    'IX-B': [
+        { nis: '12401', name: 'Fajar Nugroho', namaOrtu: 'Nugroho', noHp: '081234567893' },
+        { nis: '12402', name: 'Gita Permata', namaOrtu: 'Permata', noHp: '081234567894' },
+    ]
+};
+
+// --- VARIABEL GLOBAL & DATABASE SEMENTARA ---
+let currentUser = null;
+let mockAbsensiDatabase = { personal: {}, siswa: {} };
+
+
+// --- FUNGSI UTAMA ---
+document.addEventListener('DOMContentLoaded', () => {
+    // --- SIDEBAR TOGGLE SCRIPT ---
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    const toggleSidebar = () => {
+        sidebar.classList.toggle('-translate-x-full');
+        mainContent.classList.toggle('lg:ml-64');
+        sidebarOverlay.classList.toggle('hidden');
+    };
+
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+    // --- END SIDEBAR TOGGLE SCRIPT ---
+
+    // Inisialisasi tanggal
+    updateDate();
+    setAbsenInputsToNow('inputTanggalAbsenSiswa');
+
+    // Inisialisasi event listener
+    document.getElementById('pilihKelas').addEventListener('change', loadSiswaForAbsen);
+    document.getElementById('inputTanggalAbsen').addEventListener('change', (e) => updatePersonalAbsenStatus(e.target.value));
+    document.getElementById('pilihKelasLihat').addEventListener('change', renderAbsensiHarianSiswa);
     
-    const appId = typeof __app_id !== 'undefined' ? __app_id : '1:878553978081:web:4fe2ede353d3e40a1b93a0';
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+    const guruTab = document.getElementById('guru-tab');
+    const siswaTab = document.getElementById('siswa-tab');
+    guruTab.addEventListener('click', () => switchTab('guru'));
+    siswaTab.addEventListener('click', () => switchTab('siswa'));
     
-    // --- VARIABEL GLOBAL & STATE APLIKASI ---
-    let currentUser = null; // Menyimpan data user yang sedang login
-    let allPersonil = [];
-    let allKelas = [];
-    let allSiswa = {}; // Format: { kelasId: [siswa1, siswa2], ... }
-    let absensiPersonal = {}; // Format: { 'YYYY-MM-DD': { nip: {masuk, pulang} }, ... }
-    let absensiSiswa = {}; // Format: { 'YYYY-MM-DD': { kelasId: { nis: {status} } }, ... }
-    let unsubscribes = []; // Untuk menyimpan fungsi unsubscribe dari listener Firestore
+    // Inisialisasi Panel Admin Tabs
+    setupAdminTabs();
 
-    // --- PATHS DATABASE ---
-    const getPath = (collectionName) => `/artifacts/${appId}/public/data/${collectionName}`;
+    // Inisialisasi dropdown bulan
+    populateBulanDropdown();
 
-    // --- FUNGSI UTAMA ---
-    document.addEventListener('DOMContentLoaded', () => {
-        setupStaticEventListeners();
-        updateDate();
-    });
+    // Inisialisasi Tab Rekap
+    setupRekapTabs();
     
-    function setupStaticEventListeners() {
-        document.getElementById('loginButton').addEventListener('click', handleLogin);
-        document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
-        document.getElementById('sidebarOverlay').addEventListener('click', toggleSidebar);
+    // Update Dropdown Kelas di seluruh sistem
+    updateAllKelasDropdowns();
+});
 
-        // Event listener untuk tab admin
-        document.querySelectorAll('.admin-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Hapus kelas aktif dari semua tab
-                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('border-blue-500', 'text-blue-600'));
-                // Sembunyikan semua konten tab
-                document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+function showSuccessToast(message) {
+    const toast = document.getElementById('successToast');
+    document.getElementById('successMessage').innerText = message;
+    
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+        toast.classList.add('translate-x-0');
+    }, 10);
 
-                // Tambahkan kelas aktif ke tab yang diklik
-                tab.classList.add('border-blue-500', 'text-blue-600');
-                // Tampilkan konten tab yang relevan
-                document.getElementById(tab.dataset.tab).classList.remove('hidden');
-            });
+    setTimeout(() => {
+        toast.classList.remove('translate-x-0');
+        toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 500);
+    }, 3000);
+}
+
+function showErrorToast(message) {
+    const toast = document.getElementById('errorToast');
+    document.getElementById('errorMessage').innerText = message;
+    
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+        toast.classList.add('translate-x-0');
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.remove('translate-x-0');
+        toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 500);
+    }, 4000);
+}
+
+// --- FUNGSI MODAL KONFIRMASI ---
+function showConfirmModal(title, message, onConfirm) {
+    const modal = document.getElementById('confirmModal');
+    document.getElementById('confirmTitle').innerText = title;
+    document.getElementById('confirmMessage').innerText = message;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    const confirmOk = document.getElementById('confirmOk');
+    const confirmCancel = document.getElementById('confirmCancel');
+
+    const okListener = () => {
+        onConfirm();
+        closeConfirmModal();
+    };
+
+    const cancelListener = () => {
+        closeConfirmModal();
+    };
+
+    const closeConfirmModal = () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        confirmOk.removeEventListener('click', okListener);
+        confirmCancel.removeEventListener('click', cancelListener);
+    };
+
+    confirmOk.addEventListener('click', okListener);
+    confirmCancel.addEventListener('click', cancelListener);
+}
+
+
+// --- FUNGSI HALAMAN & NAVIGASI ---
+function showPage(pageId, element) {
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+
+    if (pageId === 'homePage') {
+        updateDashboardStats();
+    }
+    if (pageId === 'absensiPersonalPage' && currentUser) {
+        document.getElementById('personalAbsenName').innerText = currentUser.name;
+        setAbsenInputsToNow('inputTanggalAbsen', 'inputWaktuAbsen');
+        updatePersonalAbsenStatus(document.getElementById('inputTanggalAbsen').value);
+    }
+    if (pageId === 'rekapAbsensiPage') {
+        renderRekapSiswa();
+        renderRekapGuruPegawai();
+    }
+    if (pageId === 'lihatAbsensiPage') {
+        renderAbsensiHarian();
+    }
+    if (pageId === 'adminPage') {
+        renderManajemenPersonil();
+        renderManajemenSiswa();
+        renderManajemenKelas();
+    }
+
+    if (element) {
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-blue-700'));
+        element.classList.add('bg-blue-700');
+    }
+}
+
+function switchTab(tabName) {
+    const guruTabContent = document.getElementById('guru');
+    const siswaTabContent = document.getElementById('siswa');
+    const guruTabBtn = document.getElementById('guru-tab');
+    const siswaTabBtn = document.getElementById('siswa-tab');
+
+    const activeClasses = ['border-blue-600', 'text-blue-600'];
+    const inactiveClasses = ['border-transparent', 'hover:text-gray-600', 'hover:border-gray-300'];
+
+    if (tabName === 'guru') {
+        guruTabContent.classList.remove('hidden');
+        siswaTabContent.classList.add('hidden');
+        guruTabBtn.classList.add(...activeClasses);
+        guruTabBtn.classList.remove(...inactiveClasses);
+        siswaTabBtn.classList.add(...inactiveClasses);
+        siswaTabBtn.classList.remove(...activeClasses);
+    } else {
+        siswaTabContent.classList.remove('hidden');
+        guruTabContent.classList.add('hidden');
+        siswaTabBtn.classList.add(...activeClasses);
+        siswaTabBtn.classList.remove(...inactiveClasses);
+        guruTabBtn.classList.add(...inactiveClasses);
+        guruTabBtn.classList.remove(...activeClasses);
+    }
+}
+
+// --- FUNGSI TAB PANEL ADMIN ---
+function setupAdminTabs() {
+    const adminTabs = document.querySelectorAll('.admin-tab');
+    const adminContents = document.querySelectorAll('.admin-tab-content');
+    const defaultTabStyle = 'border-transparent hover:text-gray-600 hover:border-gray-300';
+    const activeTabStyle = 'border-blue-600 text-blue-600';
+
+    if(adminTabs.length > 0) {
+        adminTabs.forEach(t => t.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
+        adminTabs[0].className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
+        adminContents.forEach(c => c.classList.add('hidden'));
+        if(adminContents.length > 0) adminContents[0].classList.remove('hidden');
+    }
+
+    adminTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
+            adminTabs.forEach(t => t.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
+            tab.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
+            adminContents.forEach(content => content.classList.add('hidden'));
+            document.getElementById(target).classList.remove('hidden');
         });
-         // Set tab pertama sebagai aktif secara default
-        document.querySelector('.admin-tab').click();
-    }
-
-    // --- OTENTIKASI & INISIALISASI APLIKASI ---
-    
-    onAuthStateChanged(auth, user => {
-        if (user) {
-            initializeAppData(user.uid);
-        } else {
-            cleanupAndShowLogin();
-        }
     });
+}
 
-    async function handleLogin() {
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const errorDiv = document.getElementById('loginError');
-        const loginButton = document.getElementById('loginButton');
-        
-        loginButton.disabled = true;
-        document.getElementById('loginText').classList.add('hidden');
-        document.getElementById('loginSpinner').classList.remove('hidden');
-        errorDiv.classList.add('hidden');
+// --- FUNGSI TAB REKAP ABSENSI ---
+function setupRekapTabs() {
+    const rekapTabs = document.querySelectorAll('.rekap-tab');
+    const rekapContents = document.querySelectorAll('.rekap-tab-content');
+    const defaultTabStyle = 'border-transparent hover:text-gray-600 hover:border-gray-300';
+    const activeTabStyle = 'border-blue-600 text-blue-600';
 
-        // --- DEBUGGING ---
-        const usernameValue = usernameInput.value;
-        const collectionPath = getPath('personil');
-        console.log('--- Memulai Proses Login ---');
-        console.log('App ID yang digunakan:', appId);
-        console.log('Mencari di path:', collectionPath);
-        console.log('Dengan NIP/Username:', usernameValue);
-        // --- AKHIR DEBUGGING ---
+    if(rekapTabs.length > 0) {
+        rekapTabs.forEach(t => t.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
+        rekapTabs[0].className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
+        rekapContents.forEach(c => c.classList.add('hidden'));
+        if(rekapContents.length > 0) rekapContents[0].classList.remove('hidden');
+    }
 
-        try {
-            const personilRef = collection(db, collectionPath);
-            const q = query(personilRef, where("nip", "==", usernameValue));
-            const querySnapshot = await getDocs(q);
+    rekapTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
+            rekapTabs.forEach(t => t.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
+            tab.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
+            rekapContents.forEach(content => content.classList.add('hidden'));
+            document.getElementById(target).classList.remove('hidden');
+        });
+    });
+}
 
-            console.log('Hasil query:', querySnapshot.size, 'dokumen ditemukan.'); // DEBUGGING
 
-            if (querySnapshot.empty) {
-                throw new Error("User tidak ditemukan di database.");
+// --- FUNGSI OTENTIKASI (LOGIN/LOGOUT) ---
+function handleLogin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const user = mockUsers[username];
+    let passwordValid = false;
+
+    if (user) {
+        // Special case for admin login
+        if (user.role === 'Admin' && user.password === password) {
+            passwordValid = true;
+        } 
+        // Logic for other users based on birth date
+        else if (user.tglLahir) {
+            const [year, month, day] = user.tglLahir.split('-');
+            const formattedPassword = `${day}${month}${year}`;
+            if (password === formattedPassword) {
+                passwordValid = true;
             }
-
-            const userDoc = querySnapshot.docs[0];
-            const userData = userDoc.data();
-            console.log('Data user yang ditemukan:', userData); // DEBUGGING
-
-            let passwordValid = false;
-            const enteredPassword = passwordInput.value;
-            
-            if (userData.role === 'Admin') {
-                if (userData.password && userData.password === enteredPassword) {
-                    passwordValid = true;
-                }
-            } else if (userData.tglLahir) {
-                const [year, month, day] = userData.tglLahir.split('-');
-                const formattedPassword = `${day}${month}${year}`;
-                if (enteredPassword === formattedPassword) {
-                    passwordValid = true;
-                }
-            }
-
-            if (!passwordValid) {
-                throw new Error("Password salah atau tidak sesuai");
-            }
-            
-            console.log('Login berhasil! Memproses token...'); // DEBUGGING
-            const token = typeof __initial_auth_token !== 'undefined' 
-                ? __initial_auth_token 
-                : await getFakeToken(userDoc.id);
-            
-            await signInWithCustomToken(auth, token);
-            
-        } catch (error) {
-            console.error("Login failed:", error.message);
-            errorDiv.querySelector('span').innerText = error.message;
-            errorDiv.classList.remove('hidden');
-        } finally {
-            loginButton.disabled = false;
-            document.getElementById('loginText').classList.remove('hidden');
-            document.getElementById('loginSpinner').classList.add('hidden');
         }
     }
 
-    async function getFakeToken(uid) {
-        console.warn("MENGGUNAKAN FAKE TOKEN UNTUK LOGIN. INI TIDAK AMAN.");
-        const header = btoa(JSON.stringify({ alg: "none", typ: "JWT" }));
-        const payload = btoa(JSON.stringify({ uid: uid, iat: Math.floor(Date.now() / 1000) }));
-        return `${header}.${payload}.`;
-    }
-
-    async function handleLogout() {
-        await signOut(auth);
-    }
-    
-    async function initializeAppData(uid) {
-        const userDocRef = doc(db, getPath('personil'), uid);
-        const userDoc = await getDoc(userDocRef);
-        if (!userDoc.exists()) {
-            console.error("Data user tidak ditemukan di Firestore!");
-            await handleLogout();
-            return;
-        }
-        currentUser = { id: userDoc.id, ...userDoc.data() };
-
-        setupDashboardUI();
-        setupDataListeners();
-        
+    if (passwordValid) {
+        currentUser = user;
         document.getElementById('loginPage').classList.remove('active');
         document.getElementById('mainApp').classList.remove('hidden');
         showPage('homePage', document.querySelector('.nav-link'));
-        document.getElementById('loading-overlay').style.display = 'none';
+        setupDashboard();
+    } else {
+        const errorDiv = document.getElementById('loginError');
+        errorDiv.classList.remove('hidden');
     }
-    
-    function cleanupAndShowLogin() {
-        unsubscribes.forEach(unsub => unsub());
-        unsubscribes = [];
-        
-        currentUser = null;
-        document.getElementById('loginPage').classList.add('active');
-        document.getElementById('mainApp').classList.add('hidden');
-        document.getElementById('loading-overlay').style.display = 'none';
+}
+
+function handleLogout() {
+    currentUser = null;
+    document.getElementById('loginPage').classList.add('active');
+    document.getElementById('mainApp').classList.add('hidden');
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('loginError').classList.add('hidden');
+}
+
+function setupDashboard() {
+    document.getElementById('userName').innerText = currentUser.name;
+    document.getElementById('userRole').innerText = currentUser.role;
+    document.getElementById('welcomeName').innerText = currentUser.name.split(',')[0]; 
+
+    if (currentUser.role === 'Admin') {
+        document.getElementById('adminMenu').classList.remove('hidden');
+    } else {
+        document.getElementById('adminMenu').classList.add('hidden');
     }
+    updateDashboardStats();
+}
 
-    function setupDashboardUI() {
-        document.getElementById('userName').innerText = currentUser.name;
-        document.getElementById('userRole').innerText = currentUser.role;
-        document.getElementById('welcomeName').innerText = currentUser.name.split(',')[0];
-        document.getElementById('userAvatar').src = `https://placehold.co/40x40/E2E8F0/4A5568?text=${currentUser.name.charAt(0)}`;
-        document.getElementById('adminMenu').classList.toggle('hidden', currentUser.role !== 'Admin');
-    }
+function updateDashboardStats() {
+    const today = getTodayDateString();
 
-    // --- DATA LISTENERS (REAL-TIME) ---
-    function setupDataListeners() {
-        const personilQuery = query(collection(db, getPath('personil')));
-        const unsubPersonil = onSnapshot(personilQuery, snapshot => {
-            allPersonil = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            console.log("Real-time update: Personil", allPersonil);
-            if (document.getElementById('adminPage').classList.contains('active')) renderManajemenPersonil();
-        }, error => console.error("Error listening to personil:", error));
-        unsubscribes.push(unsubPersonil);
+    // --- Update Your Attendance Status ---
+    const guruStatusEl = document.getElementById('guruStatus');
+    const guruTimeEl = document.getElementById('guruTime');
 
-        const kelasQuery = query(collection(db, getPath('kelas')));
-        const unsubKelas = onSnapshot(kelasQuery, snapshot => {
-            allKelas = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            allKelas.sort((a,b) => a.name.localeCompare(b.name));
-            console.log("Real-time update: Kelas", allKelas);
-            updateAllKelasDropdowns();
-            setupSiswaListeners();
-            if (document.getElementById('adminPage').classList.contains('active')) renderManajemenKelas();
-        }, error => console.error("Error listening to kelas:", error));
-        unsubscribes.push(unsubKelas);
-    }
-    
-    function setupSiswaListeners() {
-        unsubscribes = unsubscribes.filter(unsub => !unsub.isSiswaListener);
-        allSiswa = {};
-
-        allKelas.forEach(kelas => {
-            const siswaQuery = query(collection(db, getPath('kelas'), kelas.id, 'siswa'));
-            const unsubSiswa = onSnapshot(siswaQuery, snapshot => {
-                allSiswa[kelas.id] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                console.log(`Real-time update: Siswa kelas ${kelas.name}`, allSiswa[kelas.id]);
-                 if (document.getElementById('adminPage').classList.contains('active')) renderManajemenSiswa();
-            }, error => console.error(`Error listening to siswa in kelas ${kelas.id}:`, error));
-            unsubSiswa.isSiswaListener = true;
-            unsubscribes.push(unsubSiswa);
-        });
-    }
-
-    // --- FUNGSI RENDER & UI ---
-    
-    function showPage(pageId, element) {
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-blue-700'));
-        if(element) element.classList.add('bg-blue-700');
-        
-        // Tutup sidebar di mode mobile saat link diklik
-        const sidebar = document.getElementById('sidebar');
-        if (!sidebar.classList.contains('lg:translate-x-0')) {
-           toggleSidebar();
+    if (currentUser) {
+        const absenRecord = mockAbsensiDatabase.personal[today]?.[currentUser.nip];
+        if (absenRecord && absenRecord.masuk && absenRecord.pulang) {
+            guruStatusEl.innerText = 'Hadir';
+            guruTimeEl.innerText = `Pulang pukul ${absenRecord.pulang} WIB`;
+        } else if (absenRecord && absenRecord.masuk) {
+            guruStatusEl.innerText = 'Sudah Masuk';
+            guruTimeEl.innerText = `Masuk pukul ${absenRecord.masuk} WIB`;
+        } else {
+            guruStatusEl.innerText = 'Belum Absen';
+            guruTimeEl.innerText = 'Silakan lakukan absensi hari ini.';
         }
     }
 
-    function updateDate() {
-        const dateElement = document.getElementById('currentDate');
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        dateElement.innerText = now.toLocaleDateString('id-ID', options);
-    }
-    
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-        sidebar.classList.toggle('-translate-x-full');
-        overlay.classList.toggle('hidden');
-    }
+    // --- Update Student Attendance Status ---
+    const siswaHadirPersenEl = document.getElementById('siswaHadirPersen');
+    const siswaHadirDetailEl = document.getElementById('siswaHadirDetail');
 
-    // --- FUNGSI CRUD & FORM (Personil) ---
+    let totalSiswa = 0;
+    let totalHadir = 0;
 
-    function renderManajemenPersonil() {
-        const tbody = document.getElementById('personilTableBody');
-        tbody.innerHTML = '';
-        const personilToShow = allPersonil.filter(u => u.role !== 'Admin');
-        
-        if (personilToShow.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 text-gray-400">Belum ada data personil.</td></tr>`;
-            return;
-        }
+    Object.values(mockSiswa).forEach(kelas => {
+        totalSiswa += kelas.length;
+    });
 
-        personilToShow.sort((a,b) => a.name.localeCompare(b.name)).forEach(user => {
-            const row = `
-                <tr class="bg-white border-b hover:bg-gray-50">
-                    <td class="px-6 py-4 font-medium text-gray-900">${user.name}</td>
-                    <td class="px-6 py-4">${user.nip}</td>
-                    <td class="px-6 py-4">${user.role}</td>
-                    <td class="px-6 py-4 space-x-4">
-                        <button onclick="showPersonilForm('${user.id}')" class="text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-edit"></i> Edit</button>
-                        <button onclick="hapusPersonil('${user.id}')" class="text-red-600 hover:text-red-800 font-medium"><i class="fas fa-trash"></i> Hapus</button>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += row;
-        });
-    }
-
-    function showPersonilForm(personilId = null) {
-        const personil = personilId ? allPersonil.find(p => p.id === personilId) : null;
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-
-        modalTitle.innerText = personil ? 'Edit Data Personil' : 'Tambah Personil Baru';
-        modalBody.innerHTML = `
-            <div class="space-y-4">
-                <div>
-                    <label for="formNip" class="text-sm font-medium text-gray-600">NIP / ID Pegawai</label>
-                    <input type="text" id="formNip" value="${personil?.nip || ''}" ${personil ? 'readonly' : ''} class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${personil ? 'bg-gray-200 cursor-not-allowed' : ''}">
-                </div>
-                <div>
-                    <label for="formNama" class="text-sm font-medium text-gray-600">Nama Lengkap & Gelar</label>
-                    <input type="text" id="formNama" value="${personil?.name || ''}" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="formTglLahir" class="text-sm font-medium text-gray-600">Tgl. Lahir (Password Default)</label>
-                    <input type="date" id="formTglLahir" value="${personil?.tglLahir || ''}" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <p class="text-xs text-gray-500 mt-1">Format password: ddmmyyyy (contoh: 01011990)</p>
-                </div>
-                <div>
-                    <label for="formRole" class="text-sm font-medium text-gray-600">Peran / Jabatan</label>
-                    <select id="formRole" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="Guru" ${personil?.role === 'Guru' ? 'selected' : ''}>Guru</option>
-                        <option value="Pegawai" ${personil?.role === 'Pegawai' ? 'selected' : ''}>Pegawai</option>
-                    </select>
-                </div>
-                <div class="flex justify-end pt-4">
-                     <button onclick="simpanPersonil()" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">Simpan</button>
-                </div>
-            </div>
-        `;
-        document.getElementById('formModal').classList.remove('hidden');
-        document.getElementById('formModal').classList.add('flex');
-    }
-
-    async function simpanPersonil() {
-        const nip = document.getElementById('formNip').value.trim();
-        const name = document.getElementById('formNama').value.trim();
-        const tglLahir = document.getElementById('formTglLahir').value;
-        const role = document.getElementById('formRole').value;
-        
-        if (!nip || !name || !tglLahir || !role) {
-            showErrorToast('Semua kolom wajib diisi!');
-            return;
-        }
-        
-        const personilRef = doc(db, getPath('personil'), nip);
-        
-        try {
-            await setDoc(personilRef, { nip, name, tglLahir, role }, { merge: true });
-            showSuccessToast('Data personil berhasil disimpan!');
-            closeModal();
-        } catch (error) {
-            console.error("Gagal menyimpan personil:", error);
-            showErrorToast('Gagal menyimpan data ke server.');
-        }
-    }
-
-    function hapusPersonil(personilId) {
-       showConfirmModal('Hapus Personil', 'Apakah Anda yakin ingin menghapus data personil ini secara permanen?', async () => {
-           try {
-               await deleteDoc(doc(db, getPath('personil'), personilId));
-               showSuccessToast('Data personil berhasil dihapus.');
-           } catch (error) {
-               console.error("Gagal menghapus personil:", error);
-               showErrorToast('Gagal menghapus data.');
-           }
-       });
-    }
-
-    // --- FUNGSI CRUD & FORM (Kelas) ---
-    function renderManajemenKelas() {
-        const tbody = document.getElementById('kelasTableBody');
-        tbody.innerHTML = '';
-
-        if (allKelas.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 text-gray-400">Belum ada data kelas.</td></tr>`;
-            return;
-        }
-        
-        allKelas.forEach(kelas => {
-            const wali = allPersonil.find(p => p.id === kelas.waliKelasId);
-            const jumlahSiswa = allSiswa[kelas.id]?.length || 0;
-            const row = `
-                <tr class="bg-white border-b hover:bg-gray-50">
-                    <td class="px-6 py-4 font-medium text-gray-900">${kelas.name}</td>
-                    <td class="px-6 py-4">${wali ? wali.name : 'Belum diatur'}</td>
-                    <td class="px-6 py-4">${jumlahSiswa} Siswa</td>
-                    <td class="px-6 py-4 space-x-4">
-                        <button onclick="showKelasForm('${kelas.id}')" class="text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-edit"></i> Edit</button>
-                        <button onclick="hapusKelas('${kelas.id}')" class="text-red-600 hover:text-red-800 font-medium"><i class="fas fa-trash"></i> Hapus</button>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += row;
-        });
-    }
-
-    function showKelasForm(kelasId = null) {
-        const kelas = kelasId ? allKelas.find(k => k.id === kelasId) : null;
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-
-        const guruOptions = allPersonil
-            .filter(p => p.role === 'Guru')
-            .map(guru => `<option value="${guru.id}" ${kelas?.waliKelasId === guru.id ? 'selected' : ''}>${guru.name}</option>`)
-            .join('');
-
-        modalTitle.innerText = kelas ? 'Edit Data Kelas' : 'Tambah Kelas Baru';
-        modalBody.innerHTML = `
-            <div class="space-y-4">
-                <input type="hidden" id="formKelasId" value="${kelas?.id || ''}">
-                <div>
-                    <label for="formNamaKelas" class="text-sm font-medium text-gray-600">Nama Kelas</label>
-                    <input type="text" id="formNamaKelas" value="${kelas?.name || ''}" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="formWaliKelas" class="text-sm font-medium text-gray-600">Wali Kelas</label>
-                    <select id="formWaliKelas" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="">-- Pilih Guru --</option>
-                        ${guruOptions}
-                    </select>
-                </div>
-                <div class="flex justify-end pt-4">
-                     <button onclick="simpanKelas()" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">Simpan</button>
-                </div>
-            </div>
-        `;
-        document.getElementById('formModal').classList.remove('hidden');
-        document.getElementById('formModal').classList.add('flex');
-    }
-
-    async function simpanKelas() {
-        const kelasId = document.getElementById('formKelasId').value;
-        const name = document.getElementById('formNamaKelas').value.trim();
-        const waliKelasId = document.getElementById('formWaliKelas').value;
-
-        if (!name || !waliKelasId) {
-            showErrorToast('Nama Kelas dan Wali Kelas wajib diisi!');
-            return;
-        }
-
-        // Jika kelasId kosong, ini adalah kelas baru. Kita gunakan nama kelas sebagai ID.
-        const docId = kelasId || name.replace(/\s+/g, '-').toLowerCase();
-        const kelasRef = doc(db, getPath('kelas'), docId);
-        
-        try {
-            await setDoc(kelasRef, { name, waliKelasId }, { merge: true });
-            showSuccessToast('Data kelas berhasil disimpan!');
-            closeModal();
-        } catch (error) {
-            console.error("Gagal menyimpan kelas:", error);
-            showErrorToast('Gagal menyimpan data.');
-        }
-    }
-
-    function hapusKelas(kelasId) {
-        // Peringatan: Menghapus kelas juga akan menghapus semua data siswa di dalamnya.
-        const jumlahSiswa = allSiswa[kelasId]?.length || 0;
-        showConfirmModal(
-            'Hapus Kelas', 
-            `Yakin ingin menghapus kelas ini? Semua (${jumlahSiswa}) data siswa di dalamnya akan ikut terhapus secara permanen.`, 
-            async () => {
-                try {
-                    // Batched write untuk menghapus semua siswa terlebih dahulu
-                    const batch = writeBatch(db);
-                    const siswaCollectionRef = collection(db, getPath('kelas'), kelasId, 'siswa');
-                    const siswaSnapshot = await getDocs(siswaCollectionRef);
-                    siswaSnapshot.forEach(doc => {
-                        batch.delete(doc.ref);
-                    });
-                    await batch.commit();
-
-                    // Setelah semua siswa dihapus, hapus dokumen kelasnya
-                    await deleteDoc(doc(db, getPath('kelas'), kelasId));
-                    showSuccessToast('Kelas dan seluruh data siswa berhasil dihapus.');
-                } catch (error) {
-                    console.error("Gagal menghapus kelas:", error);
-                    showErrorToast('Gagal menghapus data.');
+    const absensiHariIni = mockAbsensiDatabase.siswa[today];
+    if (absensiHariIni) {
+        Object.values(absensiHariIni).forEach(kelas => {
+            Object.values(kelas).forEach(absen => {
+                if (absen.status === 'H') {
+                    totalHadir++;
                 }
-            }
-        );
-    }
-
-
-    // --- FUNGSI MODAL & NOTIFIKASI ---
-    function closeModal() {
-        const modal = document.getElementById('formModal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.getElementById('modalBody').innerHTML = '';
-    }
-
-    function showSuccessToast(message) {
-        const toast = document.getElementById('successToast');
-        document.getElementById('successMessage').innerText = message;
-        toast.classList.remove('hidden', 'translate-x-full');
-        setTimeout(() => {
-            toast.classList.add('translate-x-full');
-             setTimeout(() => toast.classList.add('hidden'), 500);
-        }, 3000);
-    }
-
-    function showErrorToast(message) {
-        const toast = document.getElementById('errorToast');
-        document.getElementById('errorMessage').innerText = message;
-        toast.classList.remove('hidden', 'translate-x-full');
-        setTimeout(() => {
-            toast.classList.add('translate-x-full');
-            setTimeout(() => toast.classList.add('hidden'), 500);
-        }, 3000);
-    }
-    
-    function showConfirmModal(title, message, onConfirm) {
-        document.getElementById('confirmTitle').innerText = title;
-        document.getElementById('confirmMessage').innerText = message;
-        const confirmModal = document.getElementById('confirmModal');
-        confirmModal.classList.remove('hidden');
-        confirmModal.classList.add('flex');
-
-        const confirmOk = document.getElementById('confirmOk');
-        const confirmCancel = document.getElementById('confirmCancel');
-
-        const closeConfirm = () => {
-            confirmModal.classList.add('hidden');
-            confirmModal.classList.remove('flex');
-            // Hapus event listener agar tidak menumpuk
-            confirmOk.replaceWith(confirmOk.cloneNode(true));
-            confirmCancel.replaceWith(confirmCancel.cloneNode(true));
-        };
-
-        confirmOk.addEventListener('click', () => {
-            onConfirm();
-            closeConfirm();
-        });
-        confirmCancel.addEventListener('click', closeConfirm);
-    }
-    
-    // --- STUB/PLACEHOLDER FUNGSI LAINNYA ---
-    function renderManajemenSiswa() { /* TODO */ }
-    
-    function updateAllKelasDropdowns() {
-        const dropdowns = [
-            document.getElementById('pilihKelas'),
-            document.getElementById('pilihKelasLihat'),
-            document.getElementById('pilihKelasRekap'),
-            document.getElementById('filterKelasSiswa')
-        ];
-        
-        dropdowns.forEach(dropdown => {
-            const firstOption = dropdown.querySelector('option');
-            dropdown.innerHTML = ''; // Hapus semua opsi
-            dropdown.appendChild(firstOption); // Tambahkan kembali opsi default
-            
-            allKelas.forEach(k => {
-                const option = document.createElement('option');
-                option.value = k.id;
-                option.textContent = k.name;
-                dropdown.appendChild(option);
             });
         });
     }
-    
-    // --- EXPORT FUNGSI KE GLOBAL SCOPE ---
-    window.showPage = showPage;
-    window.handleLogout = handleLogout;
-    window.simpanPersonil = simpanPersonil;
-    window.showPersonilForm = showPersonilForm;
-    window.hapusPersonil = hapusPersonil;
-    window.closeModal = closeModal;
-    window.showKelasForm = showKelasForm;
-    window.simpanKelas = simpanKelas;
-    window.hapusKelas = hapusKelas;
-    // ... export fungsi lainnya jika sudah dibuat ...
-    
-</script>
 
+    if (totalSiswa > 0) {
+        const persentase = totalHadir === 0 ? 0 : ((totalHadir / totalSiswa) * 100).toFixed(1);
+        siswaHadirPersenEl.innerText = `${persentase}%`;
+        siswaHadirDetailEl.innerText = `${totalHadir} dari ${totalSiswa} siswa hadir`;
+    } else {
+        siswaHadirPersenEl.innerText = `N/A`;
+        siswaHadirDetailEl.innerText = `Tidak ada data siswa.`;
+    }
+}
+
+
+// --- FUNGSI WAKTU & TANGGAL ---
+function updateDate() {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const today = new Date().toLocaleDateString('id-ID', options);
+    const currentDateEl = document.getElementById('currentDate');
+    if (currentDateEl) currentDateEl.innerText = today;
+}
+
+function getTodayDateString() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
+
+
+function setAbsenInputsToNow(dateInputId, timeInputId) {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+
+    const dateInput = document.getElementById(dateInputId);
+    if(dateInput) dateInput.value = `${yyyy}-${mm}-${dd}`;
+    
+    if(timeInputId) {
+        const timeInput = document.getElementById(timeInputId);
+        if(timeInput) timeInput.value = `${hh}:${min}`;
+    }
+}
+
+
+// --- FUNGSI ABSENSI PERSONAL ---
+function handleAbsenStaff(tipe) {
+    const date = document.getElementById('inputTanggalAbsen').value;
+    const time = document.getElementById('inputWaktuAbsen').value;
+
+    if (!date || !time) {
+        showErrorToast("Tanggal dan Waktu tidak boleh kosong!");
+        return;
+    }
+
+    if (!mockAbsensiDatabase.personal[date]) {
+        mockAbsensiDatabase.personal[date] = {};
+    }
+    if (!mockAbsensiDatabase.personal[date][currentUser.nip]) {
+        mockAbsensiDatabase.personal[date][currentUser.nip] = { masuk: null, pulang: null };
+    }
+
+    const absenRecord = mockAbsensiDatabase.personal[date][currentUser.nip];
+
+    if (tipe === 'masuk') {
+        absenRecord.masuk = time;
+        showSuccessToast(`Absen masuk pukul ${time} berhasil dicatat.`);
+    } else if (tipe === 'pulang') {
+        if (!absenRecord.masuk) {
+            showErrorToast("Anda harus absen masuk terlebih dahulu sebelum absen pulang!");
+            return;
+        }
+        absenRecord.pulang = time;
+        showSuccessToast(`Absen pulang pukul ${time} berhasil dicatat.`);
+    }
+    
+    console.log("Database Absensi Personal Updated:", mockAbsensiDatabase.personal);
+    updatePersonalAbsenStatus(date);
+    updateDashboardStats();
+}
+
+function updatePersonalAbsenStatus(date) {
+    const statusDiv = document.getElementById('personalAbsenStatus');
+    const btnMasuk = document.getElementById('btnAbsenMasuk');
+    const btnPulang = document.getElementById('btnAbsenPulang');
+    
+    const absenRecord = mockAbsensiDatabase.personal[date]?.[currentUser.nip];
+
+    if (!absenRecord || (!absenRecord.masuk && !absenRecord.pulang)) {
+        statusDiv.classList.add('hidden');
+        btnMasuk.disabled = false;
+        btnPulang.disabled = true;
+    } else {
+        let statusText = 'Status Hari Ini: ';
+        if (absenRecord.masuk) {
+            statusText += `Masuk <strong>${absenRecord.masuk}</strong>. `;
+            btnMasuk.disabled = true;
+            btnPulang.disabled = false;
+        } else {
+            btnMasuk.disabled = false;
+            btnPulang.disabled = true;
+        }
+
+        if (absenRecord.pulang) {
+            statusText += `Pulang <strong>${absenRecord.pulang}</strong>.`;
+            btnPulang.disabled = true;
+        }
+        
+        statusDiv.innerHTML = statusText;
+        statusDiv.className = 'mb-6 p-4 rounded-lg text-sm bg-blue-100 text-blue-800';
+    }
+}
+
+// --- FUNGSI ABSENSI SISWA & NOTIFIKASI WA ---
+function kirimNotifikasiWA(nomorHp, pesan) {
+    const secretKey = document.getElementById('sidobeSecretKey').value;
+    if (!secretKey) {
+        console.warn("Secret Key Sidobe belum diatur di Panel Admin.");
+        showErrorToast("Gagal kirim notifikasi: Secret Key belum diatur.");
+        return;
+    }
+    // Hapus karakter non-numerik, pastikan dimulai dengan 62
+    let nomorHpBersih = nomorHp.replace(/\D/g, '');
+    if (nomorHpBersih.startsWith('0')) {
+        nomorHpBersih = '62' + nomorHpBersih.substring(1);
+    }
+
+    const endpoint = 'https://api.sidobe.com/wa/v1/send-message';
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Secret-Key': secretKey
+    };
+    const body = JSON.stringify({
+        phone: `+${nomorHpBersih}`,
+        message: pesan
+    });
+
+    // Simulasi pengiriman notifikasi
+    console.log(`--- SIMULASI KIRIM WA (POST Request) ---
+    Endpoint: ${endpoint}
+    Headers: ${JSON.stringify(headers, null, 2)}
+    Body: ${body}
+    -----------------------------------`);
+
+    // Di aplikasi nyata, Anda akan menghapus komentar di bawah ini
+    /*
+    fetch(endpoint, {
+        method: 'POST',
+        headers: headers,
+        body: body
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respon dari Sidobe API:', data);
+        if (data.success) {
+            showSuccessToast(`Notifikasi ke ${nomorHp} berhasil dikirim.`);
+        } else {
+            showErrorToast(`Gagal kirim notifikasi: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error saat mengirim notifikasi:', error);
+        showErrorToast('Terjadi kesalahan jaringan saat mengirim notifikasi.');
+    });
+    */
+}
+
+function simpanAbsensiSiswa() {
+    const tanggal = document.getElementById('inputTanggalAbsenSiswa').value;
+    const kelas = document.getElementById('pilihKelas').value;
+    const kirimNotifikasi = document.getElementById('kirimNotifikasiWA').checked;
+    
+    if (!tanggal || !kelas || kelas === "-- Pilih Kelas --") {
+        showErrorToast("Harap pilih tanggal dan kelas terlebih dahulu!");
+        return;
+    }
+
+    if (!mockAbsensiDatabase.siswa[tanggal]) {
+        mockAbsensiDatabase.siswa[tanggal] = {};
+    }
+    if (!mockAbsensiDatabase.siswa[tanggal][kelas]) {
+        mockAbsensiDatabase.siswa[tanggal][kelas] = {};
+    }
+
+    const siswaDiKelas = mockSiswa[kelas];
+    if (siswaDiKelas) {
+        siswaDiKelas.forEach(siswa => {
+            const statusRadio = document.querySelector(`input[name="status-${siswa.nis}"]:checked`);
+            if (!statusRadio) return; // Lewati jika tidak ada yang dipilih
+            
+            const status = statusRadio.value;
+            mockAbsensiDatabase.siswa[tanggal][kelas][siswa.nis] = { status: status };
+
+            // Kirim notifikasi jika diperlukan
+            if (kirimNotifikasi) {
+                if (siswa.noHp) {
+                    const template = document.getElementById('sidobePesanTemplate').value;
+                    const statusLengkap = { 'H': 'Hadir', 'S': 'Sakit', 'I': 'Izin', 'A': 'Alfa' }[status];
+
+                    const pesan = template
+                        .replace(/\[nama_siswa\]/g, siswa.name)
+                        .replace(/\[nama_ortu\]/g, siswa.namaOrtu)
+                        .replace(/\[kelas\]/g, kelas)
+                        .replace(/\[tanggal\]/g, new Date(tanggal).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'}))
+                        .replace(/\[status\]/g, statusLengkap);
+                    
+                    kirimNotifikasiWA(siswa.noHp, pesan);
+                } else {
+                    console.warn(`Nomor HP untuk siswa ${siswa.name} tidak ditemukan.`);
+                }
+            }
+        });
+    }
+
+    console.log("Database Absensi Siswa:", mockAbsensiDatabase.siswa);
+    showSuccessToast(`Absensi kelas ${kelas} tanggal ${tanggal} berhasil disimpan!`);
+    updateDashboardStats();
+}
+
+function loadSiswaForAbsen() {
+    const kelas = document.getElementById('pilihKelas').value;
+    const tbody = document.getElementById('daftarSiswa');
+    const siswa = mockSiswa[kelas];
+    
+    tbody.innerHTML = ''; 
+
+    if (!siswa) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-6 text-gray-400">Pilih kelas yang valid.</td></tr>';
+        return;
+    }
+
+    siswa.forEach((s, index) => {
+        const row = `
+            <tr class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4">${index + 1}</td>
+                <td class="px-6 py-4 font-medium text-gray-900">${s.name}</td>
+                <td class="px-6 py-4">${s.nis}</td>
+                <td class="px-6 py-4">
+                    <div class="flex justify-center items-center space-x-1" role="group">
+                        <input type="radio" id="h-${s.nis}" name="status-${s.nis}" value="H" class="hidden peer/h" checked>
+                        <label for="h-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-green-600 bg-green-100 rounded-full cursor-pointer peer-checked/h:bg-green-600 peer-checked/h:text-white transition">H</label>
+                        
+                        <input type="radio" id="s-${s.nis}" name="status-${s.nis}" value="S" class="hidden peer/s">
+                        <label for="s-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-blue-600 bg-blue-100 rounded-full cursor-pointer peer-checked/s:bg-blue-600 peer-checked/s:text-white transition">S</label>
+                        
+                        <input type="radio" id="i-${s.nis}" name="status-${s.nis}" value="I" class="hidden peer/i">
+                        <label for="i-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-yellow-600 bg-yellow-100 rounded-full cursor-pointer peer-checked/i:bg-yellow-600 peer-checked/i:text-white transition">I</label>
+                        
+                        <input type="radio" id="a-${s.nis}" name="status-${s.nis}" value="A" class="hidden peer/a">
+                        <label for="a-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-red-600 bg-red-100 rounded-full cursor-pointer peer-checked/a:bg-red-600 peer-checked/a:text-white transition">A</label>
+                    </div>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+// --- FUNGSI LIHAT ABSENSI HARIAN ---
+function renderAbsensiHarian() {
+    renderAbsensiHarianGuru();
+    renderAbsensiHarianSiswa();
+}
+
+function renderAbsensiHarianGuru() {
+    const today = getTodayDateString();
+    const tbody = document.querySelector('#guru tbody');
+    tbody.innerHTML = '';
+    
+    const staff = Object.values(mockUsers).filter(u => u.role === 'Guru' || u.role === 'Pegawai');
+    
+    if (staff.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4">Tidak ada data personil.</td></tr>';
+        return;
+    }
+
+    staff.forEach(person => {
+        const absenRecord = mockAbsensiDatabase.personal[today]?.[person.nip];
+        let statusHtml = '<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Belum Absen</span>';
+        let masuk = '-';
+        let pulang = '-';
+
+        if (absenRecord) {
+            if (absenRecord.masuk && absenRecord.pulang) {
+                statusHtml = '<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Hadir</span>';
+                masuk = absenRecord.masuk;
+                pulang = absenRecord.pulang;
+            } else if (absenRecord.masuk) {
+                statusHtml = '<span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Sudah Masuk</span>';
+                masuk = absenRecord.masuk;
+            }
+        }
+
+        const row = `
+            <tr class="bg-white border-b">
+                <td class="px-6 py-4 font-medium text-gray-900">${person.name}</td>
+                <td class="px-6 py-4">${statusHtml}</td>
+                <td class="px-6 py-4">${masuk}</td>
+                <td class="px-6 py-4">${pulang}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+function renderAbsensiHarianSiswa() {
+    const today = getTodayDateString();
+    const selectedKelas = document.getElementById('pilihKelasLihat').value;
+    const tbody = document.querySelector('#siswa tbody');
+    tbody.innerHTML = '';
+
+    if (!selectedKelas) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center p-6 text-gray-400">Silakan pilih kelas untuk melihat absensi.</td></tr>';
+        return;
+    }
+
+    const siswaDiKelas = mockSiswa[selectedKelas];
+    const absensiKelasHariIni = mockAbsensiDatabase.siswa[today]?.[selectedKelas];
+
+    if (!siswaDiKelas) {
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center p-6 text-gray-400">Kelas tidak ditemukan.</td></tr>`;
+        return;
+    }
+    
+    if (!absensiKelasHariIni) {
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center p-6 text-gray-400">Belum ada data absensi untuk kelas ${selectedKelas} hari ini.</td></tr>`;
+        return;
+    }
+
+    const statusMap = {
+        H: { text: 'Hadir', class: 'bg-green-100 text-green-800' },
+        S: { text: 'Sakit', class: 'bg-blue-100 text-blue-800' },
+        I: { text: 'Izin', class: 'bg-yellow-100 text-yellow-800' },
+        A: { text: 'Alfa', class: 'bg-red-100 text-red-800' }
+    };
+
+    siswaDiKelas.forEach(siswa => {
+        const absenRecord = absensiKelasHariIni[siswa.nis];
+        const statusInfo = absenRecord ? statusMap[absenRecord.status] : null;
+        const statusHtml = statusInfo ? `<span class="${statusInfo.class} text-xs font-medium px-2.5 py-0.5 rounded-full">${statusInfo.text}</span>` : '<span>-</span>';
+        
+        const row = `
+            <tr class="bg-white border-b">
+                <td class="px-6 py-4 font-medium text-gray-900">${siswa.name}</td>
+                <td class="px-6 py-4">${statusHtml}</td>
+                <td class="px-6 py-4">-</td> <!-- Keterangan placeholder -->
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+// --- FUNGSI REKAP ABSENSI ---
+function populateBulanDropdown() {
+    const selects = [
+        document.getElementById('pilihBulanRekapSiswa'), 
+        document.getElementById('pilihBulanRekapGuru'),
+    ];
+    const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const currentMonth = new Date().getMonth();
+
+    selects.forEach(select => {
+        if (!select) return;
+        select.innerHTML = '';
+        bulan.forEach((namaBulan, index) => {
+            const option = document.createElement('option');
+            option.value = index; // month is 0-indexed
+            option.textContent = namaBulan;
+            if (index === currentMonth) {
+                option.selected = true;
+            }
+            select.appendChild(option);
+        });
+    });
+}
+
+function renderRekapSiswa() {
+    const kelas = document.getElementById('pilihKelasRekap').value;
+    const tbody = document.getElementById('rekapTabelBodySiswa');
+    const siswa = mockSiswa[kelas];
+    const month = parseInt(document.getElementById('pilihBulanRekapSiswa').value);
+    const year = parseInt(document.getElementById('pilihTahunRekapSiswa').value);
+    
+    tbody.innerHTML = '';
+    
+    if (!siswa) {
+        tbody.innerHTML = '<tr><td colspan="37" class="p-6 text-gray-400">Pilih kelas untuk melihat rekapitulasi.</td></tr>';
+        return;
+    }
+    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const colors = { H: 'bg-green-100', S: 'bg-blue-100', I: 'bg-yellow-100', A: 'bg-red-100' };
+
+    siswa.forEach((s, index) => {
+        let row = `<tr class="text-center">
+            <td class="border border-gray-300 p-1">${index + 1}</td>
+            <td class="border border-gray-300 p-1 text-left">${s.name}</td>`;
+        
+        let counts = { H: 0, S: 0, I: 0, A: 0 };
+        
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const absen = mockAbsensiDatabase.siswa[dateStr]?.[kelas]?.[s.nis];
+            const status = absen ? absen.status : '';
+            if(status) counts[status]++;
+            row += `<td class="border border-gray-300 ${colors[status] || ''}">${status}</td>`;
+        }
+         // Pad with empty cells if month < 31 days
+        for (let i = daysInMonth + 1; i <= 31; i++) {
+             row += `<td class="border border-gray-300 bg-gray-200"></td>`;
+        }
+        
+        row += `
+            <td class="border border-gray-300 font-semibold bg-green-100">${counts.H}</td>
+            <td class="border border-gray-300 font-semibold bg-blue-100">${counts.S}</td>
+            <td class="border border-gray-300 font-semibold bg-yellow-100">${counts.I}</td>
+            <td class="border border-gray-300 font-semibold bg-red-100">${counts.A}</td>
+        </tr>`;
+        
+        tbody.innerHTML += row;
+    });
+}
+
+function renderRekapGuruPegawai() {
+    const tbody = document.getElementById('rekapTabelBodyGuru');
+    const personil = Object.values(mockUsers).filter(user => user.role === 'Guru' || user.role === 'Pegawai');
+    const month = parseInt(document.getElementById('pilihBulanRekapGuru').value);
+    const year = parseInt(document.getElementById('pilihTahunRekapGuru').value);
+
+    tbody.innerHTML = '';
+    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const colors = { H: 'bg-green-100', S: 'bg-blue-100', I: 'bg-yellow-100', A: 'bg-red-100' };
+
+    personil.forEach((p, index) => {
+        let row = `<tr class="text-center">
+            <td class="border border-gray-300 p-1">${index + 1}</td>
+            <td class="border border-gray-300 p-1 text-left">${p.name}</td>
+            <td class="border border-gray-300 p-1 text-left">${p.nip}</td>`;
+        
+        let counts = { H: 0, S: 0, I: 0, A: 0 };
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const dayOfWeek = date.getDay(); // 0=Sunday, 6=Saturday
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const absen = mockAbsensiDatabase.personal[dateStr]?.[p.nip];
+            let status = '';
+            
+            if (dayOfWeek !== 0) { // Jika hari kerja (Senin-Sabtu)
+                if (absen && absen.masuk && absen.pulang) {
+                    status = 'H';
+                } else {
+                    status = 'A'; // Alfa jika hanya masuk atau tidak absen sama sekali
+                }
+            } // Hari Minggu dikosongkan
+            
+            if (status) counts[status]++;
+            
+            const cellColor = dayOfWeek === 0 ? 'bg-gray-200' : colors[status] || '';
+            row += `<td class="border border-gray-300 ${cellColor}">${status}</td>`;
+        }
+        
+        for (let i = daysInMonth + 1; i <= 31; i++) {
+             row += `<td class="border border-gray-300 bg-gray-200"></td>`;
+        }
+        
+        row += `
+            <td class="border border-gray-300 font-semibold bg-green-100">${counts.H}</td>
+            <td class="border border-gray-300 font-semibold bg-blue-100">${counts.S}</td>
+            <td class="border border-gray-300 font-semibold bg-yellow-100">${counts.I}</td>
+            <td class="border border-gray-300 font-semibold bg-red-100">${counts.A}</td>
+        </tr>`;
+        
+        tbody.innerHTML += row;
+    });
+}
+
+
+function printRekap() {
+    const activeTabContent = document.querySelector('.rekap-tab-content:not(.hidden)');
+    let kopSurat, bulanEl, tahunEl;
+
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const today = new Date().toLocaleDateString('id-ID', options);
+    document.querySelectorAll('.print-date').forEach(el => el.innerText = today);
+    
+    const namaKepsek = document.getElementById('namaKepsek').value || '(Nama Kepala Sekolah)';
+    const nipKepsek = document.getElementById('nipKepsek').value || '(NIP Kepala Sekolah)';
+
+    if (activeTabContent.id === 'rekapSiswa') {
+        kopSurat = document.getElementById('kopSuratSiswa');
+        bulanEl = document.getElementById('pilihBulanRekapSiswa');
+        tahunEl = document.getElementById('pilihTahunRekapSiswa');
+        const kelasEl = document.getElementById('pilihKelasRekap');
+        kopSurat.querySelector('.rekapKelas').innerText = kelasEl.value;
+
+        const kelasInfo = mockKelas.find(k => k.id === kelasEl.value);
+        const waliKelas = kelasInfo ? mockUsers[kelasInfo.waliKelasNip] : null;
+
+        document.getElementById('printNamaWaliKelas').innerText = waliKelas ? waliKelas.name : '(Nama Wali Kelas)';
+        document.getElementById('printNipWaliKelas').innerText = waliKelas ? waliKelas.nip : '(NIP Wali Kelas)';
+
+    } else { // rekapGuru
+        kopSurat = document.getElementById('kopSuratGuru');
+        bulanEl = document.getElementById('pilihBulanRekapGuru');
+        tahunEl = document.getElementById('pilihTahunRekapGuru');
+        document.getElementById('printNamaKepsek').innerText = namaKepsek;
+        document.getElementById('printNipKepsek').innerText = nipKepsek;
+    }
+    
+    kopSurat.querySelector('.rekapBulan').innerText = bulanEl.options[bulanEl.selectedIndex].text;
+    kopSurat.querySelector('.rekapTahun').innerText = tahunEl.value;
+    
+    kopSurat.classList.remove('hidden');
+    window.print();
+    kopSurat.classList.add('hidden');
+}
+
+// --- FUNGSI PANEL ADMIN ---
+
+// MODAL
+function openModal(title, bodyHtml) {
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalBody').innerHTML = bodyHtml;
+    document.getElementById('formModal').classList.remove('hidden');
+    document.getElementById('formModal').classList.add('flex');
+}
+
+function closeModal() {
+    document.getElementById('formModal').classList.add('hidden');
+    document.getElementById('formModal').classList.remove('flex');
+}
+
+// Manajemen Personil
+function renderManajemenPersonil() {
+    const tbody = document.getElementById('personilTableBody');
+    tbody.innerHTML = '';
+    Object.values(mockUsers).filter(u => u.role !== 'Admin').forEach(user => {
+        const row = `
+            <tr class="bg-white border-b">
+                <td class="px-6 py-4 font-medium text-gray-900">${user.name}</td>
+                <td class="px-6 py-4">${user.nip}</td>
+                <td class="px-6 py-4">${user.role}</td>
+                <td class="px-6 py-4 space-x-2">
+                    <button onclick="showPersonilForm('${user.nip}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
+                    <button onclick="hapusPersonil('${user.nip}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+function showPersonilForm(nip = null) {
+    const user = nip ? mockUsers[nip] : null;
+    const title = user ? 'Edit Personil' : 'Tambah Personil';
+    const bodyHtml = `
+        <div class="space-y-4">
+            <div>
+                <label class="text-sm font-medium text-gray-600">NIP / ID</label>
+                <input type="text" id="formNip" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.nip || ''}" ${user ? 'readonly' : ''}>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
+                <input type="text" id="formNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.name || ''}">
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-medium text-gray-600">Tempat Lahir</label>
+                    <input type="text" id="formTempatLahir" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.tempatLahir || ''}">
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-600">Tanggal Lahir</label>
+                    <input type="date" id="formTglLahir" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.tglLahir || ''}">
+                </div>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">No. Handphone</label>
+                <input type="tel" id="formNoHp" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.noHp || ''}">
+            </div>
+             <div>
+                <label class="text-sm font-medium text-gray-600">Peran</label>
+                <select id="formPeran" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                    <option value="Guru" ${user?.role === 'Guru' ? 'selected' : ''}>Guru</option>
+                    <option value="Pegawai" ${user?.role === 'Pegawai' ? 'selected' : ''}>Pegawai</option>
+                </select>
+            </div>
+            <p class="text-xs text-gray-500 italic">Password login akan diatur otomatis berdasarkan tanggal lahir dengan format: <strong>ddmmyyyy</strong> (contoh: 01011990).</p>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
+                <button onclick="simpanPersonil()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
+            </div>
+        </div>
+    `;
+    openModal(title, bodyHtml);
+}
+
+function simpanPersonil() {
+    const nip = document.getElementById('formNip').value;
+    const name = document.getElementById('formNama').value;
+    const role = document.getElementById('formPeran').value;
+    const tempatLahir = document.getElementById('formTempatLahir').value;
+    const tglLahir = document.getElementById('formTglLahir').value;
+    const noHp = document.getElementById('formNoHp').value;
+
+    if (!nip || !name || !tglLahir) {
+        showErrorToast('NIP, Nama, dan Tanggal Lahir wajib diisi!');
+        return;
+    }
+
+    const isEditing = !!mockUsers[nip];
+
+    // Jika tambah baru, cek apakah NIP sudah ada
+    if (!isEditing && mockUsers[nip]) {
+        showErrorToast('NIP/ID sudah terdaftar. Gunakan ID lain.');
+        return;
+    }
+
+    mockUsers[nip] = { 
+        ...mockUsers[nip], // Pertahankan data lama jika ada
+        nip, name, role, tempatLahir, tglLahir, noHp 
+    };
+    
+    showSuccessToast('Data personil berhasil disimpan!');
+    renderManajemenPersonil();
+    closeModal();
+}
+
+function hapusPersonil(nip) {
+    showConfirmModal(
+        'Hapus Personil',
+        `Apakah Anda yakin ingin menghapus personil dengan NIP ${nip}? Aksi ini tidak dapat dibatalkan.`,
+        () => {
+            delete mockUsers[nip];
+            showSuccessToast('Data personil berhasil dihapus.');
+            renderManajemenPersonil();
+        }
+    );
+}
+
+// Manajemen Kelas
+function renderManajemenKelas() {
+    const tbody = document.getElementById('kelasTableBody');
+    tbody.innerHTML = '';
+    mockKelas.forEach(kelas => {
+        const jumlahSiswa = mockSiswa[kelas.id]?.length || 0;
+        const waliKelas = mockUsers[kelas.waliKelasNip];
+        const row = `
+            <tr class="bg-white border-b">
+                <td class="px-6 py-4 font-medium text-gray-900">${kelas.name}</td>
+                <td class="px-6 py-4">${waliKelas ? waliKelas.name : '<span class="text-gray-400">Belum diatur</span>'}</td>
+                <td class="px-6 py-4">${jumlahSiswa}</td>
+                <td class="px-6 py-4 space-x-2">
+                    <button onclick="showKelasForm('${kelas.id}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
+                    <button onclick="hapusKelas('${kelas.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+function showKelasForm(id = null) {
+    const kelas = id ? mockKelas.find(k => k.id === id) : null;
+    const title = kelas ? 'Edit Kelas' : 'Tambah Kelas Baru';
+    
+    const teachers = Object.values(mockUsers).filter(u => u.role === 'Guru');
+    let teacherOptions = '<option value="">-- Pilih Wali Kelas --</option>';
+    teacherOptions += teachers.map(t => `<option value="${t.nip}" ${kelas?.waliKelasNip === t.nip ? 'selected' : ''}>${t.name}</option>`).join('');
+
+    const bodyHtml = `
+         <div class="space-y-4">
+            <div>
+                <label class="text-sm font-medium text-gray-600">ID Kelas (cth: IX-C)</label>
+                <input type="text" id="formKelasId" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${kelas?.id || ''}" ${kelas ? 'readonly' : ''}>
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Nama Kelas (cth: IX C)</label>
+                <input type="text" id="formKelasNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${kelas?.name || ''}">
+            </div>
+             <div>
+                <label class="text-sm font-medium text-gray-600">Wali Kelas</label>
+                <select id="formWaliKelas" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">${teacherOptions}</select>
+            </div>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
+                <button onclick="simpanKelas()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
+            </div>
+        </div>
+    `;
+    openModal(title, bodyHtml);
+}
+
+function simpanKelas() {
+    const id = document.getElementById('formKelasId').value.toUpperCase();
+    const name = document.getElementById('formKelasNama').value;
+    const waliKelasNip = document.getElementById('formWaliKelas').value;
+
+    if (!id || !name) {
+        showErrorToast('ID dan Nama Kelas tidak boleh kosong!');
+        return;
+    }
+    
+    const isEditing = !!mockKelas.find(k => k.id === id);
+
+    if (isEditing) { // Edit
+        const kelasIndex = mockKelas.findIndex(k => k.id === id);
+        mockKelas[kelasIndex].name = name;
+        mockKelas[kelasIndex].waliKelasNip = waliKelasNip;
+    } else { // Tambah
+        if (mockKelas.find(k => k.id === id)) {
+            showErrorToast('ID Kelas sudah ada! Gunakan ID yang unik.');
+            return;
+        }
+        mockKelas.push({ id, name, waliKelasNip });
+        mockSiswa[id] = []; // Buat array kosong untuk siswa di kelas baru
+    }
+
+    showSuccessToast('Data kelas berhasil disimpan.');
+    renderManajemenKelas();
+    updateAllKelasDropdowns();
+    closeModal();
+}
+
+
+function hapusKelas(id) {
+    showConfirmModal(
+        'Hapus Kelas',
+        `Yakin ingin menghapus kelas ${id}? Ini akan menghapus semua data siswa di dalamnya.`,
+        () => {
+            mockKelas = mockKelas.filter(k => k.id !== id);
+            delete mockSiswa[id];
+            showSuccessToast('Kelas berhasil dihapus.');
+            renderManajemenKelas();
+            updateAllKelasDropdowns();
+        }
+    );
+}
+
+// Manajemen Siswa
+function renderManajemenSiswa() {
+    const container = document.getElementById('siswaListContainer');
+    const filterKelasId = document.getElementById('filterKelasSiswa').value;
+    container.innerHTML = '';
+    
+    const kelasToRender = filterKelasId ? mockKelas.filter(k => k.id === filterKelasId) : mockKelas;
+
+    if (kelasToRender.length === 0 && filterKelasId) {
+        container.innerHTML = `<p class="text-center text-gray-500 mt-4">Kelas tidak ditemukan.</p>`;
+        return;
+    }
+    
+    kelasToRender.forEach(kelas => {
+        const siswaDiKelas = mockSiswa[kelas.id] || [];
+        let siswaHtml = siswaDiKelas.map(siswa => `
+            <tr class="bg-white border-b">
+                <td class="px-6 py-4">${siswa.nis}</td>
+                <td class="px-6 py-4 font-medium text-gray-900">${siswa.name}</td>
+                <td class="px-6 py-4">${siswa.namaOrtu || '-'}</td>
+                <td class="px-6 py-4">${siswa.noHp || '-'}</td>
+                <td class="px-6 py-4 space-x-2">
+                    <button onclick="showSiswaForm('${siswa.nis}', '${kelas.id}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
+                    <button onclick="hapusSiswa('${siswa.nis}', '${kelas.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+        `).join('');
+
+        if (siswaDiKelas.length === 0) {
+            siswaHtml = `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-400">Belum ada siswa di kelas ini.</td></tr>`;
+        }
+
+        const kelasTableHtml = `
+            <div class="mb-6">
+                <h4 class="text-lg font-semibold bg-gray-50 p-2 rounded-t-lg">${kelas.name}</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                            <tr>
+                                <th class="px-6 py-3">NIS</th>
+                                <th class="px-6 py-3">Nama</th>
+                                <th class="px-6 py-3">Nama Ortu</th>
+                                <th class="px-6 py-3">No. HP</th>
+                                <th class="px-6 py-3">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>${siswaHtml}</tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        container.innerHTML += kelasTableHtml;
+    });
+}
+
+function showSiswaForm(nis = null, kelasId = null) {
+    const siswa = nis ? mockSiswa[kelasId].find(s => s.nis === nis) : null;
+    const title = siswa ? 'Edit Siswa' : 'Tambah Siswa';
+    
+    let kelasOptions = mockKelas.map(k => `<option value="${k.id}" ${kelasId === k.id ? 'selected' : ''}>${k.name}</option>`).join('');
+
+    const bodyHtml = `
+         <div class="space-y-4">
+            <div>
+                <label class="text-sm font-medium text-gray-600">NIS</label>
+                <input type="text" id="formSiswaNis" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.nis || ''}" ${siswa ? 'readonly' : ''}>
+                 <input type="hidden" id="formSiswaKelasLama" value="${kelasId || ''}">
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
+                <input type="text" id="formSiswaNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.name || ''}">
+            </div>
+             <div>
+                <label class="text-sm font-medium text-gray-600">Nama Orang Tua</label>
+                <input type="text" id="formSiswaNamaOrtu" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.namaOrtu || ''}">
+            </div>
+             <div>
+                <label class="text-sm font-medium text-gray-600">No. Handphone</label>
+                <input type="tel" id="formSiswaNoHp" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.noHp || ''}">
+            </div>
+             <div>
+                <label class="text-sm font-medium text-gray-600">Kelas</label>
+                <select id="formSiswaKelas" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">${kelasOptions}</select>
+            </div>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
+                <button onclick="simpanSiswa()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
+            </div>
+        </div>
+    `;
+    openModal(title, bodyHtml);
+}
+
+function simpanSiswa() {
+    const nis = document.getElementById('formSiswaNis').value;
+    const name = document.getElementById('formSiswaNama').value;
+    const kelasId = document.getElementById('formSiswaKelas').value;
+    const kelasLamaId = document.getElementById('formSiswaKelasLama').value;
+    const namaOrtu = document.getElementById('formSiswaNamaOrtu').value;
+    const noHp = document.getElementById('formSiswaNoHp').value;
+    
+    if(!nis || !name || !kelasId) {
+        showErrorToast('NIS, Nama, dan Kelas wajib diisi!');
+        return;
+    }
+    
+    const isEditing = !!kelasLamaId;
+
+    // Cek jika siswa sudah ada (untuk tambah baru)
+    if (!isEditing && Object.values(mockSiswa).flat().some(s => s.nis === nis)) {
+        showErrorToast('NIS sudah terdaftar!');
+        return;
+    }
+
+    // Hapus dari kelas lama jika pindah kelas
+    if(kelasLamaId && kelasLamaId !== kelasId) {
+        mockSiswa[kelasLamaId] = mockSiswa[kelasLamaId].filter(s => s.nis !== nis);
+    }
+    
+    const siswaData = { nis, name, namaOrtu, noHp };
+    
+    // Cari siswa di kelas baru (untuk edit)
+    const siswaIndex = mockSiswa[kelasId].findIndex(s => s.nis === nis);
+    
+    if (siswaIndex > -1) { // Edit
+        mockSiswa[kelasId][siswaIndex] = siswaData;
+    } else { // Tambah
+        mockSiswa[kelasId].push(siswaData);
+    }
+    
+    showSuccessToast('Data siswa berhasil disimpan.');
+    renderManajemenSiswa();
+    renderManajemenKelas(); // update jumlah siswa
+    closeModal();
+}
+
+function hapusSiswa(nis, kelasId) {
+    showConfirmModal(
+        'Hapus Siswa',
+        `Yakin ingin menghapus siswa dengan NIS ${nis}?`,
+        () => {
+            mockSiswa[kelasId] = mockSiswa[kelasId].filter(s => s.nis !== nis);
+            showSuccessToast('Siswa berhasil dihapus.');
+            renderManajemenSiswa();
+            renderManajemenKelas();
+        }
+    );
+}
+
+// Helper Functions
+function updateAllKelasDropdowns() {
+    const dropdowns = [
+        document.getElementById('pilihKelas'),
+        document.getElementById('pilihKelasLihat'),
+        document.getElementById('pilihKelasRekap'),
+        document.getElementById('filterKelasSiswa')
+    ];
+    
+    const optionsHtml = mockKelas.map(k => `<option value="${k.id}">${k.name}</option>`).join('');
+    
+    dropdowns.forEach(dropdown => {
+        const firstOption = dropdown.querySelector('option');
+        dropdown.innerHTML = '';
+        dropdown.appendChild(firstOption);
+        dropdown.innerHTML += optionsHtml;
+    });
+}
+
+</script>
 
 </body>
 </html>

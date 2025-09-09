@@ -859,29 +859,38 @@
         document.getElementById('loginSpinner').classList.remove('hidden');
         errorDiv.classList.add('hidden');
 
+        // --- DEBUGGING ---
+        const usernameValue = usernameInput.value;
+        const collectionPath = getPath('personil');
+        console.log('--- Memulai Proses Login ---');
+        console.log('App ID yang digunakan:', appId);
+        console.log('Mencari di path:', collectionPath);
+        console.log('Dengan NIP/Username:', usernameValue);
+        // --- AKHIR DEBUGGING ---
+
         try {
-            const personilRef = collection(db, getPath('personil'));
-            const q = query(personilRef, where("nip", "==", usernameInput.value));
+            const personilRef = collection(db, collectionPath);
+            const q = query(personilRef, where("nip", "==", usernameValue));
             const querySnapshot = await getDocs(q);
 
+            console.log('Hasil query:', querySnapshot.size, 'dokumen ditemukan.'); // DEBUGGING
+
             if (querySnapshot.empty) {
-                throw new Error("User tidak ditemukan");
+                throw new Error("User tidak ditemukan di database.");
             }
 
             const userDoc = querySnapshot.docs[0];
             const userData = userDoc.data();
+            console.log('Data user yang ditemukan:', userData); // DEBUGGING
 
             let passwordValid = false;
             const enteredPassword = passwordInput.value;
             
-            // Logika Validasi Password yang Diperbaiki
             if (userData.role === 'Admin') {
-                // Admin WAJIB punya field 'password' di Firestore
                 if (userData.password && userData.password === enteredPassword) {
                     passwordValid = true;
                 }
             } else if (userData.tglLahir) {
-                // Guru & Pegawai menggunakan tanggal lahir
                 const [year, month, day] = userData.tglLahir.split('-');
                 const formattedPassword = `${day}${month}${year}`;
                 if (enteredPassword === formattedPassword) {
@@ -893,6 +902,7 @@
                 throw new Error("Password salah atau tidak sesuai");
             }
             
+            console.log('Login berhasil! Memproses token...'); // DEBUGGING
             const token = typeof __initial_auth_token !== 'undefined' 
                 ? __initial_auth_token 
                 : await getFakeToken(userDoc.id);
@@ -1200,5 +1210,6 @@
 </body>
 </html>
     
+
 
 

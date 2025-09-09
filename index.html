@@ -1036,7 +1036,7 @@
         overlay.classList.toggle('hidden');
     }
 
-    // --- FUNGSI CRUD & FORM (Contoh untuk Personil) ---
+    // --- FUNGSI CRUD & FORM (Personil) ---
 
     function renderManajemenPersonil() {
         const tbody = document.getElementById('personilTableBody');
@@ -1136,6 +1136,120 @@
        });
     }
 
+    // --- FUNGSI CRUD & FORM (Kelas) ---
+    function renderManajemenKelas() {
+        const tbody = document.getElementById('kelasTableBody');
+        tbody.innerHTML = '';
+
+        if (allKelas.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 text-gray-400">Belum ada data kelas.</td></tr>`;
+            return;
+        }
+        
+        allKelas.forEach(kelas => {
+            const wali = allPersonil.find(p => p.id === kelas.waliKelasId);
+            const jumlahSiswa = allSiswa[kelas.id]?.length || 0;
+            const row = `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium text-gray-900">${kelas.name}</td>
+                    <td class="px-6 py-4">${wali ? wali.name : 'Belum diatur'}</td>
+                    <td class="px-6 py-4">${jumlahSiswa} Siswa</td>
+                    <td class="px-6 py-4 space-x-4">
+                        <button onclick="showKelasForm('${kelas.id}')" class="text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-edit"></i> Edit</button>
+                        <button onclick="hapusKelas('${kelas.id}')" class="text-red-600 hover:text-red-800 font-medium"><i class="fas fa-trash"></i> Hapus</button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+
+    function showKelasForm(kelasId = null) {
+        const kelas = kelasId ? allKelas.find(k => k.id === kelasId) : null;
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+
+        const guruOptions = allPersonil
+            .filter(p => p.role === 'Guru')
+            .map(guru => `<option value="${guru.id}" ${kelas?.waliKelasId === guru.id ? 'selected' : ''}>${guru.name}</option>`)
+            .join('');
+
+        modalTitle.innerText = kelas ? 'Edit Data Kelas' : 'Tambah Kelas Baru';
+        modalBody.innerHTML = `
+            <div class="space-y-4">
+                <input type="hidden" id="formKelasId" value="${kelas?.id || ''}">
+                <div>
+                    <label for="formNamaKelas" class="text-sm font-medium text-gray-600">Nama Kelas</label>
+                    <input type="text" id="formNamaKelas" value="${kelas?.name || ''}" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="formWaliKelas" class="text-sm font-medium text-gray-600">Wali Kelas</label>
+                    <select id="formWaliKelas" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- Pilih Guru --</option>
+                        ${guruOptions}
+                    </select>
+                </div>
+                <div class="flex justify-end pt-4">
+                     <button onclick="simpanKelas()" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">Simpan</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('formModal').classList.remove('hidden');
+        document.getElementById('formModal').classList.add('flex');
+    }
+
+    async function simpanKelas() {
+        const kelasId = document.getElementById('formKelasId').value;
+        const name = document.getElementById('formNamaKelas').value.trim();
+        const waliKelasId = document.getElementById('formWaliKelas').value;
+
+        if (!name || !waliKelasId) {
+            showErrorToast('Nama Kelas dan Wali Kelas wajib diisi!');
+            return;
+        }
+
+        // Jika kelasId kosong, ini adalah kelas baru. Kita gunakan nama kelas sebagai ID.
+        const docId = kelasId || name.replace(/\s+/g, '-').toLowerCase();
+        const kelasRef = doc(db, getPath('kelas'), docId);
+        
+        try {
+            await setDoc(kelasRef, { name, waliKelasId }, { merge: true });
+            showSuccessToast('Data kelas berhasil disimpan!');
+            closeModal();
+        } catch (error) {
+            console.error("Gagal menyimpan kelas:", error);
+            showErrorToast('Gagal menyimpan data.');
+        }
+    }
+
+    function hapusKelas(kelasId) {
+        // Peringatan: Menghapus kelas juga akan menghapus semua data siswa di dalamnya.
+        const jumlahSiswa = allSiswa[kelasId]?.length || 0;
+        showConfirmModal(
+            'Hapus Kelas', 
+            `Yakin ingin menghapus kelas ini? Semua (${jumlahSiswa}) data siswa di dalamnya akan ikut terhapus secara permanen.`, 
+            async () => {
+                try {
+                    // Batched write untuk menghapus semua siswa terlebih dahulu
+                    const batch = writeBatch(db);
+                    const siswaCollectionRef = collection(db, getPath('kelas'), kelasId, 'siswa');
+                    const siswaSnapshot = await getDocs(siswaCollectionRef);
+                    siswaSnapshot.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    await batch.commit();
+
+                    // Setelah semua siswa dihapus, hapus dokumen kelasnya
+                    await deleteDoc(doc(db, getPath('kelas'), kelasId));
+                    showSuccessToast('Kelas dan seluruh data siswa berhasil dihapus.');
+                } catch (error) {
+                    console.error("Gagal menghapus kelas:", error);
+                    showErrorToast('Gagal menghapus data.');
+                }
+            }
+        );
+    }
+
 
     // --- FUNGSI MODAL & NOTIFIKASI ---
     function closeModal() {
@@ -1191,9 +1305,29 @@
     }
     
     // --- STUB/PLACEHOLDER FUNGSI LAINNYA ---
-    function renderManajemenKelas() { /* TODO */ }
     function renderManajemenSiswa() { /* TODO */ }
-    function updateAllKelasDropdowns() { /* TODO */ }
+    
+    function updateAllKelasDropdowns() {
+        const dropdowns = [
+            document.getElementById('pilihKelas'),
+            document.getElementById('pilihKelasLihat'),
+            document.getElementById('pilihKelasRekap'),
+            document.getElementById('filterKelasSiswa')
+        ];
+        
+        dropdowns.forEach(dropdown => {
+            const firstOption = dropdown.querySelector('option');
+            dropdown.innerHTML = ''; // Hapus semua opsi
+            dropdown.appendChild(firstOption); // Tambahkan kembali opsi default
+            
+            allKelas.forEach(k => {
+                const option = document.createElement('option');
+                option.value = k.id;
+                option.textContent = k.name;
+                dropdown.appendChild(option);
+            });
+        });
+    }
     
     // --- EXPORT FUNGSI KE GLOBAL SCOPE ---
     window.showPage = showPage;
@@ -1202,6 +1336,9 @@
     window.showPersonilForm = showPersonilForm;
     window.hapusPersonil = hapusPersonil;
     window.closeModal = closeModal;
+    window.showKelasForm = showKelasForm;
+    window.simpanKelas = simpanKelas;
+    window.hapusKelas = hapusKelas;
     // ... export fungsi lainnya jika sudah dibuat ...
     
 </script>

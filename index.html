@@ -734,12 +734,12 @@
                                 <hr>
                                 <h4 class="text-lg font-semibold text-gray-700 pt-2">Pengaturan Notifikasi WhatsApp (Sidobe)</h4>
                                 <div>
-                                    <label for="sidobeApiKey" class="text-sm font-medium text-gray-600">API Key Sidobe</label>
-                                    <input type="text" id="sidobeApiKey" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" placeholder="Masukkan API Key Anda">
+                                    <label for="sidobeSecretKey" class="text-sm font-medium text-gray-600">Sidobe Secret Key</label>
+                                    <input type="text" id="sidobeSecretKey" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" placeholder="Masukkan Secret Key Anda">
                                 </div>
                                 <div>
                                     <label for="sidobePesanTemplate" class="text-sm font-medium text-gray-600">Template Pesan</label>
-                                    <textarea id="sidobePesanTemplate" rows="4" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">Yth. Bapak/Ibu [nama_ortu], kami memberitahukan bahwa ananda [nama_siswa] dari kelas [kelas] tidak hadir pada hari ini, [tanggal], dengan keterangan [status]. Terima kasih. - SMPN 3 Lempuing Jaya</textarea>
+                                    <textarea id="sidobePesanTemplate" rows="4" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">Yth. Bapak/Ibu [nama_ortu], kami menginformasikan status kehadiran ananda [nama_siswa] dari kelas [kelas] pada hari ini, [tanggal], adalah [status]. Terima kasih. - SMPN 3 Lempuing Jaya</textarea>
                                     <p class="text-xs text-gray-500 mt-1">Gunakan variabel: [nama_siswa], [nama_ortu], [kelas], [tanggal], [status].</p>
                                 </div>
                                 <button class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
@@ -1267,26 +1267,58 @@ function updatePersonalAbsenStatus(date) {
     }
 }
 
-
 // --- FUNGSI ABSENSI SISWA & NOTIFIKASI WA ---
 function kirimNotifikasiWA(nomorHp, pesan) {
-    const apiKey = document.getElementById('sidobeApiKey').value;
-    if (!apiKey) {
-        console.warn("API Key Sidobe belum diatur di Panel Admin.");
+    const secretKey = document.getElementById('sidobeSecretKey').value;
+    if (!secretKey) {
+        console.warn("Secret Key Sidobe belum diatur di Panel Admin.");
+        showErrorToast("Gagal kirim notifikasi: Secret Key belum diatur.");
         return;
     }
-    // Hapus karakter non-numerik dari nomor HP
-    const nomorHpBersih = nomorHp.replace(/\D/g, '');
+    // Hapus karakter non-numerik, pastikan dimulai dengan 62
+    let nomorHpBersih = nomorHp.replace(/\D/g, '');
+    if (nomorHpBersih.startsWith('0')) {
+        nomorHpBersih = '62' + nomorHpBersih.substring(1);
+    }
+
+    const endpoint = 'https://api.sidobe.com/wa/v1/send-message';
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Secret-Key': secretKey
+    };
+    const body = JSON.stringify({
+        phone: `+${nomorHpBersih}`,
+        message: pesan
+    });
 
     // Simulasi pengiriman notifikasi
-    console.log(`--- SIMULASI KIRIM WA via Sidobe ---
-    API Key: ${apiKey}
-    Nomor Tujuan: ${nomorHpBersih}
-    Pesan: ${pesan}
+    console.log(`--- SIMULASI KIRIM WA (POST Request) ---
+    Endpoint: ${endpoint}
+    Headers: ${JSON.stringify(headers, null, 2)}
+    Body: ${body}
     -----------------------------------`);
-    // Di aplikasi nyata, Anda akan menggunakan fetch() untuk memanggil API Sidobe
-    // const url = `https://sidobe.com/api/v1/message/send?api_key=${apiKey}&tujuan=${nomorHpBersih}&pesan=${encodeURIComponent(pesan)}`;
-    // fetch(url).then(res => res.json()).then(data => console.log(data));
+
+    // Di aplikasi nyata, Anda akan menghapus komentar di bawah ini
+    /*
+    fetch(endpoint, {
+        method: 'POST',
+        headers: headers,
+        body: body
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respon dari Sidobe API:', data);
+        if (data.success) {
+            showSuccessToast(`Notifikasi ke ${nomorHp} berhasil dikirim.`);
+        } else {
+            showErrorToast(`Gagal kirim notifikasi: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error('Error saat mengirim notifikasi:', error);
+        showErrorToast('Terjadi kesalahan jaringan saat mengirim notifikasi.');
+    });
+    */
 }
 
 function simpanAbsensiSiswa() {

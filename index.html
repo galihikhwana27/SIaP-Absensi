@@ -247,10 +247,16 @@
                 <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md text-center">
                     <h2 class="text-2xl font-bold text-gray-800">Absensi Kehadiran Guru</h2>
                     <p id="guruAbsenName" class="text-lg font-semibold text-blue-600 mb-4"></p>
-                    <p class="text-gray-500 mb-6">Silakan catat kehadiran Anda hari ini.</p>
-                    <div class="bg-gray-100 p-6 rounded-lg mb-6">
-                        <div id="digitalClock" class="text-6xl font-bold text-blue-600">00:00:00</div>
-                        <div class="text-gray-600" id="clockDate"></div>
+                    <p class="text-gray-500 mb-6">Silakan sesuaikan tanggal dan waktu jika diperlukan.</p>
+                    <div class="bg-gray-100 p-6 rounded-lg mb-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <div>
+                            <label for="inputTanggalAbsen" class="text-sm font-medium text-gray-600">Tanggal Absen</label>
+                            <input type="date" id="inputTanggalAbsen" class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="inputWaktuAbsen" class="text-sm font-medium text-gray-600">Waktu Absen</label>
+                            <input type="time" id="inputWaktuAbsen" class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
                     </div>
                     <div id="guruAbsenStatus" class="mb-6 p-4 rounded-lg text-sm hidden"></div>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -298,11 +304,12 @@
                             </select>
                         </div>
                          <div>
-                            <label for="jamPelajaran" class="text-sm font-medium text-gray-600">Jam Pelajaran Ke-</label>
-                            <select id="jamPelajaran" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option>1-2</option>
-                                <option>3-4</option>
-                                <option>5-6</option>
+                            <label for="pilihGuruPiket" class="text-sm font-medium text-gray-600">Pilih Guru Piket</label>
+                            <select id="pilihGuruPiket" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>-- Pilih Guru --</option>
+                                <option>Siti Aminah, S.Pd.</option>
+                                <option>Joko Susilo, S.Kom.</option>
+                                <option>Dr. Budi Santoso, M.Pd.</option>
                             </select>
                         </div>
                     </div>
@@ -592,6 +599,11 @@
                                     <i class="fas fa-bullhorn mr-2"></i>Buat Pengumuman
                                 </button>
                             </li>
+                             <li role="presentation">
+                                <button class="admin-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="pengaturanSekolah">
+                                    <i class="fas fa-cogs mr-2"></i>Pengaturan Sekolah
+                                </button>
+                            </li>
                         </ul>
                     </div>
 
@@ -626,6 +638,37 @@
                                 </div>
                                 <button class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
                                     Kirim Pengumuman
+                                </button>
+                            </div>
+                        </div>
+                        <div id="pengaturanSekolah" class="admin-tab-content hidden pt-4">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-700">Pengaturan Umum Sekolah</h3>
+                            <div class="space-y-4 max-w-lg">
+                                <div>
+                                    <label for="namaSekolah" class="text-sm font-medium text-gray-600">Nama Sekolah</label>
+                                    <input type="text" id="namaSekolah" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" value="SMP NEGERI 3 LEMPUING JAYA">
+                                </div>
+                                 <div>
+                                    <label for="npsnSekolah" class="text-sm font-medium text-gray-600">NPSN / Identitas Sekolah</label>
+                                    <input type="text" id="npsnSekolah" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan NPSN">
+                                </div>
+                                <div>
+                                    <label for="namaKepsek" class="text-sm font-medium text-gray-600">Nama Kepala Sekolah</label>
+                                    <input type="text" id="namaKepsek" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan Nama Lengkap">
+                                </div>
+                                <div>
+                                    <label for="nipKepsek" class="text-sm font-medium text-gray-600">NIP Kepala Sekolah</label>
+                                    <input type="text" id="nipKepsek" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan NIP">
+                                </div>
+                                <div>
+                                    <label for="logoSekolah" class="text-sm font-medium text-gray-600">Logo Sekolah</label>
+                                    <div class="mt-1 flex items-center gap-4">
+                                        <img src="https://placehold.co/80x80/E2E8F0/4A5568?text=Logo" class="rounded-lg bg-gray-100" alt="Logo saat ini">
+                                        <input type="file" id="logoSekolah" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    </div>
+                                </div>
+                                <button class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">
+                                    <i class="fas fa-save mr-2"></i>Simpan Pengaturan
                                 </button>
                             </div>
                         </div>
@@ -692,10 +735,8 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebarOverlay.addEventListener('click', toggleSidebar);
     // --- END SIDEBAR TOGGLE SCRIPT ---
 
-    // Inisialisasi tanggal & jam
+    // Inisialisasi tanggal
     updateDate();
-    updateClock();
-    setInterval(updateClock, 1000);
 
     // Inisialisasi event listener
     document.getElementById('pilihKelas').addEventListener('change', loadSiswaForAbsen);
@@ -742,6 +783,7 @@ function showPage(pageId, element) {
 
     if (pageId === 'absensiGuruPage' && currentUser) {
         document.getElementById('guruAbsenName').innerText = currentUser.name;
+        setAbsenInputsToNow(); // Set input ke waktu sekarang saat halaman dibuka
     }
 
     if (element) {
@@ -871,32 +913,48 @@ function setupDashboard() {
 function updateDate() {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const today = new Date().toLocaleDateString('id-ID', options);
-    document.getElementById('currentDate').innerText = today;
-    document.getElementById('clockDate').innerText = today;
+    const currentDateEl = document.getElementById('currentDate');
+    if (currentDateEl) currentDateEl.innerText = today;
 }
 
-function updateClock() {
+function setAbsenInputsToNow() {
     const now = new Date();
-    const timeString = now.toLocaleTimeString('it-IT'); 
-    document.getElementById('digitalClock').innerText = timeString;
+    // Format YYYY-MM-DD for date input
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    // Format HH:MM for time input
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+
+    const dateInput = document.getElementById('inputTanggalAbsen');
+    const timeInput = document.getElementById('inputWaktuAbsen');
+
+    if(dateInput) dateInput.value = `${yyyy}-${mm}-${dd}`;
+    if(timeInput) timeInput.value = `${hh}:${min}`;
 }
 
 
 // --- FUNGSI ABSENSI GURU ---
 function handleAbsenGuru(tipe) {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    const dateValue = document.getElementById('inputTanggalAbsen').value;
+    const timeValue = document.getElementById('inputWaktuAbsen').value;
     const statusDiv = document.getElementById('guruAbsenStatus');
 
+    if (!dateValue || !timeValue) {
+        alert("Tanggal dan waktu tidak boleh kosong!");
+        return;
+    }
+
     if (tipe === 'masuk') {
-        guruAbsenState.masuk = timeString;
-        statusDiv.innerHTML = `<i class="fas fa-check-circle text-green-500"></i> Anda berhasil absen masuk pada pukul <strong>${timeString}</strong>.`;
+        guruAbsenState.masuk = timeValue;
+        statusDiv.innerHTML = `<i class="fas fa-check-circle text-green-500"></i> Anda berhasil absen masuk pada pukul <strong>${timeValue}</strong> (${dateValue}).`;
         statusDiv.className = 'mb-6 p-4 rounded-lg text-sm bg-green-100 text-green-800';
         document.getElementById('btnAbsenMasuk').disabled = true;
         document.getElementById('btnAbsenPulang').disabled = false;
     } else if (tipe === 'pulang') {
-        guruAbsenState.pulang = timeString;
-        statusDiv.innerHTML = `<i class="fas fa-check-circle text-orange-500"></i> Anda berhasil absen pulang pada pukul <strong>${timeString}</strong>.`;
+        guruAbsenState.pulang = timeValue;
+        statusDiv.innerHTML = `<i class="fas fa-check-circle text-orange-500"></i> Anda berhasil absen pulang pada pukul <strong>${timeValue}</strong> (${dateValue}).`;
         statusDiv.className = 'mb-6 p-4 rounded-lg text-sm bg-orange-100 text-orange-800';
         document.getElementById('btnAbsenPulang').disabled = true;
     }

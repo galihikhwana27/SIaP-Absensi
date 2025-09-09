@@ -235,16 +235,16 @@
                             <h3 class="font-semibold">Kehadiran Siswa Hari Ini</h3>
                             <i class="fas fa-users text-2xl opacity-50"></i>
                         </div>
-                        <p class="text-4xl font-bold mt-2">97.5%</p>
-                        <p class="text-sm opacity-80 mt-1">273 dari 280 siswa hadir</p>
+                        <p id="siswaHadirPersen" class="text-4xl font-bold mt-2">0%</p>
+                        <p id="siswaHadirDetail" class="text-sm opacity-80 mt-1">0 dari 0 siswa hadir</p>
                     </div>
                     <div class="bg-gradient-to-r from-sky-500 to-cyan-500 text-white p-6 rounded-xl shadow-lg">
                         <div class="flex justify-between items-start">
                             <h3 class="font-semibold">Status Absensi Anda</h3>
                              <i class="fas fa-user-check text-2xl opacity-50"></i>
                         </div>
-                        <p id="guruStatus" class="text-4xl font-bold mt-2">Hadir</p>
-                        <p id="guruTime" class="text-sm opacity-80 mt-1">Masuk pukul 07:10 WIB</p>
+                        <p id="guruStatus" class="text-4xl font-bold mt-2">Belum Absen</p>
+                        <p id="guruTime" class="text-sm opacity-80 mt-1">Silakan lakukan absensi hari ini.</p>
                     </div>
                 </div>
             </div>
@@ -852,6 +852,9 @@ function showPage(pageId, element) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
 
+    if (pageId === 'homePage') {
+        updateDashboardStats();
+    }
     if (pageId === 'absensiPersonalPage' && currentUser) {
         document.getElementById('personalAbsenName').innerText = currentUser.name;
         setAbsenInputsToNow('inputTanggalAbsen', 'inputWaktuAbsen');
@@ -1006,6 +1009,60 @@ function setupDashboard() {
     } else {
         document.getElementById('adminMenu').classList.add('hidden');
     }
+    updateDashboardStats();
+}
+
+function updateDashboardStats() {
+    const today = getTodayDateString();
+
+    // --- Update Your Attendance Status ---
+    const guruStatusEl = document.getElementById('guruStatus');
+    const guruTimeEl = document.getElementById('guruTime');
+
+    if (currentUser) {
+        const absenRecord = mockAbsensiDatabase.personal[today]?.[currentUser.nip];
+        if (absenRecord && absenRecord.masuk && absenRecord.pulang) {
+            guruStatusEl.innerText = 'Hadir';
+            guruTimeEl.innerText = `Pulang pukul ${absenRecord.pulang} WIB`;
+        } else if (absenRecord && absenRecord.masuk) {
+            guruStatusEl.innerText = 'Sudah Masuk';
+            guruTimeEl.innerText = `Masuk pukul ${absenRecord.masuk} WIB`;
+        } else {
+            guruStatusEl.innerText = 'Belum Absen';
+            guruTimeEl.innerText = 'Silakan lakukan absensi hari ini.';
+        }
+    }
+
+    // --- Update Student Attendance Status ---
+    const siswaHadirPersenEl = document.getElementById('siswaHadirPersen');
+    const siswaHadirDetailEl = document.getElementById('siswaHadirDetail');
+
+    let totalSiswa = 0;
+    let totalHadir = 0;
+
+    Object.values(mockSiswa).forEach(kelas => {
+        totalSiswa += kelas.length;
+    });
+
+    const absensiHariIni = mockAbsensiDatabase.siswa[today];
+    if (absensiHariIni) {
+        Object.values(absensiHariIni).forEach(kelas => {
+            Object.values(kelas).forEach(absen => {
+                if (absen.status === 'H') {
+                    totalHadir++;
+                }
+            });
+        });
+    }
+
+    if (totalSiswa > 0) {
+        const persentase = totalHadir === 0 ? 0 : ((totalHadir / totalSiswa) * 100).toFixed(1);
+        siswaHadirPersenEl.innerText = `${persentase}%`;
+        siswaHadirDetailEl.innerText = `${totalHadir} dari ${totalSiswa} siswa hadir`;
+    } else {
+        siswaHadirPersenEl.innerText = `N/A`;
+        siswaHadirDetailEl.innerText = `Tidak ada data siswa.`;
+    }
 }
 
 
@@ -1077,6 +1134,7 @@ function handleAbsenStaff(tipe) {
     
     console.log("Database Absensi Personal Updated:", mockAbsensiDatabase.personal);
     updatePersonalAbsenStatus(date);
+    updateDashboardStats();
 }
 
 function updatePersonalAbsenStatus(date) {
@@ -1177,6 +1235,7 @@ function simpanAbsensiSiswa() {
 
     console.log("Database Absensi Siswa:", mockAbsensiDatabase.siswa);
     showSuccessToast(`Absensi kelas ${kelas} tanggal ${tanggal} berhasil disimpan!`);
+    updateDashboardStats();
 }
 
 // --- FUNGSI LIHAT ABSENSI HARIAN ---

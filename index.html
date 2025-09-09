@@ -42,6 +42,10 @@
             animation: marquee 30s linear infinite;
         }
 
+        .print-only {
+            display: none;
+        }
+
         /* Gaya untuk sidebar saat dicetak */
         @media print {
             body {
@@ -60,6 +64,9 @@
             #rekapAbsensiPage .bg-white {
                 box-shadow: none;
                 border: none;
+            }
+            .print-only {
+                display: block;
             }
         }
     </style>
@@ -512,6 +519,17 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <!-- Tanda Tangan -->
+                                <div class="w-full mt-12 text-sm print-only">
+                                    <div class="float-right w-1/3 text-center">
+                                        <p>Lempuing Jaya, <span class="print-date"></span></p>
+                                        <p>Wali Kelas</p>
+                                        <br><br><br><br>
+                                        <p class="font-bold underline" id="printNamaWaliKelas">(Nama Wali Kelas)</p>
+                                        <p>NIP. <span id="printNipWaliKelas">(NIP Wali Kelas)</span></p>
+                                    </div>
+                                    <div class="clear-both"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -563,6 +581,17 @@
                                             <!-- Data rekap guru dimuat di sini -->
                                         </tbody>
                                     </table>
+                                </div>
+                                <!-- Tanda Tangan -->
+                                <div class="w-full mt-12 text-sm print-only">
+                                    <div class="float-right w-1/3 text-center">
+                                        <p>Lempuing Jaya, <span class="print-date"></span></p>
+                                        <p>Kepala Sekolah</p>
+                                        <br><br><br><br>
+                                        <p class="font-bold underline" id="printNamaKepsek">(Nama Kepala Sekolah)</p>
+                                        <p>NIP. <span id="printNipKepsek">(NIP Kepala Sekolah)</span></p>
+                                    </div>
+                                    <div class="clear-both"></div>
                                 </div>
                             </div>
                         </div>
@@ -1113,16 +1142,37 @@ function printRekap() {
     const activeTabContent = document.querySelector('.rekap-tab-content:not(.hidden)');
     let kopSurat, bulanEl, tahunEl, kelasEl;
 
+    // Set tanggal cetak
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const today = new Date().toLocaleDateString('id-ID', options);
+    document.querySelectorAll('.print-date').forEach(el => el.innerText = today);
+
     if (activeTabContent.id === 'rekapSiswa') {
         kopSurat = document.getElementById('kopSuratSiswa');
         bulanEl = document.getElementById('pilihBulanRekapSiswa');
         tahunEl = document.getElementById('pilihTahunRekapSiswa');
         kelasEl = document.getElementById('pilihKelasRekap');
         kopSurat.querySelector('.rekapKelas').innerText = kelasEl.value;
+
+        // Simulasi data wali kelas berdasarkan kelas yang dipilih
+        const waliKelasData = {
+            "IX-A": { name: "Dr. Budi Santoso, M.Pd.", nip: "198501012010011001" },
+            "IX-B": { name: "Siti Aminah, S.Pd.", nip: "198805102014022003" }
+        };
+        const selectedWaliKelas = waliKelasData[kelasEl.value] || { name: "(Nama Wali Kelas)", nip: "(NIP Wali Kelas)" };
+        document.getElementById('printNamaWaliKelas').innerText = selectedWaliKelas.name;
+        document.getElementById('printNipWaliKelas').innerText = selectedWaliKelas.nip;
+        
     } else { // Rekap Guru
         kopSurat = document.getElementById('kopSuratGuru');
         bulanEl = document.getElementById('pilihBulanRekapGuru');
         tahunEl = document.getElementById('pilihTahunRekapGuru');
+        
+        // Ambil data kepala sekolah dari form pengaturan
+        const namaKepsek = document.getElementById('namaKepsek').value || '(Nama Kepala Sekolah)';
+        const nipKepsek = document.getElementById('nipKepsek').value || '(NIP Kepala Sekolah)';
+        document.getElementById('printNamaKepsek').innerText = namaKepsek;
+        document.getElementById('printNipKepsek').innerText = nipKepsek;
     }
     
     kopSurat.querySelector('.rekapBulan').innerText = bulanEl.options[bulanEl.selectedIndex].text;
@@ -1137,4 +1187,7 @@ function printRekap() {
 
 </body>
 </html>
+" of the Canvas.
+I would like to:
+add staff data other than teachers and admins, for example employees. And on the rekap page add the Rekap Pegawai tab
 

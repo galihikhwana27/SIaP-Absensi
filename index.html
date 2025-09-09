@@ -1631,7 +1631,7 @@ async function renderAbsensiHarianGuru() {
     });
 
     tbody.innerHTML = '';
-    const staff = semuaPersonil.filter(u => u.role === 'Guru' || u.role === 'Pegawai');
+    const staff = semuaPersonil.filter(u => u.role === 'Guru' || u.role === 'Pegawai' || u.role === 'Kepala Sekolah' || u.role === 'Wakil Kepala Sekolah');
     if (staff.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4">Tidak ada data personil.</td></tr>';
         return;
@@ -1849,7 +1849,7 @@ window.showPersonilForm = function(id = null) {
             <div><label class="text-sm font-medium">Tempat Lahir</label><input type="text" id="formTempatLahir" class="mt-1 block w-full p-2 bg-gray-50 border rounded-lg" value="${user?.tempatLahir || ''}"></div>
             <div><label class="text-sm font-medium">Tanggal Lahir</label><input type="date" id="formTglLahir" class="mt-1 block w-full p-2 bg-gray-50 border rounded-lg" value="${user?.tglLahir || ''}"></div>
             <div><label class="text-sm font-medium">No. HP</label><input type="tel" id="formNoHp" class="mt-1 block w-full p-2 bg-gray-50 border rounded-lg" value="${user?.noHp || ''}"></div>
-            <div><label class="text-sm font-medium">Peran</label><select id="formPeran" class="mt-1 block w-full p-2 bg-gray-50 border rounded-lg"><option value="Guru" ${user?.role === 'Guru' ? 'selected' : ''}>Guru</option><option value="Pegawai" ${user?.role === 'Pegawai' ? 'selected' : ''}>Pegawai</option><option value="Admin" ${user?.role === 'Admin' ? 'selected' : ''}>Admin</option></select></div>
+            <div><label class="text-sm font-medium">Peran</label><select id="formPeran" class="mt-1 block w-full p-2 bg-gray-50 border rounded-lg"><option value="Kepala Sekolah" ${user?.role === 'Kepala Sekolah' ? 'selected' : ''}>Kepala Sekolah</option><option value="Wakil Kepala Sekolah" ${user?.role === 'Wakil Kepala Sekolah' ? 'selected' : ''}>Wakil Kepala Sekolah</option><option value="Admin" ${user?.role === 'Admin' ? 'selected' : ''}>Admin</option><option value="Guru" ${user?.role === 'Guru' ? 'selected' : ''}>Guru</option><option value="Pegawai" ${user?.role === 'Pegawai' ? 'selected' : ''}>Pegawai</option></select></div>
             <p class="text-xs text-gray-500 italic">Password login diatur berdasarkan tanggal lahir (ddmmyyyy), kecuali untuk Admin.</p>
             <div class="flex justify-end gap-2"><button onclick="closeModal()" class="bg-gray-200 font-semibold py-2 px-4 rounded-lg">Batal</button><button onclick="simpanPersonil()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg">Simpan</button></div>
         </div>`;
@@ -1859,7 +1859,7 @@ window.showPersonilForm = function(id = null) {
 window.showKelasForm = function(id = null) {
     const kelas = id ? semuaKelas.find(k => k.id === id) : null;
     const title = kelas ? 'Edit Kelas' : 'Tambah Kelas';
-    let teacherOptions = '<option value="">-- Pilih Wali Kelas --</option>' + semuaPersonil.filter(u => u.role === 'Guru').map(t => `<option value="${t.id}" ${kelas?.waliKelasNip === t.id ? 'selected' : ''}>${t.name}</option>`).join('');
+    let teacherOptions = '<option value="">-- Pilih Wali Kelas --</option>' + semuaPersonil.filter(u => u.role === 'Guru' || u.role === 'Kepala Sekolah' || u.role === 'Wakil Kepala Sekolah').map(t => `<option value="${t.id}" ${kelas?.waliKelasNip === t.id ? 'selected' : ''}>${t.name}</option>`).join('');
 
     const bodyHtml = `
          <div class="space-y-4">

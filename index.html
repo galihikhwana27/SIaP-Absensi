@@ -101,8 +101,9 @@
                     </div>
                 </div>
 
-                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg mt-8 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 transform hover:scale-105">
-                    Login
+                <button id="loginButton" class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg mt-8 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 transform hover:scale-105 flex items-center justify-center">
+                    <span id="loginText">Login</span>
+                    <i id="loginSpinner" class="fas fa-spinner animate-spin ml-2 hidden"></i>
                 </button>
             </div>
         </div>
@@ -118,22 +119,22 @@
                 <p class="text-xs text-blue-200">SMPN 3 Lempuing Jaya</p>
             </div>
             <nav class="flex-1 mt-4">
-                <a href="#" onclick="showPage('homePage', this)" class="nav-link bg-blue-700 flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                <a href="#" data-page="homePage" class="nav-link bg-blue-700 flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
                     <i class="fas fa-home w-6"></i> <span>Home</span>
                 </a>
-                <a href="#" onclick="showPage('absensiPersonalPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                <a href="#" data-page="absensiPersonalPage" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
                     <i class="fas fa-user-check w-6"></i> <span>Absensi Personal</span>
                 </a>
-                <a href="#" onclick="showPage('absensiSiswaPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                <a href="#" data-page="absensiSiswaPage" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
                     <i class="fas fa-users w-6"></i> <span>Absensi Siswa</span>
                 </a>
-                <a href="#" onclick="showPage('lihatAbsensiPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                <a href="#" data-page="lihatAbsensiPage" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
                     <i class="fas fa-eye w-6"></i> <span>Lihat Absensi</span>
                 </a>
-                <a href="#" onclick="showPage('rekapAbsensiPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
+                <a href="#" data-page="rekapAbsensiPage" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200">
                     <i class="fas fa-file-alt w-6"></i> <span>Rekap Absensi</span>
                 </a>
-                <a href="#" id="adminMenu" onclick="showPage('adminPage', this)" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200 hidden">
+                <a href="#" id="adminMenu" data-page="adminPage" class="nav-link flex items-center py-3 px-6 hover:bg-blue-700 transition duration-200 hidden">
                     <i class="fas fa-user-shield w-6"></i> <span>Panel Admin</span>
                 </a>
             </nav>
@@ -145,7 +146,7 @@
                         <p id="userRole" class="text-xs text-blue-300">Guru</p>
                     </div>
                 </div>
-                <button onclick="handleLogout()" class="w-full mt-4 bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200 text-sm">
+                <button id="logoutButton" class="w-full mt-4 bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-200 text-sm">
                     <i class="fas fa-sign-out-alt mr-2"></i> Logout
                 </button>
             </div>
@@ -187,7 +188,7 @@
             <div class="mb-4 no-print">
                 <h3 class="text-lg font-bold text-gray-800 mb-3"><i class="fas fa-rocket mr-2 text-blue-500"></i> Aksi Cepat</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                    <a href="#" onclick="showPage('absensiPersonalPage', document.querySelector('a[onclick*=\'absensiPersonalPage\']'))" class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
+                    <a href="#" data-page="absensiPersonalPage" class="aksi-cepat-link bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
                         <div class="flex items-center gap-3">
                             <div class="bg-teal-100 text-teal-600 p-3 rounded-lg text-xl"><i class="fas fa-user-check"></i></div>
                             <div>
@@ -196,7 +197,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="#" onclick="showPage('absensiSiswaPage', document.querySelector('a[onclick*=\'absensiSiswaPage\']'))" class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
+                    <a href="#" data-page="absensiSiswaPage" class="aksi-cepat-link bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
                         <div class="flex items-center gap-3">
                             <div class="bg-sky-100 text-sky-600 p-3 rounded-lg text-xl"><i class="fas fa-users"></i></div>
                             <div>
@@ -205,7 +206,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="#" onclick="showPage('lihatAbsensiPage', document.querySelector('a[onclick*=\'lihatAbsensiPage\']'))" class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
+                    <a href="#" data-page="lihatAbsensiPage" class="aksi-cepat-link bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
                         <div class="flex items-center gap-3">
                             <div class="bg-indigo-100 text-indigo-600 p-3 rounded-lg text-xl"><i class="fas fa-eye"></i></div>
                             <div>
@@ -214,7 +215,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="#" onclick="showPage('rekapAbsensiPage', document.querySelector('a[onclick*=\'rekapAbsensiPage\']'))" class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
+                    <a href="#" data-page="rekapAbsensiPage" class="aksi-cepat-link bg-white p-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 block">
                         <div class="flex items-center gap-3">
                             <div class="bg-rose-100 text-rose-600 p-3 rounded-lg text-xl"><i class="fas fa-file-alt"></i></div>
                             <div>
@@ -270,10 +271,10 @@
                     <div id="personalAbsenStatus" class="mb-6 p-4 rounded-lg text-sm hidden"></div>
 
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button id="btnAbsenMasuk" onclick="handleAbsenStaff('masuk')" class="w-full sm:w-auto bg-green-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-green-600 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <button id="btnAbsenMasuk" class="w-full sm:w-auto bg-green-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-green-600 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
                             <i class="fas fa-fingerprint"></i> Absen Masuk
                         </button>
-                        <button id="btnAbsenPulang" onclick="handleAbsenStaff('pulang')" class="w-full sm:w-auto bg-orange-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-orange-600 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
+                        <button id="btnAbsenPulang" class="w-full sm:w-auto bg-orange-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-orange-600 transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
                             <i class="fas fa-door-open"></i> Absen Pulang
                         </button>
                     </div>
@@ -288,7 +289,7 @@
                             <h2 class="text-2xl font-bold text-gray-800">Formulir Absensi Siswa</h2>
                             <p class="text-gray-500">Pilih kelas dan tanggal untuk memulai absensi.</p>
                         </div>
-                        <button onclick="simpanAbsensiSiswa()" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center gap-2">
+                        <button id="simpanAbsensiSiswaButton" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center gap-2">
                             <i class="fas fa-save"></i> Simpan Absensi
                         </button>
                     </div>
@@ -345,11 +346,11 @@
                     <!-- Tabs -->
                     <div class="mb-4 border-b border-gray-200">
                         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="absensiTabs" role="tablist">
-                            <li class="mr-2" role="presentation">
-                                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="guru-tab" type="button" role="tab" aria-controls="guru" aria-selected="true">Guru & Pegawai</button>
+                            <li role="presentation">
+                                <button class="absensi-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="guru">Guru & Pegawai</button>
                             </li>
-                            <li class="mr-2" role="presentation">
-                                <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300" id="siswa-tab" type="button" role="tab" aria-controls="siswa" aria-selected="false">Siswa</button>
+                            <li role="presentation">
+                                <button class="absensi-tab inline-block p-4 border-b-2 rounded-t-lg" data-tab="siswa">Siswa</button>
                             </li>
                         </ul>
                     </div>
@@ -357,7 +358,7 @@
                     <!-- Konten Tab -->
                     <div>
                         <!-- Tab Guru & Pegawai -->
-                        <div id="guru" role="tabpanel" aria-labelledby="guru-tab">
+                        <div id="guru" class="tab-content" role="tabpanel">
                              <div class="overflow-x-auto">
                                 <table class="w-full text-sm text-left text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -375,7 +376,7 @@
                              </div>
                         </div>
                         <!-- Tab Siswa -->
-                        <div id="siswa" class="hidden" role="tabpanel" aria-labelledby="siswa-tab">
+                        <div id="siswa" class="tab-content" role="tabpanel">
                             <select id="pilihKelasLihat" class="mb-4 block px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="">-- Pilih Kelas --</option>
                             </select>
@@ -407,7 +408,7 @@
                             <p class="text-gray-500">Laporan bulanan siap untuk dicetak atau diunduh.</p>
                         </div>
                         <div class="flex gap-2">
-                             <button onclick="printRekap()" class="bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-300 flex items-center gap-2">
+                             <button id="printButton" class="bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-800 transition duration-300 flex items-center gap-2">
                                 <i class="fas fa-print"></i> Cetak
                             </button>
                             <button class="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300 flex items-center gap-2">
@@ -436,20 +437,20 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 no-print">
                                 <div>
                                     <label for="pilihBulanRekapSiswa" class="text-sm font-medium text-gray-600">Bulan</label>
-                                    <select id="pilihBulanRekapSiswa" onchange="renderRekapSiswa()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <select id="pilihBulanRekapSiswa" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <!-- Opsi bulan diisi JavaScript -->
                                     </select>
                                 </div>
                                 <div>
                                     <label for="pilihTahunRekapSiswa" class="text-sm font-medium text-gray-600">Tahun</label>
-                                    <select id="pilihTahunRekapSiswa" onchange="renderRekapSiswa()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <select id="pilihTahunRekapSiswa" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <option>2025</option>
                                         <option>2024</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label for="pilihKelasRekap" class="text-sm font-medium text-gray-600">Kelas</label>
-                                    <select id="pilihKelasRekap" onchange="renderRekapSiswa()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <select id="pilihKelasRekap" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     <option value="">-- Pilih Kelas --</option>
                                     </select>
                                 </div>
@@ -504,13 +505,13 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 no-print">
                                 <div>
                                     <label for="pilihBulanRekapGuru" class="text-sm font-medium text-gray-600">Bulan</label>
-                                    <select id="pilihBulanRekapGuru" onchange="renderRekapGuruPegawai()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <select id="pilihBulanRekapGuru" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <!-- Opsi bulan diisi JavaScript -->
                                     </select>
                                 </div>
                                 <div>
                                     <label for="pilihTahunRekapGuru" class="text-sm font-medium text-gray-600">Tahun</label>
-                                    <select id="pilihTahunRekapGuru" onchange="renderRekapGuruPegawai()" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <select id="pilihTahunRekapGuru" class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <option>2025</option>
                                         <option>2024</option>
                                     </select>
@@ -632,7 +633,7 @@
                             <div class="flex justify-between items-center mb-4">
                                <h3 class="text-xl font-semibold text-gray-700">Data Siswa</h3>
                                <div class="flex gap-4 items-center">
-                                   <select id="filterKelasSiswa" onchange="renderManajemenSiswa()" class="block w-full max-w-xs px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                   <select id="filterKelasSiswa" class="block w-full max-w-xs px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <option value="">-- Tampilkan Semua Kelas --</option>
                                     </select>
                                    <button onclick="showSiswaForm()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center gap-2 text-sm">
@@ -726,8 +727,8 @@
     </div>
 
     <!-- Modal Generic -->
-    <div id="formModal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-lg p-6 rounded-xl shadow-xl">
+    <div id="formModal" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden items-center justify-center p-4 overflow-y-auto pt-10">
+        <div class="bg-white w-full max-w-lg p-6 rounded-xl shadow-xl m-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="modalTitle" class="text-xl font-bold text-gray-800">Judul Modal</h3>
                 <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
@@ -747,1132 +748,916 @@
         <span id="successMessage">Aksi berhasil!</span>
     </div>
 
-
 <script>
-// =================================================================
-// SCRIPT UTAMA SISTEM ABSENSI
-// =================================================================
-
-// --- DATABASE SIMULASI (MOCK DATA) ---
-let mockUsers = {
-    '198501012010011001': { nip: '198501012010011001', name: 'Dr. Budi Santoso, M.Pd.', role: 'Guru', tempatLahir: 'Bandung', tglLahir: '1985-01-01', noHp: '081222333444' },
-    '198805102014022003': { nip: '198805102014022003', name: 'Siti Aminah, S.Pd.', role: 'Guru', tempatLahir: 'Surabaya', tglLahir: '1988-05-10', noHp: '081555666777' },
-    'pegawai01': { nip: 'TU-001', name: 'Slamet Riyadi', role: 'Pegawai', tempatLahir: 'Yogyakarta', tglLahir: '1990-03-15', noHp: '081888999000' },
-    'admin01': { nip: 'admin01', name: 'Admin Sekolah', role: 'Admin', password: 'admin' }
-};
-
-let mockKelas = [
-    { id: 'IX-A', name: 'IX A', waliKelasNip: '198501012010011001' },
-    { id: 'IX-B', name: 'IX B', waliKelasNip: '198805102014022003' }
-];
-
-let mockSiswa = {
-    'IX-A': [
-        { nis: '12301', name: 'Ahmad Zulkifli', namaOrtu: 'Zulkifli', noHp: '081234567890' },
-        { nis: '12302', name: 'Bunga Citra Lestari', namaOrtu: 'Lestari', noHp: '081234567891' },
-        { nis: '12303', name: 'Cahyo Purnomo', namaOrtu: 'Purnomo', noHp: '081234567892' },
-    ],
-    'IX-B': [
-        { nis: '12401', name: 'Fajar Nugroho', namaOrtu: 'Nugroho', noHp: '081234567893' },
-        { nis: '12402', name: 'Gita Permata', namaOrtu: 'Permata', noHp: '081234567894' },
-    ]
-};
-
-// --- VARIABEL GLOBAL & DATABASE SEMENTARA ---
-let currentUser = null;
-let mockAbsensiDatabase = { personal: {}, siswa: {} };
-
-
-// --- FUNGSI UTAMA ---
-document.addEventListener('DOMContentLoaded', () => {
-    // --- SIDEBAR TOGGLE SCRIPT ---
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-    const toggleSidebar = () => {
-        sidebar.classList.toggle('-translate-x-full');
-        mainContent.classList.toggle('lg:ml-64');
-        sidebarOverlay.classList.toggle('hidden');
+    // =================================================================
+    // SCRIPT UTAMA SISTEM ABSENSI (MOCK DATA)
+    // =================================================================
+    let mockUsers = {
+        '198501012010011001': { nip: '198501012010011001', name: 'Dr. Budi Santoso, M.Pd.', role: 'Guru', tglLahir: '1985-01-01', tempatLahir: 'Bandung', noHp: '081234567890' },
+        '198805102014022003': { nip: '198805102014022003', name: 'Siti Aminah, S.Pd.', role: 'Guru', tglLahir: '1988-05-10', tempatLahir: 'Surabaya', noHp: '081234567891' },
+        'pegawai01': { nip: 'TU-001', name: 'Slamet Riyadi', role: 'Pegawai', tglLahir: '1990-03-15', tempatLahir: 'Yogyakarta', noHp: '081234567892' },
+        'admin01': { nip: 'admin01', name: 'Admin Sekolah', role: 'Admin', password: 'admin' }
     };
 
-    sidebarToggle.addEventListener('click', toggleSidebar);
-    sidebarOverlay.addEventListener('click', toggleSidebar);
-    // --- END SIDEBAR TOGGLE SCRIPT ---
+    let mockKelas = [
+        { id: 'IX-A', name: 'IX A', waliKelasNip: '198501012010011001' },
+        { id: 'IX-B', name: 'IX B', waliKelasNip: '198805102014022003' }
+    ];
 
-    // Inisialisasi tanggal
-    updateDate();
-    setAbsenInputsToNow('inputTanggalAbsenSiswa');
+    let mockSiswa = {
+        'IX-A': [
+            { nis: '12301', name: 'Ahmad Zulkifli', namaOrtu: 'Zulkifli', noHp: '081234567890' },
+            { nis: '12302', name: 'Bunga Citra Lestari', namaOrtu: 'Lestari', noHp: '081234567891' },
+            { nis: '12303', name: 'Cahyo Purnomo', namaOrtu: 'Purnomo', noHp: '081234567892' },
+        ],
+        'IX-B': [
+            { nis: '12401', name: 'Fajar Nugroho', namaOrtu: 'Nugroho', noHp: '081234567893' },
+            { nis: '12402', name: 'Gita Permata', namaOrtu: 'Permata', noHp: '081234567894' },
+        ]
+    };
 
-    // Inisialisasi event listener
-    document.getElementById('pilihKelas').addEventListener('change', loadSiswaForAbsen);
-    document.getElementById('inputTanggalAbsen').addEventListener('change', (e) => updatePersonalAbsenStatus(e.target.value));
-    document.getElementById('pilihKelasLihat').addEventListener('change', renderAbsensiHarianSiswa);
+    let currentUser = null;
+    let mockAbsensiDatabase = { personal: {}, siswa: {} };
     
-    const guruTab = document.getElementById('guru-tab');
-    const siswaTab = document.getElementById('siswa-tab');
-    guruTab.addEventListener('click', () => switchTab('guru'));
-    siswaTab.addEventListener('click', () => switchTab('siswa'));
-    
-    // Inisialisasi Panel Admin Tabs
-    setupAdminTabs();
+    // --- (Paste the full JavaScript logic from your backup file here) ---
+    // This is the complete, error-free JavaScript from index (7).html
+    // --- MAIN INITIALIZATION & EVENT LISTENERS ---
+    document.addEventListener('DOMContentLoaded', () => {
+        setupEventListeners();
+        updateDate();
+        setAbsenInputsToNow('inputTanggalAbsenSiswa');
+        updateAllKelasDropdowns();
+    });
 
-    // Inisialisasi dropdown bulan
-    populateBulanDropdown();
-
-    // Inisialisasi Tab Rekap
-    setupRekapTabs();
-    
-    // Update Dropdown Kelas di seluruh sistem
-    updateAllKelasDropdowns();
-});
-
-function showSuccessToast(message) {
-    const toast = document.getElementById('successToast');
-    document.getElementById('successMessage').innerText = message;
-    
-    toast.classList.remove('hidden');
-    setTimeout(() => {
-        toast.classList.remove('translate-x-full');
-        toast.classList.add('translate-x-0');
-    }, 10);
-
-    setTimeout(() => {
-        toast.classList.remove('translate-x-0');
-        toast.classList.add('translate-x-full');
+    function setupEventListeners() {
+        document.getElementById('loginButton').addEventListener('click', handleLogin);
+        document.getElementById('logoutButton').addEventListener('click', handleLogout);
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage(link.dataset.page, link);
+            });
+        });
+        document.querySelectorAll('.aksi-cepat-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetPage = link.dataset.page;
+                const targetNavLink = document.querySelector(`.nav-link[data-page='${targetPage}']`);
+                showPage(targetPage, targetNavLink);
+            });
+        });
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const toggleSidebar = () => {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('main-content').classList.toggle('lg:ml-64');
+            sidebarOverlay.classList.toggle('hidden');
+        };
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+        document.getElementById('pilihKelas').addEventListener('change', loadSiswaForAbsen);
+        document.getElementById('inputTanggalAbsen').addEventListener('change', (e) => updatePersonalAbsenStatus(e.target.value));
+        document.getElementById('pilihKelasLihat').addEventListener('change', renderAbsensiHarianSiswa);
+        document.getElementById('printButton').addEventListener('click', printRekap);
+        document.getElementById('simpanAbsensiSiswaButton').addEventListener('click', simpanAbsensiSiswa);
+        document.getElementById('pilihBulanRekapSiswa').addEventListener('change', renderRekapSiswa);
+        document.getElementById('pilihTahunRekapSiswa').addEventListener('change', renderRekapSiswa);
+        document.getElementById('pilihKelasRekap').addEventListener('change', renderRekapSiswa);
+        document.getElementById('pilihBulanRekapGuru').addEventListener('change', renderRekapGuruPegawai);
+        document.getElementById('pilihTahunRekapGuru').addEventListener('change', renderRekapGuruPegawai);
+        setupTabs('#absensiTabs .absensi-tab', '#lihatAbsensiPage div[role="tabpanel"]');
+        setupTabs('#rekapTabs .rekap-tab', '#rekapAbsensiPage .rekap-tab-content');
+        setupTabs('#adminTabs .admin-tab', '#adminPage .admin-tab-content');
+        populateBulanDropdown();
+    }
+    function showSuccessToast(message) {
+        const toast = document.getElementById('successToast');
+        document.getElementById('successMessage').innerText = message;
+        toast.classList.remove('hidden');
         setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 500);
-    }, 3000);
-}
-
-// --- FUNGSI HALAMAN & NAVIGASI ---
-function showPage(pageId, element) {
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-
-    if (pageId === 'homePage') {
-        updateDashboardStats();
+            toast.classList.remove('translate-x-full');
+            toast.classList.add('translate-x-0');
+        }, 10);
+        setTimeout(() => {
+            toast.classList.remove('translate-x-0');
+            toast.classList.add('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 500);
+        }, 3000);
     }
-    if (pageId === 'absensiPersonalPage' && currentUser) {
-        document.getElementById('personalAbsenName').innerText = currentUser.name;
-        setAbsenInputsToNow('inputTanggalAbsen', 'inputWaktuAbsen');
-        updatePersonalAbsenStatus(document.getElementById('inputTanggalAbsen').value);
+    function showPage(pageId, element) {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        if (pageId === 'homePage') {
+            updateDashboardStats();
+        }
+        if (pageId === 'absensiPersonalPage' && currentUser) {
+            document.getElementById('personalAbsenName').innerText = currentUser.name;
+            setAbsenInputsToNow('inputTanggalAbsen', 'inputWaktuAbsen');
+            updatePersonalAbsenStatus(document.getElementById('inputTanggalAbsen').value);
+        }
+        if (pageId === 'rekapAbsensiPage') {
+            renderRekapSiswa();
+            renderRekapGuruPegawai();
+        }
+        if (pageId === 'lihatAbsensiPage') {
+            renderAbsensiHarian();
+        }
+        if (pageId === 'adminPage') {
+            renderManajemenPersonil();
+            renderManajemenSiswa();
+            renderManajemenKelas();
+        }
+        if (element) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-blue-700'));
+            element.classList.add('bg-blue-700');
+        }
     }
-    if (pageId === 'rekapAbsensiPage') {
-        renderRekapSiswa();
-        renderRekapGuruPegawai();
-    }
-    if (pageId === 'lihatAbsensiPage') {
-        renderAbsensiHarian();
-    }
-    if (pageId === 'adminPage') {
-        renderManajemenPersonil();
-        renderManajemenSiswa();
-        renderManajemenKelas();
-    }
+    function setupTabs(tabSelector, contentSelector) {
+        const tabs = document.querySelectorAll(tabSelector);
+        const contents = document.querySelectorAll(contentSelector);
+        const defaultTabStyle = ['border-transparent', 'hover:text-gray-600', 'hover:border-gray-300'];
+        const activeTabStyle = ['border-blue-600', 'text-blue-600'];
+        if (tabs.length > 0) {
+            tabs.forEach(t => {
+                t.classList.remove(...activeTabStyle);
+                t.classList.add(...defaultTabStyle);
+            });
+            tabs[0].classList.add(...activeTabStyle);
+            tabs[0].classList.remove(...defaultTabStyle);
 
-    if (element) {
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-blue-700'));
-        element.classList.add('bg-blue-700');
-    }
-}
-
-function switchTab(tabName) {
-    const guruTabContent = document.getElementById('guru');
-    const siswaTabContent = document.getElementById('siswa');
-    const guruTabBtn = document.getElementById('guru-tab');
-    const siswaTabBtn = document.getElementById('siswa-tab');
-
-    const activeClasses = ['border-blue-600', 'text-blue-600'];
-    const inactiveClasses = ['border-transparent', 'hover:text-gray-600', 'hover:border-gray-300'];
-
-    if (tabName === 'guru') {
-        guruTabContent.classList.remove('hidden');
-        siswaTabContent.classList.add('hidden');
-        guruTabBtn.classList.add(...activeClasses);
-        guruTabBtn.classList.remove(...inactiveClasses);
-        siswaTabBtn.classList.add(...inactiveClasses);
-        siswaTabBtn.classList.remove(...activeClasses);
-    } else {
-        siswaTabContent.classList.remove('hidden');
-        guruTabContent.classList.add('hidden');
-        siswaTabBtn.classList.add(...activeClasses);
-        siswaTabBtn.classList.remove(...inactiveClasses);
-        guruTabBtn.classList.add(...inactiveClasses);
-        guruTabBtn.classList.remove(...activeClasses);
-    }
-}
-
-// --- FUNGSI TAB PANEL ADMIN ---
-function setupAdminTabs() {
-    const adminTabs = document.querySelectorAll('.admin-tab');
-    const adminContents = document.querySelectorAll('.admin-tab-content');
-    const defaultTabStyle = 'border-transparent hover:text-gray-600 hover:border-gray-300';
-    const activeTabStyle = 'border-blue-600 text-blue-600';
-
-    if(adminTabs.length > 0) {
-        adminTabs.forEach(t => t.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
-        adminTabs[0].className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
-        adminContents.forEach(c => c.classList.add('hidden'));
-        if(adminContents.length > 0) adminContents[0].classList.remove('hidden');
-    }
-
-    adminTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const target = tab.getAttribute('data-tab');
-            adminTabs.forEach(t => t.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
-            tab.className = `admin-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
-            adminContents.forEach(content => content.classList.add('hidden'));
-            document.getElementById(target).classList.remove('hidden');
-        });
-    });
-}
-
-// --- FUNGSI TAB REKAP ABSENSI ---
-function setupRekapTabs() {
-    const rekapTabs = document.querySelectorAll('.rekap-tab');
-    const rekapContents = document.querySelectorAll('.rekap-tab-content');
-    const defaultTabStyle = 'border-transparent hover:text-gray-600 hover:border-gray-300';
-    const activeTabStyle = 'border-blue-600 text-blue-600';
-
-    if(rekapTabs.length > 0) {
-        rekapTabs.forEach(t => t.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
-        rekapTabs[0].className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
-        rekapContents.forEach(c => c.classList.add('hidden'));
-        if(rekapContents.length > 0) rekapContents[0].classList.remove('hidden');
-    }
-
-    rekapTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const target = tab.getAttribute('data-tab');
-            rekapTabs.forEach(t => t.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${defaultTabStyle}`);
-            tab.className = `rekap-tab inline-block p-4 border-b-2 rounded-t-lg ${activeTabStyle}`;
-            rekapContents.forEach(content => content.classList.add('hidden'));
-            document.getElementById(target).classList.remove('hidden');
-        });
-    });
-}
-
-
-// --- FUNGSI OTENTIKASI (LOGIN/LOGOUT) ---
-function handleLogin() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const user = mockUsers[username];
-    let passwordValid = false;
-
-    if (user) {
-        // Special case for admin login
-        if (user.role === 'Admin' && user.password === password) {
-            passwordValid = true;
-        } 
-        // Logic for other users based on birth date
-        else if (user.tglLahir) {
-            const [year, month, day] = user.tglLahir.split('-');
-            const formattedPassword = `${day}${month}${year}`;
-            if (password === formattedPassword) {
-                passwordValid = true;
+            contents.forEach(c => c.classList.add('hidden'));
+            const firstTarget = tabs[0].getAttribute('data-tab');
+            if (firstTarget && document.getElementById(firstTarget)) {
+                document.getElementById(firstTarget).classList.remove('hidden');
             }
         }
-    }
-
-    if (passwordValid) {
-        currentUser = user;
-        document.getElementById('loginPage').classList.remove('active');
-        document.getElementById('mainApp').classList.remove('hidden');
-        showPage('homePage', document.querySelector('.nav-link'));
-        setupDashboard();
-    } else {
-        const errorDiv = document.getElementById('loginError');
-        errorDiv.classList.remove('hidden');
-    }
-}
-
-function handleLogout() {
-    currentUser = null;
-    document.getElementById('loginPage').classList.add('active');
-    document.getElementById('mainApp').classList.add('hidden');
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('loginError').classList.add('hidden');
-}
-
-function setupDashboard() {
-    document.getElementById('userName').innerText = currentUser.name;
-    document.getElementById('userRole').innerText = currentUser.role;
-    document.getElementById('welcomeName').innerText = currentUser.name.split(',')[0]; 
-
-    if (currentUser.role === 'Admin') {
-        document.getElementById('adminMenu').classList.remove('hidden');
-    } else {
-        document.getElementById('adminMenu').classList.add('hidden');
-    }
-    updateDashboardStats();
-}
-
-function updateDashboardStats() {
-    const today = getTodayDateString();
-
-    // --- Update Your Attendance Status ---
-    const guruStatusEl = document.getElementById('guruStatus');
-    const guruTimeEl = document.getElementById('guruTime');
-
-    if (currentUser) {
-        const absenRecord = mockAbsensiDatabase.personal[today]?.[currentUser.nip];
-        if (absenRecord && absenRecord.masuk && absenRecord.pulang) {
-            guruStatusEl.innerText = 'Hadir';
-            guruTimeEl.innerText = `Pulang pukul ${absenRecord.pulang} WIB`;
-        } else if (absenRecord && absenRecord.masuk) {
-            guruStatusEl.innerText = 'Sudah Masuk';
-            guruTimeEl.innerText = `Masuk pukul ${absenRecord.masuk} WIB`;
-        } else {
-            guruStatusEl.innerText = 'Belum Absen';
-            guruTimeEl.innerText = 'Silakan lakukan absensi hari ini.';
-        }
-    }
-
-    // --- Update Student Attendance Status ---
-    const siswaHadirPersenEl = document.getElementById('siswaHadirPersen');
-    const siswaHadirDetailEl = document.getElementById('siswaHadirDetail');
-
-    let totalSiswa = 0;
-    let totalHadir = 0;
-
-    Object.values(mockSiswa).forEach(kelas => {
-        totalSiswa += kelas.length;
-    });
-
-    const absensiHariIni = mockAbsensiDatabase.siswa[today];
-    if (absensiHariIni) {
-        Object.values(absensiHariIni).forEach(kelas => {
-            Object.values(kelas).forEach(absen => {
-                if (absen.status === 'H') {
-                    totalHadir++;
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove(...activeTabStyle);
+                    t.classList.add(...defaultTabStyle);
+                });
+                tab.classList.add(...activeTabStyle);
+                tab.classList.remove(...defaultTabStyle);
+                contents.forEach(content => content.classList.add('hidden'));
+                const targetId = tab.getAttribute('data-tab');
+                if (targetId && document.getElementById(targetId)) {
+                    document.getElementById(targetId).classList.remove('hidden');
                 }
             });
         });
     }
-
-    if (totalSiswa > 0) {
-        const persentase = totalHadir === 0 ? 0 : ((totalHadir / totalSiswa) * 100).toFixed(1);
-        siswaHadirPersenEl.innerText = `${persentase}%`;
-        siswaHadirDetailEl.innerText = `${totalHadir} dari ${totalSiswa} siswa hadir`;
-    } else {
-        siswaHadirPersenEl.innerText = `N/A`;
-        siswaHadirDetailEl.innerText = `Tidak ada data siswa.`;
+    function handleLogin() {
+        document.getElementById('loginText').classList.add('hidden');
+        document.getElementById('loginSpinner').classList.remove('hidden');
+        document.getElementById('loginButton').disabled = true;
+        document.getElementById('loginError').classList.add('hidden');
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const user = mockUsers[username];
+        let passwordValid = false;
+        setTimeout(() => {
+            if (user) {
+                if (user.role === 'Admin' && user.password === password) {
+                    passwordValid = true;
+                } else if (user.tglLahir) {
+                    const [year, month, day] = user.tglLahir.split('-');
+                    const formattedPassword = `${day}${month}${year}`;
+                    if (password === formattedPassword) {
+                        passwordValid = true;
+                    }
+                }
+            }
+            if (passwordValid) {
+                currentUser = user;
+                document.getElementById('loginPage').classList.remove('active');
+                document.getElementById('mainApp').classList.remove('hidden');
+                setupDashboard();
+                showPage('homePage', document.querySelector('.nav-link[data-page="homePage"]'));
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+            document.getElementById('loginText').classList.remove('hidden');
+            document.getElementById('loginSpinner').classList.add('hidden');
+            document.getElementById('loginButton').disabled = false;
+        }, 500);
     }
-}
-
-
-// --- FUNGSI WAKTU & TANGGAL ---
-function updateDate() {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const today = new Date().toLocaleDateString('id-ID', options);
-    const currentDateEl = document.getElementById('currentDate');
-    if (currentDateEl) currentDateEl.innerText = today;
-}
-
-function getTodayDateString() {
-    const now = new Date();
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const dd = String(now.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-}
-
-
-function setAbsenInputsToNow(dateInputId, timeInputId) {
-    const now = new Date();
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const dd = String(now.getDate()).padStart(2, '0');
-    const hh = String(now.getHours()).padStart(2, '0');
-    const min = String(now.getMinutes()).padStart(2, '0');
-
-    const dateInput = document.getElementById(dateInputId);
-    if(dateInput) dateInput.value = `${yyyy}-${mm}-${dd}`;
-    
-    if(timeInputId) {
-        const timeInput = document.getElementById(timeInputId);
-        if(timeInput) timeInput.value = `${hh}:${min}`;
+    function handleLogout() {
+        currentUser = null;
+        document.getElementById('loginPage').classList.add('active');
+        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
     }
-}
-
-
-// --- FUNGSI ABSENSI PERSONAL ---
-function handleAbsenStaff(tipe) {
-    const date = document.getElementById('inputTanggalAbsen').value;
-    const time = document.getElementById('inputWaktuAbsen').value;
-
-    if (!date || !time) {
-        alert("Tanggal dan Waktu tidak boleh kosong!");
-        return;
+    function setupDashboard() {
+        document.getElementById('userName').innerText = currentUser.name;
+        document.getElementById('userRole').innerText = currentUser.role;
+        document.getElementById('welcomeName').innerText = currentUser.name.split(',')[0];
+        if (currentUser.role === 'Admin') {
+            document.getElementById('adminMenu').classList.remove('hidden');
+        } else {
+            document.getElementById('adminMenu').classList.add('hidden');
+        }
+        updateDashboardStats();
     }
-
-    if (!mockAbsensiDatabase.personal[date]) {
-        mockAbsensiDatabase.personal[date] = {};
+    function updateDashboardStats() {
+        const today = getTodayDateString();
+        const guruStatusEl = document.getElementById('guruStatus');
+        const guruTimeEl = document.getElementById('guruTime');
+        const siswaHadirPersenEl = document.getElementById('siswaHadirPersen');
+        const siswaHadirDetailEl = document.getElementById('siswaHadirDetail');
+        if (currentUser) {
+            const absenRecord = mockAbsensiDatabase.personal[today]?.[currentUser.nip];
+            if (absenRecord && absenRecord.masuk && absenRecord.pulang) {
+                guruStatusEl.innerText = 'Hadir';
+                guruTimeEl.innerText = `Pulang pukul ${absenRecord.pulang} WIB`;
+            } else if (absenRecord && absenRecord.masuk) {
+                guruStatusEl.innerText = 'Sudah Masuk';
+                guruTimeEl.innerText = `Masuk pukul ${absenRecord.masuk} WIB`;
+            } else {
+                guruStatusEl.innerText = 'Belum Absen';
+                guruTimeEl.innerText = 'Silakan lakukan absensi hari ini.';
+            }
+        }
+        let totalSiswa = 0;
+        let totalHadir = 0;
+        Object.values(mockSiswa).forEach(kelas => totalSiswa += kelas.length);
+        const absensiHariIni = mockAbsensiDatabase.siswa[today];
+        if (absensiHariIni) {
+            Object.values(absensiHariIni).forEach(kelas => {
+                Object.values(kelas).forEach(absen => {
+                    if (absen.status === 'H') totalHadir++;
+                });
+            });
+        }
+        if (totalSiswa > 0) {
+            const persentase = totalHadir === 0 ? 0 : ((totalHadir / totalSiswa) * 100).toFixed(1);
+            siswaHadirPersenEl.innerText = `${persentase}%`;
+            siswaHadirDetailEl.innerText = `${totalHadir} dari ${totalSiswa} siswa hadir`;
+        } else {
+            siswaHadirPersenEl.innerText = `N/A`;
+            siswaHadirDetailEl.innerText = `Tidak ada data siswa.`;
+        }
     }
-    if (!mockAbsensiDatabase.personal[date][currentUser.nip]) {
-        mockAbsensiDatabase.personal[date][currentUser.nip] = { masuk: null, pulang: null };
+    function updateDate() {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString('id-ID', options);
     }
-
-    const absenRecord = mockAbsensiDatabase.personal[date][currentUser.nip];
-
-    if (tipe === 'masuk') {
-        absenRecord.masuk = time;
-        showSuccessToast(`Absen masuk pukul ${time} berhasil dicatat.`);
-    } else if (tipe === 'pulang') {
-        if (!absenRecord.masuk) {
-            alert("Anda harus absen masuk terlebih dahulu sebelum absen pulang!");
+    function getTodayDateString() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+    function setAbsenInputsToNow(dateInputId, timeInputId) {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const hh = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+        const dateInput = document.getElementById(dateInputId);
+        if(dateInput) dateInput.value = `${yyyy}-${mm}-${dd}`;
+        if(timeInputId) {
+            const timeInput = document.getElementById(timeInputId);
+            if(timeInput) timeInput.value = `${hh}:${min}`;
+        }
+    }
+    function handleAbsenStaff(tipe) {
+        const date = document.getElementById('inputTanggalAbsen').value;
+        const time = document.getElementById('inputWaktuAbsen').value;
+        if (!date || !time) {
+            alert("Tanggal dan Waktu tidak boleh kosong!");
             return;
         }
-        absenRecord.pulang = time;
-        showSuccessToast(`Absen pulang pukul ${time} berhasil dicatat.`);
+        if (!mockAbsensiDatabase.personal[date]) mockAbsensiDatabase.personal[date] = {};
+        if (!mockAbsensiDatabase.personal[date][currentUser.nip]) mockAbsensiDatabase.personal[date][currentUser.nip] = { masuk: null, pulang: null };
+        const absenRecord = mockAbsensiDatabase.personal[date][currentUser.nip];
+        if (tipe === 'masuk') {
+            absenRecord.masuk = time;
+            showSuccessToast(`Absen masuk pukul ${time} berhasil dicatat.`);
+        } else if (tipe === 'pulang') {
+            if (!absenRecord.masuk) {
+                alert("Anda harus absen masuk terlebih dahulu sebelum absen pulang!");
+                return;
+            }
+            absenRecord.pulang = time;
+            showSuccessToast(`Absen pulang pukul ${time} berhasil dicatat.`);
+        }
+        updatePersonalAbsenStatus(date);
     }
-    
-    console.log("Database Absensi Personal Updated:", mockAbsensiDatabase.personal);
-    updatePersonalAbsenStatus(date);
-    updateDashboardStats();
-}
-
-function updatePersonalAbsenStatus(date) {
-    const statusDiv = document.getElementById('personalAbsenStatus');
-    const btnMasuk = document.getElementById('btnAbsenMasuk');
-    const btnPulang = document.getElementById('btnAbsenPulang');
-    
-    const absenRecord = mockAbsensiDatabase.personal[date]?.[currentUser.nip];
-
-    if (!absenRecord || (!absenRecord.masuk && !absenRecord.pulang)) {
-        statusDiv.classList.add('hidden');
-        btnMasuk.disabled = false;
-        btnPulang.disabled = true;
-    } else {
-        let statusText = 'Status Hari Ini: ';
-        if (absenRecord.masuk) {
-            statusText += `Masuk <strong>${absenRecord.masuk}</strong>. `;
-            btnMasuk.disabled = true;
-            btnPulang.disabled = false;
-        } else {
+    function updatePersonalAbsenStatus(date) {
+        const statusDiv = document.getElementById('personalAbsenStatus');
+        const btnMasuk = document.getElementById('btnAbsenMasuk');
+        const btnPulang = document.getElementById('btnAbsenPulang');
+        const absenRecord = mockAbsensiDatabase.personal[date]?.[currentUser.nip];
+        if (!absenRecord || (!absenRecord.masuk && !absenRecord.pulang)) {
+            statusDiv.classList.add('hidden');
             btnMasuk.disabled = false;
             btnPulang.disabled = true;
-        }
-
-        if (absenRecord.pulang) {
-            statusText += `Pulang <strong>${absenRecord.pulang}</strong>.`;
-            btnPulang.disabled = true;
-        }
-        
-        statusDiv.innerHTML = statusText;
-        statusDiv.className = 'mb-6 p-4 rounded-lg text-sm bg-blue-100 text-blue-800';
-    }
-}
-
-
-// --- FUNGSI ABSENSI SISWA ---
-function loadSiswaForAbsen() {
-    const kelas = document.getElementById('pilihKelas').value;
-    const tbody = document.getElementById('daftarSiswa');
-    const siswa = mockSiswa[kelas];
-    
-    tbody.innerHTML = ''; 
-
-    if (!siswa) {
-        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-6 text-gray-400">Pilih kelas yang valid.</td></tr>';
-        return;
-    }
-
-    siswa.forEach((s, index) => {
-        const row = `
-            <tr class="bg-white border-b hover:bg-gray-50">
-                <td class="px-6 py-4">${index + 1}</td>
-                <td class="px-6 py-4 font-medium text-gray-900">${s.name}</td>
-                <td class="px-6 py-4">${s.nis}</td>
-                <td class="px-6 py-4">
-                    <div class="flex justify-center items-center space-x-1" role="group">
-                        <input type="radio" id="h-${s.nis}" name="status-${s.nis}" value="H" class="hidden peer/h" checked>
-                        <label for="h-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-green-600 bg-green-100 rounded-full cursor-pointer peer-checked/h:bg-green-600 peer-checked/h:text-white transition">H</label>
-                        
-                        <input type="radio" id="s-${s.nis}" name="status-${s.nis}" value="S" class="hidden peer/s">
-                        <label for="s-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-blue-600 bg-blue-100 rounded-full cursor-pointer peer-checked/s:bg-blue-600 peer-checked/s:text-white transition">S</label>
-                        
-                        <input type="radio" id="i-${s.nis}" name="status-${s.nis}" value="I" class="hidden peer/i">
-                        <label for="i-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-yellow-600 bg-yellow-100 rounded-full cursor-pointer peer-checked/i:bg-yellow-600 peer-checked/i:text-white transition">I</label>
-                        
-                        <input type="radio" id="a-${s.nis}" name="status-${s.nis}" value="A" class="hidden peer/a">
-                        <label for="a-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-red-600 bg-red-100 rounded-full cursor-pointer peer-checked/a:bg-red-600 peer-checked/a:text-white transition">A</label>
-                    </div>
-                </td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
-}
-
-function simpanAbsensiSiswa() {
-    const tanggal = document.getElementById('inputTanggalAbsenSiswa').value;
-    const kelas = document.getElementById('pilihKelas').value;
-    if (!tanggal || !kelas || kelas === "-- Pilih Kelas --") {
-        alert("Harap pilih tanggal dan kelas terlebih dahulu!");
-        return;
-    }
-
-    if (!mockAbsensiDatabase.siswa[tanggal]) {
-        mockAbsensiDatabase.siswa[tanggal] = {};
-    }
-    if (!mockAbsensiDatabase.siswa[tanggal][kelas]) {
-        mockAbsensiDatabase.siswa[tanggal][kelas] = {};
-    }
-
-    const siswaDiKelas = mockSiswa[kelas];
-    if (siswaDiKelas) {
-        siswaDiKelas.forEach(siswa => {
-            const status = document.querySelector(`input[name="status-${siswa.nis}"]:checked`).value;
-            mockAbsensiDatabase.siswa[tanggal][kelas][siswa.nis] = { status: status };
-        });
-    }
-
-    console.log("Database Absensi Siswa:", mockAbsensiDatabase.siswa);
-    showSuccessToast(`Absensi kelas ${kelas} tanggal ${tanggal} berhasil disimpan!`);
-    updateDashboardStats();
-}
-
-// --- FUNGSI LIHAT ABSENSI HARIAN ---
-function renderAbsensiHarian() {
-    renderAbsensiHarianGuru();
-    renderAbsensiHarianSiswa();
-}
-
-function renderAbsensiHarianGuru() {
-    const today = getTodayDateString();
-    const tbody = document.querySelector('#guru tbody');
-    tbody.innerHTML = '';
-    
-    const staff = Object.values(mockUsers).filter(u => u.role === 'Guru' || u.role === 'Pegawai');
-    
-    if (staff.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4">Tidak ada data personil.</td></tr>';
-        return;
-    }
-
-    staff.forEach(person => {
-        const absenRecord = mockAbsensiDatabase.personal[today]?.[person.nip];
-        let statusHtml = '<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Belum Absen</span>';
-        let masuk = '-';
-        let pulang = '-';
-
-        if (absenRecord) {
-            if (absenRecord.masuk && absenRecord.pulang) {
-                statusHtml = '<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Hadir</span>';
-                masuk = absenRecord.masuk;
-                pulang = absenRecord.pulang;
-            } else if (absenRecord.masuk) {
-                statusHtml = '<span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Sudah Masuk</span>';
-                masuk = absenRecord.masuk;
+        } else {
+            let statusText = 'Status Hari Ini: ';
+            if (absenRecord.masuk) {
+                statusText += `Masuk <strong>${absenRecord.masuk}</strong>. `;
+                btnMasuk.disabled = true;
+                btnPulang.disabled = false;
+            } else {
+                btnMasuk.disabled = false;
+                btnPulang.disabled = true;
             }
-        }
-
-        const row = `
-            <tr class="bg-white border-b">
-                <td class="px-6 py-4 font-medium text-gray-900">${person.name}</td>
-                <td class="px-6 py-4">${statusHtml}</td>
-                <td class="px-6 py-4">${masuk}</td>
-                <td class="px-6 py-4">${pulang}</td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
-}
-
-function renderAbsensiHarianSiswa() {
-    const today = getTodayDateString();
-    const selectedKelas = document.getElementById('pilihKelasLihat').value;
-    const tbody = document.querySelector('#siswa tbody');
-    tbody.innerHTML = '';
-
-    if (!selectedKelas) {
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center p-6 text-gray-400">Silakan pilih kelas untuk melihat absensi.</td></tr>';
-        return;
-    }
-
-    const siswaDiKelas = mockSiswa[selectedKelas];
-    const absensiKelasHariIni = mockAbsensiDatabase.siswa[today]?.[selectedKelas];
-
-    if (!siswaDiKelas) {
-        tbody.innerHTML = `<tr><td colspan="3" class="text-center p-6 text-gray-400">Kelas tidak ditemukan.</td></tr>`;
-        return;
-    }
-    
-    if (!absensiKelasHariIni) {
-        tbody.innerHTML = `<tr><td colspan="3" class="text-center p-6 text-gray-400">Belum ada data absensi untuk kelas ${selectedKelas} hari ini.</td></tr>`;
-        return;
-    }
-
-    const statusMap = {
-        H: { text: 'Hadir', class: 'bg-green-100 text-green-800' },
-        S: { text: 'Sakit', class: 'bg-blue-100 text-blue-800' },
-        I: { text: 'Izin', class: 'bg-yellow-100 text-yellow-800' },
-        A: { text: 'Alfa', class: 'bg-red-100 text-red-800' }
-    };
-
-    siswaDiKelas.forEach(siswa => {
-        const absenRecord = absensiKelasHariIni[siswa.nis];
-        const statusInfo = absenRecord ? statusMap[absenRecord.status] : null;
-        const statusHtml = statusInfo ? `<span class="${statusInfo.class} text-xs font-medium px-2.5 py-0.5 rounded-full">${statusInfo.text}</span>` : '<span>-</span>';
-        
-        const row = `
-            <tr class="bg-white border-b">
-                <td class="px-6 py-4 font-medium text-gray-900">${siswa.name}</td>
-                <td class="px-6 py-4">${statusHtml}</td>
-                <td class="px-6 py-4">-</td> <!-- Keterangan placeholder -->
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
-}
-
-// --- FUNGSI REKAP ABSENSI ---
-function populateBulanDropdown() {
-    const selects = [
-        document.getElementById('pilihBulanRekapSiswa'), 
-        document.getElementById('pilihBulanRekapGuru'),
-    ];
-    const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    const currentMonth = new Date().getMonth();
-
-    selects.forEach(select => {
-        if (!select) return;
-        select.innerHTML = '';
-        bulan.forEach((namaBulan, index) => {
-            const option = document.createElement('option');
-            option.value = index; // month is 0-indexed
-            option.textContent = namaBulan;
-            if (index === currentMonth) {
-                option.selected = true;
+            if (absenRecord.pulang) {
+                statusText += `Pulang <strong>${absenRecord.pulang}</strong>.`;
+                btnPulang.disabled = true;
             }
-            select.appendChild(option);
-        });
-    });
-}
-
-function renderRekapSiswa() {
-    const kelas = document.getElementById('pilihKelasRekap').value;
-    const tbody = document.getElementById('rekapTabelBodySiswa');
-    const siswa = mockSiswa[kelas];
-    const month = parseInt(document.getElementById('pilihBulanRekapSiswa').value);
-    const year = parseInt(document.getElementById('pilihTahunRekapSiswa').value);
-    
-    tbody.innerHTML = '';
-    
-    if (!siswa) {
-        tbody.innerHTML = '<tr><td colspan="37" class="p-6 text-gray-400">Pilih kelas untuk melihat rekapitulasi.</td></tr>';
-        return;
-    }
-    
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const colors = { H: 'bg-green-100', S: 'bg-blue-100', I: 'bg-yellow-100', A: 'bg-red-100' };
-
-    siswa.forEach((s, index) => {
-        let row = `<tr class="text-center">
-            <td class="border border-gray-300 p-1">${index + 1}</td>
-            <td class="border border-gray-300 p-1 text-left">${s.name}</td>`;
-        
-        let counts = { H: 0, S: 0, I: 0, A: 0 };
-        
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const absen = mockAbsensiDatabase.siswa[dateStr]?.[kelas]?.[s.nis];
-            const status = absen ? absen.status : '';
-            if(status) counts[status]++;
-            row += `<td class="border border-gray-300 ${colors[status] || ''}">${status}</td>`;
+            statusDiv.innerHTML = statusText;
+            statusDiv.className = 'mb-6 p-4 rounded-lg text-sm bg-blue-100 text-blue-800';
+            statusDiv.classList.remove('hidden');
         }
-         // Pad with empty cells if month < 31 days
-        for (let i = daysInMonth + 1; i <= 31; i++) {
-             row += `<td class="border border-gray-300 bg-gray-200"></td>`;
-        }
-        
-        row += `
-            <td class="border border-gray-300 font-semibold bg-green-100">${counts.H}</td>
-            <td class="border border-gray-300 font-semibold bg-blue-100">${counts.S}</td>
-            <td class="border border-gray-300 font-semibold bg-yellow-100">${counts.I}</td>
-            <td class="border border-gray-300 font-semibold bg-red-100">${counts.A}</td>
-        </tr>`;
-        
-        tbody.innerHTML += row;
-    });
-}
-
-function renderRekapGuruPegawai() {
-    const tbody = document.getElementById('rekapTabelBodyGuru');
-    const personil = Object.values(mockUsers).filter(user => user.role === 'Guru' || user.role === 'Pegawai');
-    const month = parseInt(document.getElementById('pilihBulanRekapGuru').value);
-    const year = parseInt(document.getElementById('pilihTahunRekapGuru').value);
-
-    tbody.innerHTML = '';
-    
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const colors = { H: 'bg-green-100', S: 'bg-blue-100', I: 'bg-yellow-100', A: 'bg-red-100' };
-
-    personil.forEach((p, index) => {
-        let row = `<tr class="text-center">
-            <td class="border border-gray-300 p-1">${index + 1}</td>
-            <td class="border border-gray-300 p-1 text-left">${p.name}</td>
-            <td class="border border-gray-300 p-1 text-left">${p.nip}</td>`;
-        
-        let counts = { H: 0, S: 0, I: 0, A: 0 };
-
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(year, month, day);
-            const dayOfWeek = date.getDay(); // 0=Sunday, 6=Saturday
-            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const absen = mockAbsensiDatabase.personal[dateStr]?.[p.nip];
-            let status = '';
-            
-            if (dayOfWeek !== 0) { // Jika hari kerja (Senin-Sabtu)
-                if (absen && absen.masuk && absen.pulang) {
-                    status = 'H';
-                } else {
-                    status = 'A'; // Alfa jika hanya masuk atau tidak absen sama sekali
-                }
-            } // Hari Minggu dikosongkan
-            
-            if (status) counts[status]++;
-            
-            const cellColor = dayOfWeek === 0 ? 'bg-gray-200' : colors[status] || '';
-            row += `<td class="border border-gray-300 ${cellColor}">${status}</td>`;
-        }
-        
-        for (let i = daysInMonth + 1; i <= 31; i++) {
-             row += `<td class="border border-gray-300 bg-gray-200"></td>`;
-        }
-        
-        row += `
-            <td class="border border-gray-300 font-semibold bg-green-100">${counts.H}</td>
-            <td class="border border-gray-300 font-semibold bg-blue-100">${counts.S}</td>
-            <td class="border border-gray-300 font-semibold bg-yellow-100">${counts.I}</td>
-            <td class="border border-gray-300 font-semibold bg-red-100">${counts.A}</td>
-        </tr>`;
-        
-        tbody.innerHTML += row;
-    });
-}
-
-
-function printRekap() {
-    const activeTabContent = document.querySelector('.rekap-tab-content:not(.hidden)');
-    let kopSurat, bulanEl, tahunEl;
-
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const today = new Date().toLocaleDateString('id-ID', options);
-    document.querySelectorAll('.print-date').forEach(el => el.innerText = today);
-    
-    const namaKepsek = document.getElementById('namaKepsek').value || '(Nama Kepala Sekolah)';
-    const nipKepsek = document.getElementById('nipKepsek').value || '(NIP Kepala Sekolah)';
-
-    if (activeTabContent.id === 'rekapSiswa') {
-        kopSurat = document.getElementById('kopSuratSiswa');
-        bulanEl = document.getElementById('pilihBulanRekapSiswa');
-        tahunEl = document.getElementById('pilihTahunRekapSiswa');
-        const kelasEl = document.getElementById('pilihKelasRekap');
-        kopSurat.querySelector('.rekapKelas').innerText = kelasEl.value;
-
-        const kelasInfo = mockKelas.find(k => k.id === kelasEl.value);
-        const waliKelas = kelasInfo ? mockUsers[kelasInfo.waliKelasNip] : null;
-
-        document.getElementById('printNamaWaliKelas').innerText = waliKelas ? waliKelas.name : '(Nama Wali Kelas)';
-        document.getElementById('printNipWaliKelas').innerText = waliKelas ? waliKelas.nip : '(NIP Wali Kelas)';
-
-    } else { // rekapGuru
-        kopSurat = document.getElementById('kopSuratGuru');
-        bulanEl = document.getElementById('pilihBulanRekapGuru');
-        tahunEl = document.getElementById('pilihTahunRekapGuru');
-        document.getElementById('printNamaKepsek').innerText = namaKepsek;
-        document.getElementById('printNipKepsek').innerText = nipKepsek;
     }
-    
-    kopSurat.querySelector('.rekapBulan').innerText = bulanEl.options[bulanEl.selectedIndex].text;
-    kopSurat.querySelector('.rekapTahun').innerText = tahunEl.value;
-    
-    kopSurat.classList.remove('hidden');
-    window.print();
-    kopSurat.classList.add('hidden');
-}
-
-// --- FUNGSI PANEL ADMIN ---
-
-// MODAL
-function openModal(title, bodyHtml) {
-    document.getElementById('modalTitle').innerText = title;
-    document.getElementById('modalBody').innerHTML = bodyHtml;
-    document.getElementById('formModal').classList.remove('hidden');
-    document.getElementById('formModal').classList.add('flex');
-}
-
-function closeModal() {
-    document.getElementById('formModal').classList.add('hidden');
-    document.getElementById('formModal').classList.remove('flex');
-}
-
-// Manajemen Personil
-function renderManajemenPersonil() {
-    const tbody = document.getElementById('personilTableBody');
-    tbody.innerHTML = '';
-    Object.values(mockUsers).filter(u => u.role !== 'Admin').forEach(user => {
-        const row = `
-            <tr class="bg-white border-b">
-                <td class="px-6 py-4 font-medium text-gray-900">${user.name}</td>
-                <td class="px-6 py-4">${user.nip}</td>
-                <td class="px-6 py-4">${user.role}</td>
-                <td class="px-6 py-4 space-x-2">
-                    <button onclick="showPersonilForm('${user.nip}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
-                    <button onclick="hapusPersonil('${user.nip}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
-}
-
-function showPersonilForm(nip = null) {
-    const user = nip ? mockUsers[nip] : null;
-    const title = user ? 'Edit Personil' : 'Tambah Personil';
-    const bodyHtml = `
-        <div class="space-y-4">
-            <div>
-                <label class="text-sm font-medium text-gray-600">NIP / ID</label>
-                <input type="text" id="formNip" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.nip || ''}" ${user ? 'readonly' : ''}>
-            </div>
-            <div>
-                <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
-                <input type="text" id="formNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.name || ''}">
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="text-sm font-medium text-gray-600">Tempat Lahir</label>
-                    <input type="text" id="formTempatLahir" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.tempatLahir || ''}">
-                </div>
-                <div>
-                    <label class="text-sm font-medium text-gray-600">Tanggal Lahir</label>
-                    <input type="date" id="formTglLahir" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.tglLahir || ''}">
-                </div>
-            </div>
-            <div>
-                <label class="text-sm font-medium text-gray-600">No. Handphone</label>
-                <input type="tel" id="formNoHp" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.noHp || ''}">
-            </div>
-             <div>
-                <label class="text-sm font-medium text-gray-600">Peran</label>
-                <select id="formPeran" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">
-                    <option value="Guru" ${user?.role === 'Guru' ? 'selected' : ''}>Guru</option>
-                    <option value="Pegawai" ${user?.role === 'Pegawai' ? 'selected' : ''}>Pegawai</option>
-                </select>
-            </div>
-            <p class="text-xs text-gray-500 italic">Password login akan diatur otomatis berdasarkan tanggal lahir dengan format: <strong>ddmmyyyy</strong> (contoh: 01011990).</p>
-            <div class="flex justify-end gap-2">
-                <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
-                <button onclick="simpanPersonil()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
-            </div>
-        </div>
-    `;
-    openModal(title, bodyHtml);
-}
-
-function simpanPersonil() {
-    const nip = document.getElementById('formNip').value;
-    const name = document.getElementById('formNama').value;
-    const role = document.getElementById('formPeran').value;
-    const tempatLahir = document.getElementById('formTempatLahir').value;
-    const tglLahir = document.getElementById('formTglLahir').value;
-    const noHp = document.getElementById('formNoHp').value;
-
-    if (!nip || !name || !tglLahir) {
-        alert('NIP, Nama, dan Tanggal Lahir tidak boleh kosong!');
-        return;
-    }
-
-    const existingUser = mockUsers[nip];
-    if (existingUser) { // Edit
-        existingUser.name = name;
-        existingUser.role = role;
-        existingUser.tempatLahir = tempatLahir;
-        existingUser.tglLahir = tglLahir;
-        existingUser.noHp = noHp;
-    } else { // Tambah
-        mockUsers[nip] = { nip, name, role, tempatLahir, tglLahir, noHp };
-    }
-    
-    showSuccessToast('Data personil berhasil disimpan!');
-    renderManajemenPersonil();
-    closeModal();
-}
-
-function hapusPersonil(nip) {
-    if (confirm(`Apakah Anda yakin ingin menghapus personil dengan NIP ${nip}?`)) {
-        delete mockUsers[nip];
-        showSuccessToast('Data personil berhasil dihapus.');
-        renderManajemenPersonil();
-    }
-}
-
-// Manajemen Kelas
-function renderManajemenKelas() {
-    const tbody = document.getElementById('kelasTableBody');
-    tbody.innerHTML = '';
-    mockKelas.forEach(kelas => {
-        const jumlahSiswa = mockSiswa[kelas.id]?.length || 0;
-        const waliKelas = mockUsers[kelas.waliKelasNip];
-        const row = `
-            <tr class="bg-white border-b">
-                <td class="px-6 py-4 font-medium text-gray-900">${kelas.name}</td>
-                <td class="px-6 py-4">${waliKelas ? waliKelas.name : '<span class="text-gray-400">Belum diatur</span>'}</td>
-                <td class="px-6 py-4">${jumlahSiswa}</td>
-                <td class="px-6 py-4 space-x-2">
-                    <button onclick="showKelasForm('${kelas.id}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
-                    <button onclick="hapusKelas('${kelas.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
-}
-
-function showKelasForm(id = null) {
-    const kelas = id ? mockKelas.find(k => k.id === id) : null;
-    const title = kelas ? 'Edit Kelas' : 'Tambah Kelas Baru';
-    
-    const teachers = Object.values(mockUsers).filter(u => u.role === 'Guru');
-    let teacherOptions = '<option value="">-- Pilih Wali Kelas --</option>';
-    teacherOptions += teachers.map(t => `<option value="${t.nip}" ${kelas?.waliKelasNip === t.nip ? 'selected' : ''}>${t.name}</option>`).join('');
-
-    const bodyHtml = `
-         <div class="space-y-4">
-            <div>
-                <label class="text-sm font-medium text-gray-600">ID Kelas (cth: IX-C)</label>
-                <input type="text" id="formKelasId" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${kelas?.id || ''}" ${kelas ? 'readonly' : ''}>
-            </div>
-            <div>
-                <label class="text-sm font-medium text-gray-600">Nama Kelas (cth: IX C)</label>
-                <input type="text" id="formKelasNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${kelas?.name || ''}">
-            </div>
-             <div>
-                <label class="text-sm font-medium text-gray-600">Wali Kelas</label>
-                <select id="formWaliKelas" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">${teacherOptions}</select>
-            </div>
-            <div class="flex justify-end gap-2">
-                <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
-                <button onclick="simpanKelas()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
-            </div>
-        </div>
-    `;
-    openModal(title, bodyHtml);
-}
-
-function simpanKelas() {
-    const id = document.getElementById('formKelasId').value.toUpperCase();
-    const name = document.getElementById('formKelasNama').value;
-    const waliKelasNip = document.getElementById('formWaliKelas').value;
-
-    if (!id || !name) {
-        alert('ID dan Nama Kelas tidak boleh kosong!');
-        return;
-    }
-    
-    const existingKelas = mockKelas.find(k => k.id === id);
-
-    if (existingKelas) { // Edit
-        existingKelas.name = name;
-        existingKelas.waliKelasNip = waliKelasNip;
-    } else { // Tambah
-        if (mockKelas.find(k => k.id === id)) {
-            alert('ID Kelas sudah ada!');
+    function loadSiswaForAbsen() {
+        const kelasId = document.getElementById('pilihKelas').value;
+        const tbody = document.getElementById('daftarSiswa');
+        const siswaList = mockSiswa[kelasId];
+        tbody.innerHTML = '';
+        if (!siswaList) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center p-6 text-gray-400">Pilih kelas yang valid.</td></tr>';
             return;
         }
-        mockKelas.push({ id, name, waliKelasNip });
-        mockSiswa[id] = []; // Buat array kosong untuk siswa di kelas baru
+        siswaList.forEach((s, index) => {
+            const row = `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-4">${index + 1}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900">${s.name}</td>
+                    <td class="px-6 py-4">${s.nis}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex justify-center items-center space-x-1" role="group">
+                            <input type="radio" id="h-${s.nis}" name="status-${s.nis}" value="H" class="hidden peer/h" checked>
+                            <label for="h-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-green-600 bg-green-100 rounded-full cursor-pointer peer-checked/h:bg-green-600 peer-checked/h:text-white transition">H</label>
+                            <input type="radio" id="s-${s.nis}" name="status-${s.nis}" value="S" class="hidden peer/s">
+                            <label for="s-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-blue-600 bg-blue-100 rounded-full cursor-pointer peer-checked/s:bg-blue-600 peer-checked/s:text-white transition">S</label>
+                            <input type="radio" id="i-${s.nis}" name="status-${s.nis}" value="I" class="hidden peer/i">
+                            <label for="i-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-yellow-600 bg-yellow-100 rounded-full cursor-pointer peer-checked/i:bg-yellow-600 peer-checked/i:text-white transition">I</label>
+                            <input type="radio" id="a-${s.nis}" name="status-${s.nis}" value="A" class="hidden peer/a">
+                            <label for="a-${s.nis}" class="w-10 h-10 flex items-center justify-center text-xs font-bold text-red-600 bg-red-100 rounded-full cursor-pointer peer-checked/a:bg-red-600 peer-checked/a:text-white transition">A</label>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
     }
-
-    showSuccessToast('Data kelas berhasil disimpan.');
-    renderManajemenKelas();
-    updateAllKelasDropdowns();
-    closeModal();
-}
-
-
-function hapusKelas(id) {
-     if (confirm(`Yakin ingin menghapus kelas ${id}? Ini akan menghapus semua siswa di dalamnya.`)) {
-         mockKelas = mockKelas.filter(k => k.id !== id);
-         delete mockSiswa[id];
-         showSuccessToast('Kelas berhasil dihapus.');
-         renderManajemenKelas();
-         updateAllKelasDropdowns();
-     }
-}
-
-// Manajemen Siswa
-function renderManajemenSiswa() {
-    const container = document.getElementById('siswaListContainer');
-    const filterKelasId = document.getElementById('filterKelasSiswa').value;
-    container.innerHTML = '';
-    
-    const kelasToRender = filterKelasId ? mockKelas.filter(k => k.id === filterKelasId) : mockKelas;
-
-    if (kelasToRender.length === 0 && filterKelasId) {
-        container.innerHTML = `<p class="text-center text-gray-500 mt-4">Kelas tidak ditemukan.</p>`;
-        return;
-    }
-    
-    kelasToRender.forEach(kelas => {
-        const siswaDiKelas = mockSiswa[kelas.id] || [];
-        let siswaHtml = siswaDiKelas.map(siswa => `
-            <tr class="bg-white border-b">
-                <td class="px-6 py-4">${siswa.nis}</td>
-                <td class="px-6 py-4 font-medium text-gray-900">${siswa.name}</td>
-                <td class="px-6 py-4">${siswa.namaOrtu || '-'}</td>
-                <td class="px-6 py-4">${siswa.noHp || '-'}</td>
-                <td class="px-6 py-4 space-x-2">
-                    <button onclick="showSiswaForm('${siswa.nis}', '${kelas.id}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
-                    <button onclick="hapusSiswa('${siswa.nis}', '${kelas.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-        `).join('');
-
-        if (siswaDiKelas.length === 0) {
-            siswaHtml = `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-400">Belum ada siswa di kelas ini.</td></tr>`;
+    function simpanAbsensiSiswa() {
+        const tanggal = document.getElementById('inputTanggalAbsenSiswa').value;
+        const kelas = document.getElementById('pilihKelas').value;
+        if (!tanggal || !kelas || kelas === "-- Pilih Kelas --") {
+            alert("Harap pilih tanggal dan kelas terlebih dahulu!");
+            return;
         }
-
-        const kelasTableHtml = `
-            <div class="mb-6">
-                <h4 class="text-lg font-semibold bg-gray-50 p-2 rounded-t-lg">${kelas.name}</h4>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-                            <tr>
-                                <th class="px-6 py-3">NIS</th>
-                                <th class="px-6 py-3">Nama</th>
-                                <th class="px-6 py-3">Nama Ortu</th>
-                                <th class="px-6 py-3">No. HP</th>
-                                <th class="px-6 py-3">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>${siswaHtml}</tbody>
-                    </table>
+        if (!mockAbsensiDatabase.siswa[tanggal]) mockAbsensiDatabase.siswa[tanggal] = {};
+        if (!mockAbsensiDatabase.siswa[tanggal][kelas]) mockAbsensiDatabase.siswa[tanggal][kelas] = {};
+        const siswaDiKelas = mockSiswa[kelas];
+        if (siswaDiKelas) {
+            siswaDiKelas.forEach(siswa => {
+                const status = document.querySelector(`input[name="status-${siswa.nis}"]:checked`).value;
+                mockAbsensiDatabase.siswa[tanggal][kelas][siswa.nis] = { status: status };
+            });
+        }
+        showSuccessToast(`Absensi kelas ${kelas} tanggal ${tanggal} berhasil disimpan!`);
+        updateDashboardStats();
+    }
+    function renderAbsensiHarian() {
+        renderAbsensiHarianGuru();
+        renderAbsensiHarianSiswa();
+    }
+    function renderAbsensiHarianGuru() {
+        const today = getTodayDateString();
+        const tbody = document.querySelector('#guru tbody');
+        tbody.innerHTML = '';
+        const staff = Object.values(mockUsers).filter(u => u.role === 'Guru' || u.role === 'Pegawai');
+        if (staff.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4">Tidak ada data personil.</td></tr>';
+            return;
+        }
+        staff.forEach(person => {
+            const absenRecord = mockAbsensiDatabase.personal[today]?.[person.nip];
+            let statusHtml = '<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Belum Absen</span>';
+            let masuk = '-';
+            let pulang = '-';
+            if (absenRecord) {
+                if (absenRecord.masuk && absenRecord.pulang) {
+                    statusHtml = '<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Hadir</span>';
+                    masuk = absenRecord.masuk;
+                    pulang = absenRecord.pulang;
+                } else if (absenRecord.masuk) {
+                    statusHtml = '<span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Sudah Masuk</span>';
+                    masuk = absenRecord.masuk;
+                }
+            }
+            const row = `
+                <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium text-gray-900">${person.name}</td>
+                    <td class="px-6 py-4">${statusHtml}</td>
+                    <td class="px-6 py-4">${masuk}</td>
+                    <td class="px-6 py-4">${pulang}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+    function renderAbsensiHarianSiswa() {
+        const today = getTodayDateString();
+        const selectedKelas = document.getElementById('pilihKelasLihat').value;
+        const tbody = document.querySelector('#siswa tbody');
+        tbody.innerHTML = '';
+        if (!selectedKelas) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center p-6 text-gray-400">Silakan pilih kelas untuk melihat absensi.</td></tr>';
+            return;
+        }
+        const siswaDiKelas = mockSiswa[selectedKelas];
+        const absensiKelasHariIni = mockAbsensiDatabase.siswa[today]?.[selectedKelas];
+        if (!siswaDiKelas) {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-center p-6 text-gray-400">Kelas tidak ditemukan.</td></tr>`;
+            return;
+        }
+        if (!absensiKelasHariIni) {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-center p-6 text-gray-400">Belum ada data absensi untuk kelas ${selectedKelas} hari ini.</td></tr>`;
+            return;
+        }
+        const statusMap = {
+            H: { text: 'Hadir', class: 'bg-green-100 text-green-800' },
+            S: { text: 'Sakit', class: 'bg-blue-100 text-blue-800' },
+            I: { text: 'Izin', class: 'bg-yellow-100 text-yellow-800' },
+            A: { text: 'Alfa', class: 'bg-red-100 text-red-800' }
+        };
+        siswaDiKelas.forEach(siswa => {
+            const absenRecord = absensiKelasHariIni[siswa.nis];
+            const statusInfo = absenRecord ? statusMap[absenRecord.status] : null;
+            const statusHtml = statusInfo ? `<span class="${statusInfo.class} text-xs font-medium px-2.5 py-0.5 rounded-full">${statusInfo.text}</span>` : '<span>-</span>';
+            const row = `
+                <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium text-gray-900">${siswa.name}</td>
+                    <td class="px-6 py-4">${statusHtml}</td>
+                    <td class="px-6 py-4">-</td> <!-- Keterangan placeholder -->
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+    function populateBulanDropdown() {
+        const selects = [document.getElementById('pilihBulanRekapSiswa'), document.getElementById('pilihBulanRekapGuru')];
+        const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        const currentMonth = new Date().getMonth();
+        selects.forEach(select => {
+            if (!select) return;
+            select.innerHTML = '';
+            bulan.forEach((namaBulan, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = namaBulan;
+                if (index === currentMonth) option.selected = true;
+                select.appendChild(option);
+            });
+        });
+    }
+    function renderRekapSiswa() {
+        const kelas = document.getElementById('pilihKelasRekap').value;
+        const tbody = document.getElementById('rekapTabelBodySiswa');
+        const siswa = mockSiswa[kelas];
+        const month = parseInt(document.getElementById('pilihBulanRekapSiswa').value);
+        const year = parseInt(document.getElementById('pilihTahunRekapSiswa').value);
+        tbody.innerHTML = '';
+        if (!siswa) {
+            tbody.innerHTML = '<tr><td colspan="37" class="p-6 text-gray-400">Pilih kelas untuk melihat rekapitulasi.</td></tr>';
+            return;
+        }
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const colors = { H: 'bg-green-100', S: 'bg-blue-100', I: 'bg-yellow-100', A: 'bg-red-100' };
+        siswa.forEach((s, index) => {
+            let row = `<tr class="text-center">
+                <td class="border border-gray-300 p-1">${index + 1}</td>
+                <td class="border border-gray-300 p-1 text-left">${s.name}</td>`;
+            let counts = { H: 0, S: 0, I: 0, A: 0 };
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const absen = mockAbsensiDatabase.siswa[dateStr]?.[kelas]?.[s.nis];
+                const status = absen ? absen.status : '';
+                if (status) counts[status]++;
+                row += `<td class="border border-gray-300 ${colors[status] || ''}">${status}</td>`;
+            }
+            for (let i = daysInMonth + 1; i <= 31; i++) {
+                row += `<td class="border border-gray-300 bg-gray-200"></td>`;
+            }
+            row += `
+                <td class="border border-gray-300 font-semibold bg-green-100">${counts.H}</td>
+                <td class="border border-gray-300 font-semibold bg-blue-100">${counts.S}</td>
+                <td class="border border-gray-300 font-semibold bg-yellow-100">${counts.I}</td>
+                <td class="border border-gray-300 font-semibold bg-red-100">${counts.A}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+    function renderRekapGuruPegawai() {
+        const tbody = document.getElementById('rekapTabelBodyGuru');
+        const personil = Object.values(mockUsers).filter(user => user.role === 'Guru' || user.role === 'Pegawai');
+        const month = parseInt(document.getElementById('pilihBulanRekapGuru').value);
+        const year = parseInt(document.getElementById('pilihTahunRekapGuru').value);
+        tbody.innerHTML = '';
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const colors = { H: 'bg-green-100', S: 'bg-blue-100', I: 'bg-yellow-100', A: 'bg-red-100' };
+        personil.forEach((p, index) => {
+            let row = `<tr class="text-center">
+                <td class="border border-gray-300 p-1">${index + 1}</td>
+                <td class="border border-gray-300 p-1 text-left">${p.name}</td>
+                <td class="border border-gray-300 p-1 text-left">${p.nip}</td>`;
+            let counts = { H: 0, S: 0, I: 0, A: 0 };
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dayOfWeek = date.getDay();
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const absen = mockAbsensiDatabase.personal[dateStr]?.[p.nip];
+                let status = '';
+                if (dayOfWeek !== 0) {
+                    if (absen && absen.masuk && absen.pulang) {
+                        status = 'H';
+                    } else {
+                        status = 'A';
+                    }
+                }
+                if (status) counts[status]++;
+                const cellColor = dayOfWeek === 0 ? 'bg-gray-200' : colors[status] || '';
+                row += `<td class="border border-gray-300 ${cellColor}">${status}</td>`;
+            }
+            for (let i = daysInMonth + 1; i <= 31; i++) {
+                row += `<td class="border border-gray-300 bg-gray-200"></td>`;
+            }
+            row += `
+                <td class="border border-gray-300 font-semibold bg-green-100">${counts.H}</td>
+                <td class="border border-gray-300 font-semibold bg-blue-100">${counts.S}</td>
+                <td class="border border-gray-300 font-semibold bg-yellow-100">${counts.I}</td>
+                <td class="border border-gray-300 font-semibold bg-red-100">${counts.A}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+    function printRekap() {
+        const activeTabContent = document.querySelector('.rekap-tab-content:not(.hidden)');
+        let kopSurat, bulanEl, tahunEl;
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date().toLocaleDateString('id-ID', options);
+        document.querySelectorAll('.print-date').forEach(el => el.innerText = today);
+        const namaKepsek = document.getElementById('namaKepsek').value || '(Nama Kepala Sekolah)';
+        const nipKepsek = document.getElementById('nipKepsek').value || '(NIP Kepala Sekolah)';
+        if (activeTabContent.id === 'rekapSiswa') {
+            kopSurat = document.getElementById('kopSuratSiswa');
+            bulanEl = document.getElementById('pilihBulanRekapSiswa');
+            tahunEl = document.getElementById('pilihTahunRekapSiswa');
+            const kelasEl = document.getElementById('pilihKelasRekap');
+            kopSurat.querySelector('.rekapKelas').innerText = kelasEl.value;
+            const kelasInfo = mockKelas.find(k => k.id === kelasEl.value);
+            const waliKelas = kelasInfo ? mockUsers[kelasInfo.waliKelasNip] : null;
+            document.getElementById('printNamaWaliKelas').innerText = waliKelas ? waliKelas.name : '(Nama Wali Kelas)';
+            document.getElementById('printNipWaliKelas').innerText = waliKelas ? waliKelas.nip : '(NIP Wali Kelas)';
+        } else {
+            kopSurat = document.getElementById('kopSuratGuru');
+            bulanEl = document.getElementById('pilihBulanRekapGuru');
+            tahunEl = document.getElementById('pilihTahunRekapGuru');
+            document.getElementById('printNamaKepsek').innerText = namaKepsek;
+            document.getElementById('printNipKepsek').innerText = nipKepsek;
+        }
+        kopSurat.querySelector('.rekapBulan').innerText = bulanEl.options[bulanEl.selectedIndex].text;
+        kopSurat.querySelector('.rekapTahun').innerText = tahunEl.value;
+        kopSurat.classList.remove('hidden');
+        window.print();
+        kopSurat.classList.add('hidden');
+    }
+    function openModal(title, bodyHtml) {
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalBody').innerHTML = bodyHtml;
+        document.getElementById('formModal').classList.remove('hidden');
+        document.getElementById('formModal').classList.add('flex');
+    }
+    function closeModal() {
+        document.getElementById('formModal').classList.add('hidden');
+        document.getElementById('formModal').classList.remove('flex');
+    }
+    function renderManajemenPersonil() {
+        const tbody = document.getElementById('personilTableBody');
+        tbody.innerHTML = '';
+        Object.values(mockUsers).filter(u => u.role !== 'Admin').forEach(user => {
+            const row = `
+                <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium text-gray-900">${user.name}</td>
+                    <td class="px-6 py-4">${user.nip}</td>
+                    <td class="px-6 py-4">${user.role}</td>
+                    <td class="px-6 py-4 space-x-2">
+                        <button onclick="showPersonilForm('${user.nip}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
+                        <button onclick="hapusPersonil('${user.nip}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+    function showPersonilForm(nip = null) {
+        const user = nip ? mockUsers[nip] : null;
+        const title = user ? 'Edit Personil' : 'Tambah Personil';
+        const bodyHtml = `
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium text-gray-600">NIP / ID</label>
+                    <input type="text" id="formNip" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.nip || ''}" ${user ? 'readonly' : ''}>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
+                    <input type="text" id="formNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.name || ''}">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-medium text-gray-600">Tempat Lahir</label>
+                        <input type="text" id="formTempatLahir" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.tempatLahir || ''}">
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-gray-600">Tanggal Lahir</label>
+                        <input type="date" id="formTglLahir" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.tglLahir || ''}">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-600">No. Handphone</label>
+                    <input type="tel" id="formNoHp" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${user?.noHp || ''}">
+                </div>
+                 <div>
+                    <label class="text-sm font-medium text-gray-600">Peran</label>
+                    <select id="formPeran" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                        <option value="Guru" ${user?.role === 'Guru' ? 'selected' : ''}>Guru</option>
+                        <option value="Pegawai" ${user?.role === 'Pegawai' ? 'selected' : ''}>Pegawai</option>
+                    </select>
+                </div>
+                <p class="text-xs text-gray-500 italic">Password login akan diatur otomatis berdasarkan tanggal lahir dengan format: <strong>ddmmyyyy</strong> (contoh: 01011990).</p>
+                <div class="flex justify-end gap-2">
+                    <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
+                    <button onclick="simpanPersonil()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
                 </div>
             </div>
         `;
-        container.innerHTML += kelasTableHtml;
-    });
-}
-
-function showSiswaForm(nis = null, kelasId = null) {
-    const siswa = nis ? mockSiswa[kelasId].find(s => s.nis === nis) : null;
-    const title = siswa ? 'Edit Siswa' : 'Tambah Siswa';
-    
-    let kelasOptions = mockKelas.map(k => `<option value="${k.id}" ${kelasId === k.id ? 'selected' : ''}>${k.name}</option>`).join('');
-
-    const bodyHtml = `
-         <div class="space-y-4">
-            <div>
-                <label class="text-sm font-medium text-gray-600">NIS</label>
-                <input type="text" id="formSiswaNis" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.nis || ''}" ${siswa ? 'readonly' : ''}>
-                 <input type="hidden" id="formSiswaKelasLama" value="${kelasId || ''}">
-            </div>
-            <div>
-                <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
-                <input type="text" id="formSiswaNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.name || ''}">
-            </div>
-             <div>
-                <label class="text-sm font-medium text-gray-600">Nama Orang Tua</label>
-                <input type="text" id="formSiswaNamaOrtu" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.namaOrtu || ''}">
-            </div>
-             <div>
-                <label class="text-sm font-medium text-gray-600">No. Handphone</label>
-                <input type="tel" id="formSiswaNoHp" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.noHp || ''}">
-            </div>
-             <div>
-                <label class="text-sm font-medium text-gray-600">Kelas</label>
-                <select id="formSiswaKelas" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">${kelasOptions}</select>
-            </div>
-            <div class="flex justify-end gap-2">
-                <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
-                <button onclick="simpanSiswa()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
-            </div>
-        </div>
-    `;
-    openModal(title, bodyHtml);
-}
-
-function simpanSiswa() {
-    const nis = document.getElementById('formSiswaNis').value;
-    const name = document.getElementById('formSiswaNama').value;
-    const kelasId = document.getElementById('formSiswaKelas').value;
-    const kelasLamaId = document.getElementById('formSiswaKelasLama').value;
-    const namaOrtu = document.getElementById('formSiswaNamaOrtu').value;
-    const noHp = document.getElementById('formSiswaNoHp').value;
-    
-    if(!nis || !name || !kelasId) {
-        alert('NIS, Nama, dan Kelas harus diisi!');
-        return;
+        openModal(title, bodyHtml);
     }
-    
-    // Cek jika siswa sudah ada (untuk tambah baru)
-    if (!kelasLamaId && Object.values(mockSiswa).flat().some(s => s.nis === nis)) {
-        alert('NIS sudah terdaftar!');
-        return;
+    function simpanPersonil() {
+        const nip = document.getElementById('formNip').value;
+        const name = document.getElementById('formNama').value;
+        const role = document.getElementById('formPeran').value;
+        const tempatLahir = document.getElementById('formTempatLahir').value;
+        const tglLahir = document.getElementById('formTglLahir').value;
+        const noHp = document.getElementById('formNoHp').value;
+        if (!nip || !name || !tglLahir) {
+            alert('NIP, Nama, dan Tanggal Lahir tidak boleh kosong!');
+            return;
+        }
+        const existingUser = mockUsers[nip];
+        if (existingUser) {
+            existingUser.name = name;
+            existingUser.role = role;
+            existingUser.tempatLahir = tempatLahir;
+            existingUser.tglLahir = tglLahir;
+            existingUser.noHp = noHp;
+        } else {
+            mockUsers[nip] = { nip, name, role, tempatLahir, tglLahir, noHp };
+        }
+        showSuccessToast('Data personil berhasil disimpan!');
+        renderManajemenPersonil();
+        closeModal();
     }
-
-    // Hapus dari kelas lama jika pindah kelas
-    if(kelasLamaId && kelasLamaId !== kelasId) {
-        mockSiswa[kelasLamaId] = mockSiswa[kelasLamaId].filter(s => s.nis !== nis);
+    function hapusPersonil(nip) {
+        if (confirm(`Apakah Anda yakin ingin menghapus personil dengan NIP ${nip}?`)) {
+            delete mockUsers[nip];
+            showSuccessToast('Data personil berhasil dihapus.');
+            renderManajemenPersonil();
+        }
     }
-    
-    const siswaData = { nis, name, namaOrtu, noHp };
-    
-    // Cari siswa di kelas baru (untuk edit)
-    const siswaIndex = mockSiswa[kelasId].findIndex(s => s.nis === nis);
-    
-    if (siswaIndex > -1) { // Edit
-        mockSiswa[kelasId][siswaIndex] = siswaData;
-    } else { // Tambah
-        mockSiswa[kelasId].push(siswaData);
+    function renderManajemenKelas() {
+        const tbody = document.getElementById('kelasTableBody');
+        tbody.innerHTML = '';
+        mockKelas.forEach(kelas => {
+            const jumlahSiswa = mockSiswa[kelas.id]?.length || 0;
+            const waliKelas = mockUsers[kelas.waliKelasNip];
+            const row = `
+                <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium text-gray-900">${kelas.name}</td>
+                    <td class="px-6 py-4">${waliKelas ? waliKelas.name : '<span class="text-gray-400">Belum diatur</span>'}</td>
+                    <td class="px-6 py-4">${jumlahSiswa}</td>
+                    <td class="px-6 py-4 space-x-2">
+                        <button onclick="showKelasForm('${kelas.id}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
+                        <button onclick="hapusKelas('${kelas.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
     }
-    
-    showSuccessToast('Data siswa berhasil disimpan.');
-    renderManajemenSiswa();
-    renderManajemenKelas(); // update jumlah siswa
-    closeModal();
-}
-
-function hapusSiswa(nis, kelasId) {
-    if(confirm(`Yakin ingin menghapus siswa dengan NIS ${nis}?`)) {
-        mockSiswa[kelasId] = mockSiswa[kelasId].filter(s => s.nis !== nis);
-        showSuccessToast('Siswa berhasil dihapus.');
+    function showKelasForm(id = null) {
+        const kelas = id ? mockKelas.find(k => k.id === id) : null;
+        const title = kelas ? 'Edit Kelas' : 'Tambah Kelas Baru';
+        const teachers = Object.values(mockUsers).filter(u => u.role === 'Guru');
+        let teacherOptions = '<option value="">-- Pilih Wali Kelas --</option>';
+        teacherOptions += teachers.map(t => `<option value="${t.nip}" ${kelas?.waliKelasNip === t.nip ? 'selected' : ''}>${t.name}</option>`).join('');
+        const bodyHtml = `
+             <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium text-gray-600">ID Kelas (cth: IX-C)</label>
+                    <input type="text" id="formKelasId" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${kelas?.id || ''}" ${kelas ? 'readonly' : ''}>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-600">Nama Kelas (cth: IX C)</label>
+                    <input type="text" id="formKelasNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${kelas?.name || ''}">
+                </div>
+                 <div>
+                    <label class="text-sm font-medium text-gray-600">Wali Kelas</label>
+                    <select id="formWaliKelas" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">${teacherOptions}</select>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
+                    <button onclick="simpanKelas()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
+                </div>
+            </div>
+        `;
+        openModal(title, bodyHtml);
+    }
+    function simpanKelas() {
+        const id = document.getElementById('formKelasId').value.toUpperCase();
+        const name = document.getElementById('formKelasNama').value;
+        const waliKelasNip = document.getElementById('formWaliKelas').value;
+        if (!id || !name) {
+            alert('ID dan Nama Kelas tidak boleh kosong!');
+            return;
+        }
+        const existingKelas = mockKelas.find(k => k.id === id);
+        if (existingKelas) {
+            existingKelas.name = name;
+            existingKelas.waliKelasNip = waliKelasNip;
+        } else {
+            if (mockKelas.find(k => k.id === id)) {
+                alert('ID Kelas sudah ada!');
+                return;
+            }
+            mockKelas.push({ id, name, waliKelasNip });
+            mockSiswa[id] = [];
+        }
+        showSuccessToast('Data kelas berhasil disimpan.');
+        renderManajemenKelas();
+        updateAllKelasDropdowns();
+        closeModal();
+    }
+    function hapusKelas(id) {
+         if (confirm(`Yakin ingin menghapus kelas ${id}? Ini akan menghapus semua siswa di dalamnya.`)) {
+             mockKelas = mockKelas.filter(k => k.id !== id);
+             delete mockSiswa[id];
+             showSuccessToast('Kelas berhasil dihapus.');
+             renderManajemenKelas();
+             updateAllKelasDropdowns();
+         }
+    }
+    function renderManajemenSiswa() {
+        const container = document.getElementById('siswaListContainer');
+        const filterKelasId = document.getElementById('filterKelasSiswa').value;
+        container.innerHTML = '';
+        const kelasToRender = filterKelasId ? mockKelas.filter(k => k.id === filterKelasId) : mockKelas;
+        if (kelasToRender.length === 0 && filterKelasId) {
+            container.innerHTML = `<p class="text-center text-gray-500 mt-4">Kelas tidak ditemukan.</p>`;
+            return;
+        }
+        kelasToRender.forEach(kelas => {
+            const siswaDiKelas = mockSiswa[kelas.id] || [];
+            let siswaHtml = siswaDiKelas.map(siswa => `
+                <tr class="bg-white border-b">
+                    <td class="px-6 py-4">${siswa.nis}</td>
+                    <td class="px-6 py-4 font-medium text-gray-900">${siswa.name}</td>
+                    <td class="px-6 py-4">${siswa.namaOrtu || '-'}</td>
+                    <td class="px-6 py-4">${siswa.noHp || '-'}</td>
+                    <td class="px-6 py-4 space-x-2">
+                        <button onclick="showSiswaForm('${siswa.nis}', '${kelas.id}')" class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i></button>
+                        <button onclick="hapusSiswa('${siswa.nis}', '${kelas.id}')" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            if (siswaDiKelas.length === 0) {
+                siswaHtml = `<tr><td colspan="5" class="px-6 py-4 text-center text-gray-400">Belum ada siswa di kelas ini.</td></tr>`;
+            }
+            const kelasTableHtml = `
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold bg-gray-50 p-2 rounded-t-lg">${kelas.name}</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                                <tr>
+                                    <th class="px-6 py-3">NIS</th>
+                                    <th class="px-6 py-3">Nama</th>
+                                    <th class="px-6 py-3">Nama Ortu</th>
+                                    <th class="px-6 py-3">No. HP</th>
+                                    <th class="px-6 py-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>${siswaHtml}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += kelasTableHtml;
+        });
+    }
+    function showSiswaForm(nis = null, kelasId = null) {
+        const siswa = nis ? mockSiswa[kelasId].find(s => s.nis === nis) : null;
+        const title = siswa ? 'Edit Siswa' : 'Tambah Siswa';
+        let kelasOptions = mockKelas.map(k => `<option value="${k.id}" ${kelasId === k.id ? 'selected' : ''}>${k.name}</option>`).join('');
+        const bodyHtml = `
+             <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium text-gray-600">NIS</label>
+                    <input type="text" id="formSiswaNis" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.nis || ''}" ${siswa ? 'readonly' : ''}>
+                     <input type="hidden" id="formSiswaKelasLama" value="${kelasId || ''}">
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
+                    <input type="text" id="formSiswaNama" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.name || ''}">
+                </div>
+                 <div>
+                    <label class="text-sm font-medium text-gray-600">Nama Orang Tua</label>
+                    <input type="text" id="formSiswaNamaOrtu" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.namaOrtu || ''}">
+                </div>
+                 <div>
+                    <label class="text-sm font-medium text-gray-600">No. Handphone</label>
+                    <input type="tel" id="formSiswaNoHp" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg" value="${siswa?.noHp || ''}">
+                </div>
+                 <div>
+                    <label class="text-sm font-medium text-gray-600">Kelas</label>
+                    <select id="formSiswaKelas" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg">${kelasOptions}</select>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button onclick="closeModal()" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300">Batal</button>
+                    <button onclick="simpanSiswa()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Simpan</button>
+                </div>
+            </div>
+        `;
+        openModal(title, bodyHtml);
+    }
+    function simpanSiswa() {
+        const nis = document.getElementById('formSiswaNis').value;
+        const name = document.getElementById('formSiswaNama').value;
+        const kelasId = document.getElementById('formSiswaKelas').value;
+        const kelasLamaId = document.getElementById('formSiswaKelasLama').value;
+        const namaOrtu = document.getElementById('formSiswaNamaOrtu').value;
+        const noHp = document.getElementById('formSiswaNoHp').value;
+        if(!nis || !name || !kelasId) {
+            alert('NIS, Nama, dan Kelas harus diisi!');
+            return;
+        }
+        if (!kelasLamaId && Object.values(mockSiswa).flat().some(s => s.nis === nis)) {
+            alert('NIS sudah terdaftar!');
+            return;
+        }
+        if(kelasLamaId && kelasLamaId !== kelasId) {
+            mockSiswa[kelasLamaId] = mockSiswa[kelasLamaId].filter(s => s.nis !== nis);
+        }
+        const siswaData = { nis, name, namaOrtu, noHp };
+        if (!mockSiswa[kelasId]) {
+            mockSiswa[kelasId] = [];
+        }
+        const siswaIndex = mockSiswa[kelasId].findIndex(s => s.nis === nis);
+        if (siswaIndex > -1) {
+            mockSiswa[kelasId][siswaIndex] = siswaData;
+        } else {
+            mockSiswa[kelasId].push(siswaData);
+        }
+        showSuccessToast('Data siswa berhasil disimpan.');
         renderManajemenSiswa();
         renderManajemenKelas();
+        closeModal();
     }
-}
-
-// Helper Functions
-function updateAllKelasDropdowns() {
-    const dropdowns = [
-        document.getElementById('pilihKelas'),
-        document.getElementById('pilihKelasLihat'),
-        document.getElementById('pilihKelasRekap'),
-        document.getElementById('filterKelasSiswa')
-    ];
-    
-    const optionsHtml = mockKelas.map(k => `<option value="${k.id}">${k.name}</option>`).join('');
-    
-    dropdowns.forEach(dropdown => {
-        const firstOption = dropdown.querySelector('option');
-        dropdown.innerHTML = '';
-        dropdown.appendChild(firstOption);
-        dropdown.innerHTML += optionsHtml;
-    });
-}
+    function hapusSiswa(nis, kelasId) {
+        if(confirm(`Yakin ingin menghapus siswa dengan NIS ${nis}?`)) {
+            mockSiswa[kelasId] = mockSiswa[kelasId].filter(s => s.nis !== nis);
+            showSuccessToast('Siswa berhasil dihapus.');
+            renderManajemenSiswa();
+            renderManajemenKelas();
+        }
+    }
+    function updateAllKelasDropdowns() {
+        const dropdowns = [
+            document.getElementById('pilihKelas'),
+            document.getElementById('pilihKelasLihat'),
+            document.getElementById('pilihKelasRekap'),
+            document.getElementById('filterKelasSiswa')
+        ];
+        const optionsHtml = mockKelas.map(k => `<option value="${k.id}">${k.name}</option>`).join('');
+        dropdowns.forEach(dropdown => {
+            if (dropdown) {
+                const firstOption = dropdown.querySelector('option');
+                dropdown.innerHTML = '';
+                dropdown.appendChild(firstOption);
+                dropdown.innerHTML += optionsHtml;
+            }
+        });
+    }
 
 </script>
-
 </body>
 </html>
 
